@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SES Presentation Manager</title>
+  <style>
+    @font-face { font-family: 'Gilroy'; src: url('../fonts/Gilroy-Regular.otf'); font-weight: 400; }
+    @font-face { font-family: 'Gilroy'; src: url('../fonts/Gilroy-Medium.otf'); font-weight: 500; }
+    @font-face { font-family: 'Gilroy'; src: url('../fonts/Gilroy-SemiBold.otf'); font-weight: 600; }
+    @font-face { font-family: 'Gilroy'; src: url('../fonts/Gilroy-Bold.otf'); font-weight: 700; }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Gilroy', sans-serif;
+      background: #1a1a2e;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .logo { height: 48px; margin-bottom: 12px; opacity: 0.9; }
+    h1 { font-size: 24px; font-weight: 600; margin-bottom: 40px; color: #D8E6F0; }
+
+    .cards { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      width: 300px;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+
+    .card-header {
+      background: #0A5383;
+      color: #fff;
+      padding: 14px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .card-body { padding: 20px; }
+    .card-title { font-size: 18px; font-weight: 700; color: #0A5383; margin-bottom: 6px; }
+    .card-desc { font-size: 13px; color: #666; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <img src="../assets/ses-logo.light.png" alt="SES" class="logo">
+  <h1>Presentation Manager</h1>
+
+  <div class="cards">
+    <a href="1258-flipbook.html" class="card">
+      <div class="card-header">Contract 1258</div>
+      <div class="card-body">
+        <div class="card-title">SFR Portfolio Flipbook</div>
+        <div class="card-desc">Two-page spread with portfolio composition, performance data, loss experience, and TIV concentration.</div>
+      </div>
+    </a>
+
+    <a href="1258-stat-sheet.html" class="card">
+      <div class="card-header">Contract 1258</div>
+      <div class="card-body">
+        <div class="card-title">Stat Sheet Dashboard</div>
+        <div class="card-desc">Single-page dashboard with rates, KPIs, underwriting updates, quotes &amp; binds, and loss history.</div>
+      </div>
+    </a>
+  </div>
+</body>
+</html>

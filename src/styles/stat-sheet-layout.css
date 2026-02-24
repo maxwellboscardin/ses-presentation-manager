@@ -1,12 +1,14 @@
 /* SES Presentation Manager — Stat Sheet Layout */
 
-/* ─── Viewport — single page centered ──────────────────────── */
+/* ─── Viewport — single page centered, auto-scaled ──────────── */
 .stat-sheet-viewport {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100vw;
-  height: 100vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: center center;
 }
 
 /* ─── Page (same as flipbook) ──────────────────────────────── */

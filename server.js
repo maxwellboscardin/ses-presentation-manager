@@ -19,7 +19,7 @@ const MIME = {
 
 createServer(async (req, res) => {
   let path = req.url.split('?')[0];
-  if (path === '/') path = '/output/1258-flipbook.html';
+  if (path === '/') path = '/output/index.html';
 
   const filePath = join(ROOT, path);
   if (!filePath.startsWith(ROOT)) {

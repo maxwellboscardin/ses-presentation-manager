@@ -20,6 +20,16 @@ export async function renderStatSheet(container, dataUrl) {
   container.appendChild(toolbar);
   container.appendChild(viewport);
 
+  // Auto-scale stat sheet to fit viewport
+  function autoScale() {
+    const contentW = 816 + 48;
+    const contentH = 1056 + 48;
+    const scale = Math.min(window.innerWidth / contentW, window.innerHeight / contentH, 1);
+    viewport.style.transform = `translate(-50%, -50%) scale(${scale})`;
+  }
+  autoScale();
+  window.addEventListener('resize', autoScale);
+
   // Render charts after layout fully settles
   setTimeout(() => renderAllCharts(data), 50);
 }

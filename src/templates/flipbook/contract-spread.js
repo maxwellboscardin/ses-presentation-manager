@@ -23,6 +23,16 @@ export async function renderContractSpread(container, dataUrl) {
 
   container.appendChild(flipbook);
 
+  // Auto-scale flipbook to fit viewport
+  function autoScale() {
+    const contentW = 816 * 2 + 2 + 48; // two pages + gap + padding
+    const contentH = 1056 + 48;
+    const scale = Math.min(window.innerWidth / contentW, window.innerHeight / contentH, 1);
+    flipbook.style.transform = `translate(-50%, -50%) scale(${scale})`;
+  }
+  autoScale();
+  window.addEventListener('resize', autoScale);
+
   // Trigger chart rendering after DOM is ready
   requestAnimationFrame(() => {
     renderPage1Charts(data);
