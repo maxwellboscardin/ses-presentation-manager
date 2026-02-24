@@ -1,0 +1,297 @@
+/* SES Presentation Manager — Unified Presentation Layout */
+
+/* ─── Viewport ─────────────────────────────────────────────── */
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #1a1a2e;
+}
+
+/* ─── Section (each navigable view) ────────────────────────── */
+.pres-section {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: center center;
+  display: none;
+}
+
+.pres-section.active {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Spread sections: two pages side by side */
+.pres-section--spread {
+  gap: 2px;
+}
+
+/* Single-page sections */
+.pres-section--single {
+  /* single page, no gap */
+}
+
+/* ─── Cover / Back-Cover Pages ─────────────────────────────── */
+.cover-page {
+  width: 816px;
+  height: 1056px;
+  background:
+    repeating-linear-gradient(
+      -55deg,
+      transparent,
+      transparent 40px,
+      rgba(255, 255, 255, 0.06) 40px,
+      rgba(255, 255, 255, 0.06) 80px
+    ),
+    linear-gradient(135deg, #D8E6F0 0%, #c5d8e8 100%);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.cover-page__logo {
+  height: 72px;
+  width: auto;
+  opacity: 0.9;
+}
+
+.cover-page__title {
+  font-family: var(--font-family);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--ses-navy);
+  text-align: center;
+  line-height: 1.3;
+}
+
+.cover-page__subtitle {
+  font-family: var(--font-family);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--ses-text-muted);
+  text-align: center;
+}
+
+.cover-page__badge {
+  background: var(--ses-navy);
+  color: var(--ses-white);
+  font-family: var(--font-family);
+  font-weight: 700;
+  padding: 8px 24px;
+  border-radius: var(--radius);
+  font-size: 16px;
+}
+
+/* Back cover — simpler */
+.back-cover-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.back-cover-content__text {
+  font-family: var(--font-family);
+  font-size: 14px;
+  color: var(--ses-text-muted);
+}
+
+/* ─── Navigation Arrows ────────────────────────────────────── */
+.pres-nav {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 200;
+  background: rgba(10, 83, 131, 0.7);
+  color: #fff;
+  border: none;
+  width: 48px;
+  height: 80px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, opacity 0.15s;
+  opacity: 0.6;
+}
+
+.pres-nav:hover {
+  background: rgba(10, 83, 131, 0.95);
+  opacity: 1;
+}
+
+.pres-nav:disabled {
+  opacity: 0.15;
+  cursor: default;
+  pointer-events: none;
+}
+
+.pres-nav svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pres-nav--prev {
+  left: 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.pres-nav--next {
+  right: 0;
+  border-radius: 8px 0 0 8px;
+}
+
+/* ─── Page Indicator Dots ──────────────────────────────────── */
+.pres-dots {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 200;
+}
+
+.pres-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.pres-dot:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.pres-dot.active {
+  background: #fff;
+  transform: scale(1.3);
+}
+
+/* ─── Section Labels (below dots) ──────────────────────────── */
+.pres-label {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-family);
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  z-index: 200;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* ─── Viewer Toolbar (shared with standalone pages) ────────── */
+.viewer-toolbar {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  gap: 6px;
+  z-index: 100;
+}
+
+.viewer-toolbar__btn {
+  background: var(--ses-navy);
+  color: var(--ses-white);
+  border: none;
+  border-radius: 6px;
+  padding: 7px 14px;
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: background 0.15s;
+}
+
+.viewer-toolbar__btn:hover {
+  background: var(--ses-navy-light);
+}
+
+.viewer-toolbar__btn svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ─── Print: show all sections ─────────────────────────────── */
+@media print {
+  .pres-nav,
+  .pres-dots,
+  .pres-label,
+  .viewer-toolbar {
+    display: none !important;
+  }
+
+  .pres-section {
+    display: flex !important;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    justify-content: center;
+    page-break-after: always;
+    page-break-inside: avoid;
+  }
+
+  .pres-section:last-child {
+    page-break-after: auto;
+  }
+
+  .pres-section .page,
+  .pres-section .cover-page {
+    box-shadow: none;
+    width: 8.5in;
+    height: 11in;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* For spreads, each page gets its own printed page */
+  .pres-section--spread {
+    display: block !important;
+  }
+
+  .pres-section--spread .page {
+    page-break-after: always;
+  }
+
+  .pres-section--spread .page:last-child {
+    page-break-after: auto;
+  }
+
+  @page {
+    size: 8.5in 11in;
+    margin: 0;
+  }
+}

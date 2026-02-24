@@ -49,6 +49,36 @@
     print-color-adjust: exact;
   }
 
+  /* ─── Unified Presentation print overrides ─────────────────── */
+  .pres-nav,
+  .pres-dots,
+  .pres-label {
+    display: none !important;
+  }
+
+  .pres-section {
+    display: flex !important;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    justify-content: center;
+    page-break-inside: avoid;
+  }
+
+  .pres-section--spread {
+    display: block !important;
+  }
+
+  .cover-page {
+    width: 8.5in;
+    height: 11in;
+    box-shadow: none;
+    page-break-after: always;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
   @page {
     size: 8.5in 11in;
     margin: 0;

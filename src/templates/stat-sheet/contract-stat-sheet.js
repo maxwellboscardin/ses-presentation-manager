@@ -53,12 +53,12 @@ function buildToolbar(onReplay) {
 }
 
 function replayAllAnimations(data) {
-  renderAllCharts(data);
+  renderAllCharts(data, null);
 }
 
 // ─── Page Assembly ────────────────────────────────────────────
 
-function buildPage(data) {
+export function buildPage(data) {
   const page = document.createElement('div');
   page.className = 'page';
 
@@ -337,15 +337,16 @@ function buildRow5(data) {
 
 // ─── Chart Rendering ──────────────────────────────────────────
 
-function renderAllCharts(data) {
+export function renderAllCharts(data, root) {
+  const el = root || document;
   // Gauge — Capacity Utilization
-  const gaugeCanvas = document.getElementById('chart-gauge');
+  const gaugeCanvas = el.querySelector('#chart-gauge');
   if (gaugeCanvas) {
     createGaugeChart(gaugeCanvas, data.capacityUtilization);
   }
 
   // Line chart — Average Rates
-  const ratesCanvas = document.getElementById('chart-avg-rates');
+  const ratesCanvas = el.querySelector('#chart-avg-rates');
   if (ratesCanvas) {
     createLineChart(ratesCanvas, data.averageRates.chartData, {
       valueFormatter: (v) => v.toFixed(2),
@@ -353,7 +354,7 @@ function renderAllCharts(data) {
   }
 
   // H-bar — Property Risk Score
-  const riskCanvas = document.getElementById('chart-risk-score');
+  const riskCanvas = el.querySelector('#chart-risk-score');
   if (riskCanvas) {
     createHBarChart(riskCanvas, data.propertyRiskScore.data, {
       valueFormatter: (v) => v + '%',
@@ -363,13 +364,13 @@ function renderAllCharts(data) {
   }
 
   // Combo — Quotes & Binds
-  const qbCanvas = document.getElementById('chart-quotes-binds');
+  const qbCanvas = el.querySelector('#chart-quotes-binds');
   if (qbCanvas) {
     createComboChart(qbCanvas, data.quotesBinds.data, {
       lineValueFormatter: (v) => v.toFixed(1) + '%',
       showLineValues: true,
     });
-    const legendContainer = document.getElementById('legend-quotes-binds');
+    const legendContainer = el.querySelector('#legend-quotes-binds');
     if (legendContainer) {
       legendContainer.innerHTML = '';
       legendContainer.appendChild(createComboLegend(data.quotesBinds.legend));
@@ -377,13 +378,13 @@ function renderAllCharts(data) {
   }
 
   // Combo — Renewal Retention
-  const rrCanvas = document.getElementById('chart-renewal-retention');
+  const rrCanvas = el.querySelector('#chart-renewal-retention');
   if (rrCanvas) {
     createComboChart(rrCanvas, data.renewalRetention.data, {
       lineValueFormatter: (v) => v.toFixed(1) + '%',
       showLineValues: true,
     });
-    const legendContainer = document.getElementById('legend-renewal-retention');
+    const legendContainer = el.querySelector('#legend-renewal-retention');
     if (legendContainer) {
       legendContainer.innerHTML = '';
       legendContainer.appendChild(createComboLegend(data.renewalRetention.legend));
@@ -391,7 +392,7 @@ function renderAllCharts(data) {
   }
 
   // V-bar — Loss History
-  const lossCanvas = document.getElementById('chart-loss-history');
+  const lossCanvas = el.querySelector('#chart-loss-history');
   if (lossCanvas) {
     createVBarChart(lossCanvas, data.lossHistory.data, {
       valueFormatter: (v) => v + '%',

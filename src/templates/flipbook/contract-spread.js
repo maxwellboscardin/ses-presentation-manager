@@ -58,8 +58,8 @@ function buildToolbar(onReplay) {
 
 function replayAllAnimations(data) {
   // Re-render canvas charts only (they clear and restart)
-  renderPage1CanvasCharts(data);
-  renderPage2Charts(data);
+  renderPage1CanvasCharts(data, null);
+  renderPage2Charts(data, null);
 
   // Re-trigger map fade-in (don't recreate — just toggle opacity)
   const mapContainer = document.getElementById('chart-us-map');
@@ -78,7 +78,7 @@ function replayAllAnimations(data) {
 
 // ─── PAGE 1: Portfolio Composition ──────────────────────────────
 
-function buildPage1(data) {
+export function buildPage1(data) {
   const page = document.createElement('div');
   page.className = 'page';
   page.innerHTML = `
@@ -154,7 +154,7 @@ function createMiniKpi(label, value) {
 
 // ─── PAGE 2: Performance Data ───────────────────────────────────
 
-function buildPage2(data) {
+export function buildPage2(data) {
   const page = document.createElement('div');
   page.className = 'page';
   page.innerHTML = `
@@ -282,9 +282,10 @@ function buildRateTable(rates) {
 
 // ─── Chart Rendering ────────────────────────────────────────────
 
-function renderPage1CanvasCharts(data) {
+function renderPage1CanvasCharts(data, root) {
+  const el = root || document;
   // Top States bar chart (canvas — safe to re-render)
-  const statesCanvas = document.getElementById('chart-states-bar');
+  const statesCanvas = el.querySelector('#chart-states-bar');
   if (statesCanvas) {
     const statesData = data.portfolio.topStatesByTiv.slice(0, 8).map((s) => ({
       label: s.state,
@@ -300,11 +301,12 @@ function renderPage1CanvasCharts(data) {
   }
 }
 
-function renderPage1Charts(data) {
-  renderPage1CanvasCharts(data);
+export function renderPage1Charts(data, root) {
+  const el = root || document;
+  renderPage1CanvasCharts(data, root);
 
   // US SVG map — only created once on initial load
-  const mapContainer = document.getElementById('chart-us-map');
+  const mapContainer = el.querySelector('#chart-us-map');
   if (mapContainer) {
     const topStates = data.portfolio.topStatesByTiv.slice(0, 3).map((s) => s.state);
     createUSMap(mapContainer, data.portfolio.statesTivMap, {
@@ -313,9 +315,10 @@ function renderPage1Charts(data) {
   }
 }
 
-function renderPage2Charts(data) {
+export function renderPage2Charts(data, root) {
+  const el = root || document;
   // Stacked bar chart — deductibles
-  const stackedCanvas = document.getElementById('chart-stacked-bar');
+  const stackedCanvas = el.querySelector('#chart-stacked-bar');
   if (stackedCanvas) {
     const stackedData = data.deductibles.quarters.map((q, qi) => ({
       label: q.replace('20', "'"),
@@ -327,7 +330,7 @@ function renderPage2Charts(data) {
   }
 
   // Line chart — average rates
-  const lineCanvas = document.getElementById('chart-line');
+  const lineCanvas = el.querySelector('#chart-line');
   if (lineCanvas) {
     const lineData = data.averageRates.chartQuarters.map((q, i) => ({
       label: q,
@@ -339,7 +342,7 @@ function renderPage2Charts(data) {
   }
 
   // Vertical bar chart — annual loss ratio
-  const lossRatioCanvas = document.getElementById('chart-loss-ratio');
+  const lossRatioCanvas = el.querySelector('#chart-loss-ratio');
   if (lossRatioCanvas) {
     const lossData = data.lossExperience.annualRatios.map((r) => ({
       label: r.year,
@@ -351,7 +354,7 @@ function renderPage2Charts(data) {
   }
 
   // Horizontal bar chart — top loss types
-  const lossTypesCanvas = document.getElementById('chart-loss-types');
+  const lossTypesCanvas = el.querySelector('#chart-loss-types');
   if (lossTypesCanvas) {
     const lossTypesData = data.lossExperience.topLossTypes.map((lt) => ({
       label: lt.type,
