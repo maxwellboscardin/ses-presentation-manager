@@ -1,0 +1,304 @@
+/* SES Presentation Manager — Stat Sheet Layout */
+
+/* ─── Viewport — single page centered ──────────────────────── */
+.stat-sheet-viewport {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* ─── Page (same as flipbook) ──────────────────────────────── */
+.stat-sheet-viewport .page {
+  width: 816px;
+  height: 1056px;
+  background:
+    repeating-linear-gradient(
+      -55deg,
+      transparent,
+      transparent 40px,
+      rgba(255, 255, 255, 0.06) 40px,
+      rgba(255, 255, 255, 0.06) 80px
+    ),
+    linear-gradient(135deg, #D8E6F0 0%, #c5d8e8 100%);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+}
+
+.stat-sheet-viewport .page__inner {
+  padding: 24px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-sheet-viewport .page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--gap-sm);
+  flex-shrink: 0;
+}
+
+.stat-sheet-viewport .page-title {
+  font-size: var(--font-size-page-title);
+  font-weight: 700;
+  color: var(--ses-navy);
+  line-height: 1.2;
+}
+
+.stat-sheet-viewport .page-logo {
+  position: absolute;
+  bottom: 16px;
+  right: 20px;
+  height: 32px;
+  width: auto;
+  opacity: 0.7;
+}
+
+/* ─── Row System ───────────────────────────────────────────── */
+.stat-row {
+  display: flex;
+  gap: var(--gap-sm);
+  min-height: 0;
+}
+
+.stat-row--60-40 > :first-child { flex: 3; }
+.stat-row--60-40 > :last-child  { flex: 2; }
+
+.stat-row--thirds > * { flex: 1; }
+
+.stat-row--halves > * { flex: 1; }
+
+/* Ensure cards inside rows stretch to fill */
+.stat-row > * {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* ─── Page Content — fills remaining space ─────────────────── */
+.stat-sheet-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+  min-height: 0;
+}
+
+/* Row height proportions for the stat sheet */
+.stat-sheet-content > .stat-row {
+  flex: 1;
+  min-height: 0;
+}
+
+/* ─── Icon KPI Card ────────────────────────────────────────── */
+.icon-kpi-card {
+  background: var(--ses-white);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(10, 83, 131, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.icon-kpi-card > .section-header {
+  border-radius: 0;
+}
+
+.icon-kpi-card__body {
+  padding: var(--gap-md) var(--gap-lg);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+  justify-content: center;
+}
+
+.icon-kpi {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-md);
+}
+
+.icon-kpi__icon {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: var(--ses-navy);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icon-kpi__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.icon-kpi__label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ses-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  line-height: 1.2;
+}
+
+.icon-kpi__row {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.icon-kpi__value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ses-text);
+  line-height: 1.25;
+}
+
+.icon-kpi__row .growth-indicator {
+  font-size: 11px;
+}
+
+/* ─── Growth Indicators ────────────────────────────────────── */
+.growth-indicator {
+  font-size: var(--font-size-small);
+  font-weight: 700;
+  margin-left: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.growth-indicator--up {
+  color: #2D8A4E;
+}
+
+.growth-indicator--down {
+  color: #C53030;
+}
+
+.growth-indicator--flat {
+  color: var(--ses-text-muted);
+}
+
+/* ─── ITV Badge ────────────────────────────────────────────── */
+.itv-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--ses-white);
+  border-radius: 20px;
+  padding: 4px 14px;
+  box-shadow: 0 1px 3px rgba(10, 83, 131, 0.1);
+  font-size: var(--font-size-body);
+  font-weight: 700;
+  color: var(--ses-text);
+  white-space: nowrap;
+}
+
+.itv-badge .growth-indicator {
+  font-size: var(--font-size-body);
+}
+
+.itv-badge__label {
+  font-size: var(--font-size-small);
+  font-weight: 600;
+  color: var(--ses-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* ─── KPI Stack (vertical stack of KPI groups) ─────────────── */
+.kpi-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+  background: var(--ses-white);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(10, 83, 131, 0.1);
+}
+
+.kpi-stack > .section-header {
+  border-radius: 0;
+}
+
+.kpi-stack__body {
+  padding: var(--gap-md) var(--gap-lg);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+  justify-content: center;
+}
+
+.kpi-stack__group {
+  text-align: center;
+}
+
+.kpi-stack__group-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ses-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 2px;
+}
+
+.kpi-stack__group-values {
+  display: flex;
+  justify-content: center;
+  gap: var(--gap-sm);
+  align-items: baseline;
+}
+
+.kpi-stack__value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ses-text);
+}
+
+.kpi-stack__group-values .growth-indicator {
+  font-size: 11px;
+}
+
+.kpi-stack__divider {
+  color: var(--ses-border);
+  font-size: 18px;
+  font-weight: 300;
+}
+
+/* ─── Print Overrides ──────────────────────────────────────── */
+@media print {
+  .stat-sheet-viewport {
+    display: block;
+    width: auto;
+    height: auto;
+  }
+
+  .viewer-toolbar {
+    display: none;
+  }
+
+  .stat-sheet-viewport .page {
+    width: 8.5in;
+    height: 11in;
+    box-shadow: none;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .icon-kpi-card,
+  .kpi-stack,
+  .itv-badge {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

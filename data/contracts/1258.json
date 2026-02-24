@@ -1,0 +1,85 @@
+{
+  "contract": "1258",
+  "title": "SFR Portfolio",
+  "lastUpdated": "2025-09-01",
+
+  "portfolio": {
+    "totalAnnualPremium": "$11.3M",
+    "tiv": "$2.6B",
+    "avgRate": "0.37",
+    "assets": "10,757",
+    "accounts": "118",
+    "topStatesByTiv": [
+      { "state": "TX", "tivMillions": 677.6 },
+      { "state": "OK", "tivMillions": 494.9 },
+      { "state": "GA", "tivMillions": 210.3 },
+      { "state": "AL", "tivMillions": 185.7 },
+      { "state": "NC", "tivMillions": 162.4 },
+      { "state": "SC", "tivMillions": 148.1 },
+      { "state": "TN", "tivMillions": 135.9 },
+      { "state": "MS", "tivMillions": 102.6 },
+      { "state": "AR", "tivMillions": 89.3 },
+      { "state": "MO", "tivMillions": 72.1 }
+    ],
+    "statesTivMap": {
+      "TX": 677.6, "OK": 494.9, "GA": 210.3, "AL": 185.7,
+      "NC": 162.4, "SC": 148.1, "TN": 135.9, "MS": 102.6,
+      "AR": 89.3, "MO": 72.1, "IN": 48.2, "OH": 35.7,
+      "KY": 28.4, "LA": 22.1, "FL": 18.9, "VA": 12.3,
+      "KS": 8.7, "IL": 6.2
+    }
+  },
+
+  "deductibles": {
+    "quarters": ["2024 Q2", "2024 Q3", "2024 Q4", "2025 Q1", "2025 Q2"],
+    "tiers": [
+      { "label": "$2,500",  "values": [0,  0,  0,  0,  0]  },
+      { "label": "$5,000",  "values": [9,  7,  15, 4,  2]  },
+      { "label": "$10,000", "values": [67, 56, 18, 21, 62] },
+      { "label": "$25,000", "values": [24, 37, 23, 44, 36] },
+      { "label": "$50,000", "values": [0,  0,  44, 31, 0]  }
+    ]
+  },
+
+  "averageRates": {
+    "chartQuarters": ["Q3 '24", "Q4 '24", "Q1 '25", "Q2 '25", "Q3 '25"],
+    "chartRates": [0.45, 0.43, 0.40, 0.47, 0.45],
+    "tableQuarters": ["2024 Q2", "2024 Q3", "2024 Q4", "2025 Q1", "2025 Q2"],
+    "tableRates": [0.62, 0.44, 0.47, 0.37, 0.50]
+  },
+
+  "lossExperience": {
+    "earnedPremium5yr": "$38.8M",
+    "incurredLosses5yr": "$9.5M",
+    "lossRatio5yr": "24.43%",
+    "annualRatios": [
+      { "year": "2021", "ratio": 32 },
+      { "year": "2022", "ratio": 41 },
+      { "year": "2023", "ratio": 22 },
+      { "year": "2024", "ratio": 16 },
+      { "year": "2025", "ratio": 1 }
+    ],
+    "topLossTypes": [
+      { "type": "FIRE",          "amountMillions": 3.70 },
+      { "type": "WIND/HAIL",     "amountMillions": 2.54 },
+      { "type": "WATER",         "amountMillions": 1.96 },
+      { "type": "BODILY INJURY", "amountMillions": 0.91 },
+      { "type": "HEAVY STORM",   "amountMillions": 0.87 }
+    ]
+  },
+
+  "multiFamily": {
+    "totalAnnualPremium": "$1.7M",
+    "tiv": "$402M",
+    "avgRate": "0.40",
+    "assets": "391",
+    "accounts": "71",
+    "activeStates": "18",
+    "observations": [
+      "Equipment breakdown coverage added in last contract",
+      "Recently onboarded a monoline GL carrier",
+      "Premium minimums reduced to $5K and max community limit increased to $12.5M leading to more quotes and binds",
+      "Requesting year-built requirement adjustment from 25 to 30 years if electrical and plumbing systems are modern"
+    ]
+  }
+}

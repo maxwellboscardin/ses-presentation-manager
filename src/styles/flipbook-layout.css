@@ -1,0 +1,156 @@
+/* SES Presentation Manager — Flipbook Layout */
+
+/* Viewport — centered, no extra scroll at default zoom */
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+.flipbook {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  width: 100vw;
+  height: 100vh;
+}
+
+.page {
+  width: 816px;   /* 8.5in at 96dpi */
+  height: 1056px; /* 11in at 96dpi */
+  background:
+    repeating-linear-gradient(
+      -55deg,
+      transparent,
+      transparent 40px,
+      rgba(255, 255, 255, 0.06) 40px,
+      rgba(255, 255, 255, 0.06) 80px
+    ),
+    linear-gradient(135deg, #D8E6F0 0%, #c5d8e8 100%);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+}
+
+.page__inner {
+  padding: 24px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Page Header — compact single row: title + badge */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--gap-sm);
+  flex-shrink: 0;
+}
+
+.page-header__logo {
+  height: 40px;
+  width: auto;
+}
+
+.page-header__right {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm);
+}
+
+/* Page Title — compact, no italic */
+.page-title {
+  font-size: var(--font-size-page-title);
+  font-weight: 700;
+  color: var(--ses-navy);
+  line-height: 1.2;
+}
+
+/* Page Content — flexible area filling the page */
+.page-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+  min-height: 0;
+}
+
+/* Two-column layout within a page */
+.page-columns {
+  display: flex;
+  gap: var(--gap-sm);
+  flex: 1;
+  min-height: 0;
+}
+
+.page-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+  min-height: 0;
+}
+
+/* Section within a page */
+.page-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+}
+
+/* Logo — positioned bottom-right of right page */
+.page-logo {
+  position: absolute;
+  bottom: 16px;
+  right: 20px;
+  height: 32px;
+  width: auto;
+  opacity: 0.7;
+}
+
+/* ─── Viewer Toolbar ──────────────────────────────────────────
+   Fixed to viewport edge. Lives in the outer space around
+   the flipbook, not on the pages themselves.
+*/
+.viewer-toolbar {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  gap: 6px;
+  z-index: 100;
+}
+
+.viewer-toolbar__btn {
+  background: var(--ses-navy);
+  color: var(--ses-white);
+  border: none;
+  border-radius: 6px;
+  padding: 7px 14px;
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: background 0.15s;
+}
+
+.viewer-toolbar__btn:hover {
+  background: var(--ses-navy-light);
+}
+
+.viewer-toolbar__btn svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}

@@ -1,0 +1,56 @@
+/* SES Presentation Manager — Print / PDF Styles */
+
+@media print {
+  body {
+    background: white;
+    margin: 0;
+    padding: 0;
+  }
+
+  .flipbook {
+    display: block;
+    padding: 0;
+    gap: 0;
+    width: auto;
+    height: auto;
+  }
+
+  .viewer-toolbar {
+    display: none;
+  }
+
+  .page {
+    width: 8.5in;
+    height: 11in;
+    box-shadow: none;
+    page-break-after: always;
+    page-break-inside: avoid;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page:last-child {
+    page-break-after: auto;
+  }
+
+  /* Ensure backgrounds print */
+  .kpi-box__label,
+  .section-header,
+  .contract-badge,
+  .data-table th,
+  .growth-target-btn {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Ensure canvas charts are visible in print */
+  canvas {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  @page {
+    size: 8.5in 11in;
+    margin: 0;
+  }
+}

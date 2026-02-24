@@ -1,0 +1,260 @@
+/* SES Presentation Manager — Component Styles */
+
+/* ─── KPI Box ─────────────────────────────────────────────────
+   Small stat cards: label (navy, top) identifies the metric,
+   value (white, bottom) shows the content/data.
+*/
+.kpi-box {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--ses-white);
+  box-shadow: 0 1px 3px rgba(10, 83, 131, 0.1);
+  min-width: 0;
+}
+
+.kpi-box__label {
+  background: var(--ses-navy);
+  color: var(--ses-white);
+  font-size: var(--font-size-kpi-label);
+  font-weight: 600;
+  padding: 4px 10px;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.kpi-box__value {
+  color: var(--ses-text);
+  font-size: var(--font-size-kpi-value);
+  font-weight: 700;
+  padding: 6px 10px;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.kpi-row {
+  display: flex;
+  gap: var(--gap-sm);
+  flex-shrink: 0;
+}
+
+.kpi-row .kpi-box {
+  flex: 1;
+}
+
+/* ─── Section Header (floating label) ─────────────────────────
+   Navy bar that labels a GROUP of cards. Sits between sections,
+   not inside any card. Full rounded corners.
+*/
+.section-header {
+  background: var(--ses-navy);
+  color: var(--ses-white);
+  font-size: var(--font-size-section-header);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 5px 14px;
+  border-radius: var(--radius);
+  line-height: 1.3;
+  flex-shrink: 0;
+}
+
+/* ─── Chart Container (card) ──────────────────────────────────
+   White card with rounded corners and shadow.
+   Can contain an embedded .section-header label at the top
+   followed by a .chart-container__body for padded content.
+*/
+.chart-container {
+  background: var(--ses-white);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(10, 83, 131, 0.1);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* Embedded label inside a card — no border-radius needed,
+   parent overflow:hidden clips to card's corners */
+.chart-container > .section-header {
+  border-radius: 0;
+}
+
+/* Padded content area below the embedded label */
+.chart-container__body {
+  padding: var(--gap-sm) var(--gap-md);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.chart-canvas-wrap {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+.chart-canvas-wrap canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Fallback: bare canvas directly in body (legacy flipbook) */
+.chart-container__body > canvas {
+  display: block;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ─── Observations Panel (card with embedded label) ───────────
+   Same pattern: card with overflow:hidden, embedded label at top,
+   padded body below.
+*/
+.observations-panel {
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--ses-white);
+  box-shadow: 0 1px 3px rgba(10, 83, 131, 0.1);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.observations-panel > .section-header {
+  border-radius: 0;
+}
+
+.observations-panel__body {
+  padding: var(--gap-sm) var(--gap-md);
+  font-size: var(--font-size-body);
+  line-height: 1.4;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.observations-panel__body ul {
+  list-style: none;
+  padding: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.observations-panel__body li {
+  padding-left: 14px;
+  position: relative;
+}
+
+.observations-panel__body li::before {
+  content: '\2022';
+  color: var(--ses-orange);
+  font-weight: 700;
+  position: absolute;
+  left: 0;
+}
+
+/* ─── Data Table ──────────────────────────────────────────────*/
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-small);
+}
+
+.data-table th {
+  background: var(--ses-navy);
+  color: var(--ses-white);
+  font-weight: 600;
+  padding: 4px 8px;
+  text-align: center;
+  font-size: var(--font-size-small);
+}
+
+.data-table th:first-child {
+  text-align: left;
+  border-top-left-radius: var(--radius-sm);
+}
+
+.data-table th:last-child {
+  border-top-right-radius: var(--radius-sm);
+}
+
+.data-table td {
+  padding: 3px 8px;
+  text-align: center;
+  border-bottom: 1px solid var(--ses-border);
+}
+
+.data-table td:first-child {
+  text-align: left;
+  font-weight: 600;
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tr:nth-child(even) {
+  background: rgba(216, 230, 240, 0.3);
+}
+
+/* ─── Contract Badge ──────────────────────────────────────────*/
+.contract-badge {
+  background: var(--ses-navy);
+  color: var(--ses-white);
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  display: inline-block;
+}
+
+/* ─── Growth Target Button ────────────────────────────────────*/
+.growth-target-btn {
+  background: var(--ses-orange);
+  color: var(--ses-white);
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: var(--font-size-body);
+  padding: 6px 16px;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* ─── Chart Legend ────────────────────────────────────────────*/
+.chart-legend {
+  display: flex;
+  justify-content: center;
+  gap: var(--gap-sm);
+  flex-wrap: nowrap;
+  margin-top: var(--gap-xs);
+  font-size: 9px;
+  white-space: nowrap;
+}
+
+.chart-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.chart-legend__swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}

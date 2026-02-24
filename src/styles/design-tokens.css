@@ -1,0 +1,98 @@
+/* SES Presentation Manager — Design Tokens */
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('../../fonts/Gilroy-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('../../fonts/Gilroy-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('../../fonts/Gilroy-SemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('../../fonts/Gilroy-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('../../fonts/Gilroy-BoldItalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  /* Brand Colors */
+  --ses-navy: #0A5383;
+  --ses-navy-light: #156499;
+  --ses-navy-dark: #073D62;
+  --ses-orange: #E97121;
+  --ses-orange-light: #F09352;
+  --ses-bg: #D8E6F0;
+  --ses-bg-dark: #c5d8e8;
+  --ses-white: #FFFFFF;
+  --ses-text: #0A5383;
+  --ses-text-muted: #5A7A8F;
+  --ses-border: #B8CDD9;
+
+  /* Chart color scale (blues, light to dark) */
+  --chart-blue-1: #C5DCE8;
+  --chart-blue-2: #8FBAD2;
+  --chart-blue-3: #5A98B8;
+  --chart-blue-4: #2E7BA0;
+  --chart-blue-5: #0A5383;
+
+  /* Typography */
+  --font-family: 'Gilroy', 'Century Gothic', 'DM Sans', sans-serif;
+  --font-size-page-title: 22px;
+  --font-size-kpi-value: 18px;
+  --font-size-section-header: 14px;
+  --font-size-kpi-label: 13px;
+  --font-size-body: 12px;
+  --font-size-small: 10px;
+
+  /* Spacing */
+  --gap-xs: 4px;
+  --gap-sm: 8px;
+  --gap-md: 12px;
+  --gap-lg: 16px;
+  --gap-xl: 24px;
+
+  /* Border Radius */
+  --radius: 8px;
+  --radius-sm: 4px;
+}
+
+/* Base reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  color: var(--ses-text);
+  background: #e8ecf0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

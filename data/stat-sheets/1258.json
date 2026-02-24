@@ -1,0 +1,156 @@
+{
+  "contract": "1258",
+  "title": "Portfolio",
+  "lastUpdated": "2025-09-01",
+
+  "programUpdate": {
+    "observations": [
+      "Contract renewed 7/1 with 5% overall rate increase across all lines",
+      "Equipment breakdown coverage added to all SFR policies effective Q3",
+      "New carrier partner onboarded for excess liability layer ($5M xs $5M)",
+      "Premium minimums reduced to $5K driving increased quote volume",
+      "Year-built eligibility expanded from 25 to 30 years for updated systems"
+    ]
+  },
+
+  "capacityUtilization": {
+    "currentValue": 3.3,
+    "maxValue": 5.4,
+    "unit": "B",
+    "label": "Top 5 States"
+  },
+
+  "averageRates": {
+    "chartData": [
+      { "label": "Q3 '24", "value": 0.45 },
+      { "label": "Q4 '24", "value": 0.43 },
+      { "label": "Q1 '25", "value": 0.40 },
+      { "label": "Q2 '25", "value": 0.47 },
+      { "label": "Q3 '25", "value": 0.45 }
+    ]
+  },
+
+  "itvBadge": {
+    "value": "$150",
+    "change": "+2.39%",
+    "direction": "up",
+    "label": "Average ITV"
+  },
+
+  "ctdPremium": {
+    "kpis": [
+      { "label": "Written", "value": "$643K", "change": "+12.3%", "direction": "up" },
+      { "label": "Target", "value": "$2.8M", "change": "+5.0%", "direction": "up" }
+    ]
+  },
+
+  "inForcePremium": {
+    "kpis": [
+      { "label": "Annual", "value": "$9.6M", "change": "+8.7%", "direction": "up" },
+      { "label": "Monthly", "value": "$1.4M", "change": "+3.1%", "direction": "up" }
+    ]
+  },
+
+  "iconKpis": [
+    {
+      "icon": "map-pin",
+      "label": "States",
+      "value": "30",
+      "change": "+3.5%",
+      "direction": "up"
+    },
+    {
+      "icon": "building",
+      "label": "Assets",
+      "value": "10,757",
+      "change": "+8.2%",
+      "direction": "up"
+    },
+    {
+      "icon": "users",
+      "label": "Accounts",
+      "value": "118",
+      "change": "FLAT",
+      "direction": "flat"
+    }
+  ],
+
+  "underwritingUpdate": {
+    "observations": [
+      "Wind/hail deductible buydown offered in TX, OK, and KS markets",
+      "AOP deductible options expanded: $2,500 now available for assets < $200K TIV",
+      "Ordinance & law coverage increased to 25% across all policies",
+      "Sewer backup sublimit raised from $25K to $50K per occurrence",
+      "Equipment breakdown added as standard coverage on all new binds",
+      "Umbrella program launched with $5M limit for accounts > $1M premium"
+    ]
+  },
+
+  "propertyRiskScore": {
+    "data": [
+      { "label": "A", "value": 32, "color": "#0A5383" },
+      { "label": "B", "value": 41, "color": "#2E7BA0" },
+      { "label": "C", "value": 18, "color": "#5A98B8" },
+      { "label": "D", "value": 7, "color": "#8FBAD2" },
+      { "label": "E", "value": 2, "color": "#C5DCE8" }
+    ]
+  },
+
+  "quotesBinds": {
+    "data": [
+      { "label": "Q1 '24", "bars": [120, 45], "line": 37.5 },
+      { "label": "Q2 '24", "bars": [135, 52], "line": 38.5 },
+      { "label": "Q3 '24", "bars": [148, 61], "line": 41.2 },
+      { "label": "Q4 '24", "bars": [110, 48], "line": 43.6 },
+      { "label": "Q1 '25", "bars": [165, 72], "line": 43.6 },
+      { "label": "Q2 '25", "bars": [180, 84], "line": 46.7 },
+      { "label": "Q3 '25", "bars": [158, 68], "line": 43.0 }
+    ],
+    "legend": [
+      { "label": "Quotes", "color": "#0A5383", "type": "bar" },
+      { "label": "Binds", "color": "#8FBAD2", "type": "bar" },
+      { "label": "Bind %", "color": "#E97121", "type": "line" }
+    ]
+  },
+
+  "renewalRetention": {
+    "data": [
+      { "label": "Apr", "bars": [42, 38], "line": 90.5 },
+      { "label": "May", "bars": [51, 46], "line": 90.2 },
+      { "label": "Jun", "bars": [38, 35], "line": 92.1 },
+      { "label": "Jul", "bars": [65, 59], "line": 90.8 },
+      { "label": "Aug", "bars": [44, 41], "line": 93.2 }
+    ],
+    "legend": [
+      { "label": "Renewal", "color": "#0A5383", "type": "bar" },
+      { "label": "Retained", "color": "#8FBAD2", "type": "bar" },
+      { "label": "Ret. %", "color": "#E97121", "type": "line" }
+    ]
+  },
+
+  "lossHistory": {
+    "data": [
+      { "label": "2021", "value": 32 },
+      { "label": "2022", "value": 41 },
+      { "label": "2023", "value": 22 },
+      { "label": "2024", "value": 16 },
+      { "label": "2025", "value": 8 }
+    ]
+  },
+
+  "organizationalUpdate": {
+    "observations": [
+      "Dedicated claims adjuster assigned for all 1258 contract losses > $50K",
+      "Quarterly business review cadence established with carrier partners",
+      "New account manager onboarded for Southeast region expansion"
+    ]
+  },
+
+  "onDeck": {
+    "observations": [
+      "Q4 renewal pipeline: 72 accounts ($3.2M premium) up for renewal Oct-Dec",
+      "Carrier capacity expansion meeting scheduled for November",
+      "2026 program structure proposal due to underwriting committee by 12/15"
+    ]
+  }
+}
