@@ -19,20 +19,33 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 40px 20px;
+      padding: 60px 20px;
     }
 
     .logo { height: 48px; margin-bottom: 12px; opacity: 0.9; }
-    h1 { font-size: 24px; font-weight: 600; margin-bottom: 40px; color: #D8E6F0; }
+    h1 { font-size: 24px; font-weight: 600; margin-bottom: 48px; color: #D8E6F0; }
 
-    .cards { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
+    .contracts { display: flex; flex-direction: column; gap: 40px; width: 100%; max-width: 900px; }
+
+    .contract-group h2 {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #8FBAD2;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .contract-row { display: flex; gap: 16px; flex-wrap: wrap; }
 
     .card {
       background: #fff;
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-      width: 300px;
+      flex: 1;
+      min-width: 200px;
       overflow: hidden;
       text-decoration: none;
       color: inherit;
@@ -42,50 +55,111 @@
       transform: translateY(-4px);
       box-shadow: 0 8px 32px rgba(0,0,0,0.4);
     }
+    .card.placeholder { opacity: 0.5; pointer-events: none; }
 
     .card-header {
       background: #0A5383;
       color: #fff;
-      padding: 14px 20px;
-      font-size: 13px;
+      padding: 12px 16px;
+      font-size: 11px;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
-    .card-body { padding: 20px; }
-    .card-title { font-size: 18px; font-weight: 700; color: #0A5383; margin-bottom: 6px; }
-    .card-desc { font-size: 13px; color: #666; line-height: 1.5; }
+    .card-body { padding: 16px; }
+    .card-title { font-size: 15px; font-weight: 700; color: #0A5383; margin-bottom: 4px; }
+    .card-desc { font-size: 12px; color: #666; line-height: 1.5; }
+    .card-badge {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-top: 8px;
+    }
+    .badge-ready { background: #dcfce7; color: #166534; }
+    .badge-pending { background: #fef3c7; color: #92400e; }
   </style>
 </head>
 <body>
   <img src="../assets/ses-logo.light.png" alt="SES" class="logo">
   <h1>Presentation Manager</h1>
 
-  <div class="cards">
-    <a href="1258-flipbook.html" class="card">
-      <div class="card-header">Contract 1258</div>
-      <div class="card-body">
-        <div class="card-title">SFR Portfolio Flipbook</div>
-        <div class="card-desc">Two-page spread with portfolio composition, performance data, loss experience, and TIV concentration.</div>
-      </div>
-    </a>
+  <div class="contracts">
 
-    <a href="1258-stat-sheet.html" class="card">
-      <div class="card-header">Contract 1258</div>
-      <div class="card-body">
-        <div class="card-title">Stat Sheet Dashboard</div>
-        <div class="card-desc">Single-page dashboard with rates, KPIs, underwriting updates, quotes &amp; binds, and loss history.</div>
+    <div class="contract-group">
+      <h2>Contract 1258</h2>
+      <div class="contract-row">
+        <a href="1258-presentation.html" class="card">
+          <div class="card-header">Unified Presentation</div>
+          <div class="card-body">
+            <div class="card-title">SFR Portfolio</div>
+            <div class="card-desc">Full navigable presentation with cover, stat sheet, portfolio spread, and back cover.</div>
+            <div class="card-badge badge-ready">Data loaded</div>
+          </div>
+        </a>
+        <a href="1258-flipbook.html" class="card">
+          <div class="card-header">Flipbook</div>
+          <div class="card-body">
+            <div class="card-title">Portfolio Spread</div>
+            <div class="card-desc">Two-page spread with portfolio composition, performance, and TIV concentration.</div>
+          </div>
+        </a>
+        <a href="1258-stat-sheet.html" class="card">
+          <div class="card-header">Stat Sheet</div>
+          <div class="card-body">
+            <div class="card-title">Dashboard</div>
+            <div class="card-desc">Single-page dashboard with rates, KPIs, quotes and binds, loss history.</div>
+          </div>
+        </a>
       </div>
-    </a>
+    </div>
 
-    <a href="1258-presentation.html" class="card">
-      <div class="card-header">Contract 1258</div>
-      <div class="card-body">
-        <div class="card-title">Unified Presentation</div>
-        <div class="card-desc">Full navigable flipbook with cover, stat sheet, portfolio spread, and back cover. Use arrow keys or click to navigate.</div>
+    <div class="contract-group">
+      <h2>Contract 1334</h2>
+      <div class="contract-row">
+        <a href="1334-presentation.html" class="card">
+          <div class="card-header">Unified Presentation</div>
+          <div class="card-body">
+            <div class="card-title">SFR Portfolio</div>
+            <div class="card-desc">Full navigable presentation with cover, stat sheet, portfolio spread, and back cover.</div>
+            <div class="card-badge badge-pending">Awaiting data</div>
+          </div>
+        </a>
       </div>
-    </a>
+    </div>
+
+    <div class="contract-group">
+      <h2>Contract 1465</h2>
+      <div class="contract-row">
+        <a href="1465-presentation.html" class="card">
+          <div class="card-header">Unified Presentation</div>
+          <div class="card-body">
+            <div class="card-title">SFR Portfolio</div>
+            <div class="card-desc">Full navigable presentation with cover, stat sheet, portfolio spread, and back cover.</div>
+            <div class="card-badge badge-pending">Awaiting data</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="contract-group">
+      <h2>Contract 1097</h2>
+      <div class="contract-row">
+        <a href="1097-presentation.html" class="card">
+          <div class="card-header">Unified Presentation</div>
+          <div class="card-body">
+            <div class="card-title">SFR Portfolio</div>
+            <div class="card-desc">Full navigable presentation with cover, stat sheet, portfolio spread, and back cover.</div>
+            <div class="card-badge badge-pending">Awaiting data</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
   </div>
 </body>
 </html>

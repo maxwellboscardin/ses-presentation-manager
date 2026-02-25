@@ -1,0 +1,129 @@
+{
+  "contract": "1334",
+  "title": "Portfolio",
+  "lastUpdated": "2025-09-01",
+
+  "programUpdate": {
+    "observations": [
+      "Placeholder observation 1",
+      "Placeholder observation 2"
+    ]
+  },
+
+  "capacityUtilization": {
+    "currentValue": 0,
+    "maxValue": 5,
+    "unit": "B",
+    "label": "Top 5 States"
+  },
+
+  "averageRates": {
+    "chartData": [
+      { "label": "Q3 '24", "value": 0 },
+      { "label": "Q4 '24", "value": 0 },
+      { "label": "Q1 '25", "value": 0 },
+      { "label": "Q2 '25", "value": 0 },
+      { "label": "Q3 '25", "value": 0 }
+    ]
+  },
+
+  "itvBadge": {
+    "value": "$0",
+    "change": "0.00%",
+    "direction": "flat",
+    "label": "Average ITV"
+  },
+
+  "ctdPremium": {
+    "kpis": [
+      { "label": "Written", "value": "$0K", "change": "0.0%", "direction": "flat" },
+      { "label": "Target", "value": "$0M", "change": "0.0%", "direction": "flat" }
+    ]
+  },
+
+  "inForcePremium": {
+    "kpis": [
+      { "label": "Annual", "value": "$0M", "change": "0.0%", "direction": "flat" },
+      { "label": "Monthly", "value": "$0M", "change": "0.0%", "direction": "flat" }
+    ]
+  },
+
+  "iconKpis": [
+    { "icon": "map-pin", "label": "States", "value": "0", "change": "0.0%", "direction": "flat" },
+    { "icon": "building", "label": "Assets", "value": "0", "change": "0.0%", "direction": "flat" },
+    { "icon": "users", "label": "Accounts", "value": "0", "change": "FLAT", "direction": "flat" }
+  ],
+
+  "underwritingUpdate": {
+    "observations": [
+      "Placeholder observation 1",
+      "Placeholder observation 2"
+    ]
+  },
+
+  "propertyRiskScore": {
+    "data": [
+      { "label": "A", "value": 0, "color": "#0A5383" },
+      { "label": "B", "value": 0, "color": "#2E7BA0" },
+      { "label": "C", "value": 0, "color": "#5A98B8" },
+      { "label": "D", "value": 0, "color": "#8FBAD2" },
+      { "label": "E", "value": 0, "color": "#C5DCE8" }
+    ]
+  },
+
+  "quotesBinds": {
+    "data": [
+      { "label": "Q1 '24", "bars": [0, 0], "line": 0 },
+      { "label": "Q2 '24", "bars": [0, 0], "line": 0 },
+      { "label": "Q3 '24", "bars": [0, 0], "line": 0 },
+      { "label": "Q4 '24", "bars": [0, 0], "line": 0 },
+      { "label": "Q1 '25", "bars": [0, 0], "line": 0 },
+      { "label": "Q2 '25", "bars": [0, 0], "line": 0 },
+      { "label": "Q3 '25", "bars": [0, 0], "line": 0 }
+    ],
+    "legend": [
+      { "label": "Quotes", "color": "#0A5383", "type": "bar" },
+      { "label": "Binds", "color": "#8FBAD2", "type": "bar" },
+      { "label": "Bind %", "color": "#E97121", "type": "line" }
+    ]
+  },
+
+  "renewalRetention": {
+    "data": [
+      { "label": "Apr", "bars": [0, 0], "line": 0 },
+      { "label": "May", "bars": [0, 0], "line": 0 },
+      { "label": "Jun", "bars": [0, 0], "line": 0 },
+      { "label": "Jul", "bars": [0, 0], "line": 0 },
+      { "label": "Aug", "bars": [0, 0], "line": 0 }
+    ],
+    "legend": [
+      { "label": "Renewal", "color": "#0A5383", "type": "bar" },
+      { "label": "Retained", "color": "#8FBAD2", "type": "bar" },
+      { "label": "Ret. %", "color": "#E97121", "type": "line" }
+    ]
+  },
+
+  "lossHistory": {
+    "data": [
+      { "label": "2021", "value": 0 },
+      { "label": "2022", "value": 0 },
+      { "label": "2023", "value": 0 },
+      { "label": "2024", "value": 0 },
+      { "label": "2025", "value": 0 }
+    ]
+  },
+
+  "organizationalUpdate": {
+    "observations": [
+      "Placeholder observation 1",
+      "Placeholder observation 2"
+    ]
+  },
+
+  "onDeck": {
+    "observations": [
+      "Placeholder observation 1",
+      "Placeholder observation 2"
+    ]
+  }
+}
