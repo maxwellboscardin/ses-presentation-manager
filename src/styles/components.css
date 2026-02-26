@@ -383,10 +383,10 @@
   background: rgba(0, 0, 0, 0.7);
 }
 
-/* Replay button — on the panel (not scaled), top-left */
+/* Replay button — on the panel (not scaled), bottom-left */
 .card-editor-replay {
   position: absolute;
-  top: 14px;
+  bottom: 14px;
   left: 12px;
   z-index: 2;
   width: 32px;
