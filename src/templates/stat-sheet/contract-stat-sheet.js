@@ -1,10 +1,8 @@
 // Contract Stat Sheet — Single-Page Dashboard Template
 
-import { createLineChart } from '../../components/line-chart.js';
-import { createHBarChart } from '../../components/h-bar-chart.js';
-import { createVBarChart } from '../../components/v-bar-chart.js';
 import { createGaugeChart } from '../../components/gauge-chart.js';
 import { createComboChart, createComboLegend } from '../../components/combo-chart.js';
+import { initCardEditor } from '../../components/card-editor.js';
 
 export async function renderStatSheet(container, dataUrl) {
   const res = await fetch(dataUrl);
@@ -32,6 +30,8 @@ export async function renderStatSheet(container, dataUrl) {
 
   // Render charts after layout fully settles
   setTimeout(() => renderAllCharts(data), 50);
+
+  initCardEditor();
 }
 
 // ─── Toolbar ──────────────────────────────────────────────────
@@ -72,19 +72,19 @@ export function buildPage(data) {
   const content = document.createElement('div');
   content.className = 'stat-sheet-content';
 
-  // Row 1: Program Update (60%) | Capacity Utilization (40%)
+  // Row 1: Program Update (full width)
   content.appendChild(buildRow1(data));
 
-  // Row 2: Avg Rates | CTD/IF Premium KPIs | Icon KPIs (thirds)
+  // Row 2: Capacity Utilization | Premium | Portfolio (thirds)
   content.appendChild(buildRow2(data));
 
-  // Row 3: UW Update (60%) | Property Risk Score (40%)
+  // Row 3: Underwriting Update | Organizational Update (halves)
   content.appendChild(buildRow3(data));
 
-  // Row 4: Quotes & Binds | Renewal Retention | Loss History (thirds)
+  // Row 4: Quotes & Binds | Renewal Retention (halves)
   content.appendChild(buildRow4(data));
 
-  // Row 5: Org Update | On Deck (halves)
+  // Row 5: On the Horizon (full width)
   content.appendChild(buildRow5(data));
 
   inner.appendChild(content);
@@ -106,18 +106,17 @@ function buildHeader(data) {
   const header = document.createElement('div');
   header.className = 'page-header';
   header.innerHTML = `
-    <div class="page-title">${data.title} &mdash; ${data.contract}</div>
+    <div class="page-title">${data.contract} <span class="page-title__program">${data.title}</span></div>
   `;
   return header;
 }
 
-// ─── Row 1: Program Update + Gauge ───────────────────────────
+// ─── Row 1: Program Update (full width) ──────────────────────
 
 function buildRow1(data) {
   const row = document.createElement('div');
-  row.className = 'stat-row stat-row--60-40';
+  row.className = 'stat-row stat-row--full';
 
-  // Program Update (observations panel)
   const obsPanel = document.createElement('div');
   obsPanel.className = 'observations-panel';
   obsPanel.innerHTML = `
@@ -130,6 +129,15 @@ function buildRow1(data) {
   `;
   row.appendChild(obsPanel);
 
+  return row;
+}
+
+// ─── Row 2: Capacity | Premium | Portfolio (thirds) ──────────
+
+function buildRow2(data) {
+  const row = document.createElement('div');
+  row.className = 'stat-row stat-row--thirds';
+
   // Capacity Utilization (gauge)
   const gaugeCard = document.createElement('div');
   gaugeCard.className = 'chart-container';
@@ -140,33 +148,6 @@ function buildRow1(data) {
     </div>
   `;
   row.appendChild(gaugeCard);
-
-  return row;
-}
-
-// ─── Row 2: Avg Rates + KPIs + Icon KPIs ────────────────────
-
-function buildRow2(data) {
-  const row = document.createElement('div');
-  row.className = 'stat-row stat-row--thirds';
-
-  // Average Rates (line chart + ITV badge)
-  const ratesCard = document.createElement('div');
-  ratesCard.className = 'chart-container';
-  ratesCard.innerHTML = `
-    <div class="section-header">Average Rates</div>
-    <div class="chart-container__body">
-      <div class="chart-canvas-wrap"><canvas id="chart-avg-rates"></canvas></div>
-      <div class="itv-badge" style="align-self: center;">
-        ${data.itvBadge.value}
-        <span class="growth-indicator growth-indicator--${data.itvBadge.direction}">
-          ${directionArrow(data.itvBadge.direction)}${data.itvBadge.change}
-        </span>
-        <span class="itv-badge__label">${data.itvBadge.label}</span>
-      </div>
-    </div>
-  `;
-  row.appendChild(ratesCard);
 
   // Premium KPI Stack
   const kpiStack = document.createElement('div');
@@ -196,7 +177,7 @@ function buildRow2(data) {
   `;
   row.appendChild(kpiStack);
 
-  // Icon KPIs — stacked layout: icon | label above, value + growth below
+  // Icon KPIs
   const iconCard = document.createElement('div');
   iconCard.className = 'icon-kpi-card';
   iconCard.innerHTML = `
@@ -223,11 +204,11 @@ function buildRow2(data) {
   return row;
 }
 
-// ─── Row 3: UW Update + Property Risk Score ──────────────────
+// ─── Row 3: UW Update | Org Update (halves) ──────────────────
 
 function buildRow3(data) {
   const row = document.createElement('div');
-  row.className = 'stat-row stat-row--60-40';
+  row.className = 'stat-row stat-row--halves';
 
   // UW Update
   const uwPanel = document.createElement('div');
@@ -242,25 +223,27 @@ function buildRow3(data) {
   `;
   row.appendChild(uwPanel);
 
-  // Property Risk Score (h-bar)
-  const riskCard = document.createElement('div');
-  riskCard.className = 'chart-container';
-  riskCard.innerHTML = `
-    <div class="section-header">Property Risk Score</div>
-    <div class="chart-container__body">
-      <div class="chart-canvas-wrap"><canvas id="chart-risk-score"></canvas></div>
+  // Organizational Update
+  const orgPanel = document.createElement('div');
+  orgPanel.className = 'observations-panel';
+  orgPanel.innerHTML = `
+    <div class="section-header">Organizational Update</div>
+    <div class="observations-panel__body">
+      <ul>
+        ${data.organizationalUpdate.observations.map((o) => `<li>${o}</li>`).join('')}
+      </ul>
     </div>
   `;
-  row.appendChild(riskCard);
+  row.appendChild(orgPanel);
 
   return row;
 }
 
-// ─── Row 4: Quotes & Binds + Renewal Retention + Loss History ─
+// ─── Row 4: Quotes & Binds | Renewal Retention (halves) ──────
 
 function buildRow4(data) {
   const row = document.createElement('div');
-  row.className = 'stat-row stat-row--thirds';
+  row.className = 'stat-row stat-row--halves';
 
   // Quotes & Binds (combo chart)
   const qbCard = document.createElement('div');
@@ -286,51 +269,26 @@ function buildRow4(data) {
   `;
   row.appendChild(rrCard);
 
-  // Loss History (v-bar chart)
-  const lossCard = document.createElement('div');
-  lossCard.className = 'chart-container';
-  lossCard.innerHTML = `
-    <div class="section-header">Loss History</div>
-    <div class="chart-container__body">
-      <div class="chart-canvas-wrap"><canvas id="chart-loss-history"></canvas></div>
-    </div>
-  `;
-  row.appendChild(lossCard);
-
   return row;
 }
 
-// ─── Row 5: Org Update + On Deck ─────────────────────────────
+// ─── Row 5: On the Horizon (full width) ──────────────────────
 
 function buildRow5(data) {
   const row = document.createElement('div');
-  row.className = 'stat-row stat-row--halves';
+  row.className = 'stat-row stat-row--full';
 
-  // Org Update
-  const orgPanel = document.createElement('div');
-  orgPanel.className = 'observations-panel';
-  orgPanel.innerHTML = `
-    <div class="section-header">Organizational Update</div>
-    <div class="observations-panel__body">
-      <ul>
-        ${data.organizationalUpdate.observations.map((o) => `<li>${o}</li>`).join('')}
-      </ul>
-    </div>
-  `;
-  row.appendChild(orgPanel);
-
-  // On Deck
-  const deckPanel = document.createElement('div');
-  deckPanel.className = 'observations-panel';
-  deckPanel.innerHTML = `
-    <div class="section-header">On Deck</div>
+  const horizonPanel = document.createElement('div');
+  horizonPanel.className = 'observations-panel';
+  horizonPanel.innerHTML = `
+    <div class="section-header">On the Horizon</div>
     <div class="observations-panel__body">
       <ul>
         ${data.onDeck.observations.map((o) => `<li>${o}</li>`).join('')}
       </ul>
     </div>
   `;
-  row.appendChild(deckPanel);
+  row.appendChild(horizonPanel);
 
   return row;
 }
@@ -339,28 +297,11 @@ function buildRow5(data) {
 
 export function renderAllCharts(data, root) {
   const el = root || document;
+
   // Gauge — Capacity Utilization
   const gaugeCanvas = el.querySelector('#chart-gauge');
   if (gaugeCanvas) {
     createGaugeChart(gaugeCanvas, data.capacityUtilization);
-  }
-
-  // Line chart — Average Rates
-  const ratesCanvas = el.querySelector('#chart-avg-rates');
-  if (ratesCanvas) {
-    createLineChart(ratesCanvas, data.averageRates.chartData, {
-      valueFormatter: (v) => v.toFixed(2),
-    });
-  }
-
-  // H-bar — Property Risk Score
-  const riskCanvas = el.querySelector('#chart-risk-score');
-  if (riskCanvas) {
-    createHBarChart(riskCanvas, data.propertyRiskScore.data, {
-      valueFormatter: (v) => v + '%',
-      labelWidth: 30,
-      valueWidth: 45,
-    });
   }
 
   // Combo — Quotes & Binds
@@ -389,14 +330,6 @@ export function renderAllCharts(data, root) {
       legendContainer.innerHTML = '';
       legendContainer.appendChild(createComboLegend(data.renewalRetention.legend));
     }
-  }
-
-  // V-bar — Loss History
-  const lossCanvas = el.querySelector('#chart-loss-history');
-  if (lossCanvas) {
-    createVBarChart(lossCanvas, data.lossHistory.data, {
-      valueFormatter: (v) => v + '%',
-    });
   }
 }
 

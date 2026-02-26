@@ -59,6 +59,16 @@
     ]
   },
 
+  "propertyRiskScore": {
+    "data": [
+      { "label": "A", "value": 0, "color": "#0A5383" },
+      { "label": "B", "value": 0, "color": "#2E7BA0" },
+      { "label": "C", "value": 0, "color": "#5A98B8" },
+      { "label": "D", "value": 0, "color": "#8FBAD2" },
+      { "label": "E", "value": 0, "color": "#C5DCE8" }
+    ]
+  },
+
   "multiFamily": {
     "totalAnnualPremium": "$0.0M",
     "tiv": "$0M",

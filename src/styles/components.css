@@ -99,7 +99,8 @@
   min-height: 0;
 }
 
-.chart-canvas-wrap canvas {
+.chart-canvas-wrap canvas,
+.chart-canvas-wrap svg {
   position: absolute;
   top: 0;
   left: 0;
@@ -107,8 +108,9 @@
   height: 100%;
 }
 
-/* Fallback: bare canvas directly in body (legacy flipbook) */
-.chart-container__body > canvas {
+/* Bare chart directly in body (canvas legacy, svg current) */
+.chart-container__body > canvas,
+.chart-container__body > svg {
   display: block;
   width: 100%;
   flex: 1;
@@ -257,4 +259,254 @@
   height: 10px;
   border-radius: 2px;
   flex-shrink: 0;
+}
+
+/* ─── Chart Animations ───────────────────────────────────────────*/
+
+@keyframes chartGrowRight {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes chartGrowUp {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+
+@keyframes chartFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes chartDrawStroke {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes chartScaleIn {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+.anim-bar-h {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: chartGrowRight 500ms ease-out both;
+}
+
+.anim-bar-v {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: chartGrowUp 500ms ease-out both;
+}
+
+.anim-col-v {
+  animation: chartGrowUp 500ms ease-out both;
+}
+
+.anim-line {
+  animation: chartDrawStroke 800ms ease-out both;
+}
+
+.anim-gauge {
+  animation: chartDrawStroke 1000ms ease-out both;
+}
+
+.anim-point {
+  transform-box: fill-box;
+  transform-origin: center center;
+  animation: chartScaleIn 250ms ease-out both;
+}
+
+.anim-fade {
+  animation: chartFadeIn 300ms ease-out both;
+}
+
+/* ─── Card Editor Overlay ────────────────────────────────────────*/
+
+/* Clickable cards */
+.observations-panel,
+.chart-container,
+.kpi-stack,
+.icon-kpi-card,
+.kpi-row .kpi-box {
+  cursor: pointer;
+}
+
+/* Backdrop */
+.card-editor-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: cardEditorFadeIn 200ms ease-out;
+}
+
+@keyframes cardEditorFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Panel — sized dynamically by JS to match the scaled card */
+.card-editor-panel {
+  position: relative;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  /* width/height set by JS */
+}
+
+/* Close button — on the panel (not scaled) */
+.card-editor-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-family);
+}
+
+.card-editor-close:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+/* Replay button — on the panel (not scaled), top-left */
+.card-editor-replay {
+  position: absolute;
+  top: 14px;
+  left: 12px;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-family);
+}
+
+.card-editor-replay:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.card-editor-replay svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Edit/Done button — on the panel (not scaled) */
+.card-editor-btn {
+  position: absolute;
+  top: 14px;
+  right: 52px;
+  z-index: 2;
+  border: none;
+  background: var(--ses-navy);
+  color: var(--ses-white);
+  font-family: var(--font-family);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.card-editor-btn:hover {
+  background: var(--ses-navy-light);
+}
+
+/* Textarea (observations edit) — rendered inside the scaled card */
+.card-editor-textarea {
+  width: 100%;
+  min-height: 40px;
+  padding: 6px 8px;
+  font-family: var(--font-family);
+  font-size: 11px;
+  color: var(--ses-text);
+  border: 1px solid var(--ses-border);
+  border-radius: 4px;
+  resize: vertical;
+  line-height: 1.5;
+  outline: none;
+  flex: 1;
+}
+
+.card-editor-textarea:focus {
+  border-color: var(--ses-navy);
+  box-shadow: 0 0 0 1px rgba(10, 83, 131, 0.2);
+}
+
+/* Form layout (KPI edits) — rendered inside the scaled card */
+.card-editor-form {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.card-editor-form__heading {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--ses-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-top: 4px;
+}
+
+.card-editor-form__heading:first-child {
+  margin-top: 0;
+}
+
+.card-editor-form__field {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.card-editor-input {
+  width: 100%;
+  padding: 3px 6px;
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ses-text);
+  border: 1px solid var(--ses-border);
+  border-radius: 4px;
+  outline: none;
+}
+
+.card-editor-input:focus {
+  border-color: var(--ses-navy);
+  box-shadow: 0 0 0 1px rgba(10, 83, 131, 0.2);
+}
+
+/* Print: hide overlay */
+@media print {
+  .card-editor-backdrop {
+    display: none !important;
+  }
 }

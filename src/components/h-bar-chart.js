@@ -1,109 +1,85 @@
-// Horizontal Bar Chart Component
+// Horizontal Bar Chart Component — SVG
+
+import { svgEl, roundRectPath, prepareSvg, FONT } from './svg-utils.js';
 
 const COLORS = {
   navy: '#0A5383',
   orange: '#E97121',
   text: '#0A5383',
   muted: '#5A7A8F',
-  gridLine: '#E0E8EE',
 };
 
-export function createHBarChart(canvas, data, options = {}) {
+export function createHBarChart(element, data, options = {}) {
   const {
     barColor = COLORS.navy,
     labelColor = COLORS.text,
     valueFormatter = (v) => v.toLocaleString(),
-    animationDuration = 1400,
-    barHeight = 18,
-    barGap = 8,
     labelWidth = 80,
     valueWidth = 70,
   } = options;
 
-  const ctx = canvas.getContext('2d');
-  const dpr = window.devicePixelRatio || 1;
-
-  const drawWidth = canvas.clientWidth;
-  const drawHeight = canvas.clientHeight;
-  canvas.width = drawWidth * dpr;
-  canvas.height = drawHeight * dpr;
-  ctx.scale(dpr, dpr);
+  const { svg, w: drawWidth, h: drawHeight } = prepareSvg(element);
 
   const maxValue = Math.max(...data.map((d) => d.value));
   const chartLeft = labelWidth;
   const chartRight = drawWidth - valueWidth;
   const chartWidth = chartRight - chartLeft;
 
-  // Auto-size bars to fill available canvas proportionally
+  // Auto-size bars to fill available height
   const paddingTop = 6;
   const paddingBottom = 6;
   const availableHeight = drawHeight - paddingTop - paddingBottom;
   const perItemSlot = availableHeight / data.length;
-  // Bars take ~65% of their slot, capped at a tasteful max
   const computedBarHeight = Math.min(perItemSlot * 0.65, 30);
-  // Gap is capped to prevent enormous spacing
   const naturalGap = perItemSlot - computedBarHeight;
   const computedBarGap = Math.min(naturalGap, computedBarHeight * 0.5);
   const totalUsed = computedBarHeight * data.length + computedBarGap * (data.length - 1);
   const startY = paddingTop + (availableHeight - totalUsed) / 2;
 
-  let progress = 0;
-  const startTime = performance.now();
+  data.forEach((item, i) => {
+    const y = startY + i * (computedBarHeight + computedBarGap);
+    const barW = (item.value / maxValue) * chartWidth;
 
-  function easeOutCubic(t) {
-    return 1 - Math.pow(1 - t, 3);
-  }
-
-  function draw(now) {
-    const elapsed = now - startTime;
-    progress = Math.min(elapsed / animationDuration, 1);
-    const eased = easeOutCubic(progress);
-
-    ctx.clearRect(0, 0, drawWidth, drawHeight);
-
-    data.forEach((item, i) => {
-      const y = startY + i * (computedBarHeight + computedBarGap);
-      const barW = (item.value / maxValue) * chartWidth * eased;
-
-      // Label
-      ctx.fillStyle = labelColor;
-      ctx.font = '600 11px Gilroy, Century Gothic, sans-serif';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(item.label, chartLeft - 8, y + computedBarHeight / 2);
-
-      // Bar
-      ctx.fillStyle = item.color || barColor;
-      ctx.beginPath();
-      roundRect(ctx, chartLeft, y, barW, computedBarHeight, 3);
-      ctx.fill();
-
-      // Value label
-      if (eased > 0.3) {
-        ctx.fillStyle = COLORS.muted;
-        ctx.font = '500 10px Gilroy, Century Gothic, sans-serif';
-        ctx.textAlign = 'left';
-        ctx.fillText(valueFormatter(item.value), chartLeft + barW + 6, y + computedBarHeight / 2);
-      }
+    // Label
+    const label = svgEl('text', {
+      x: chartLeft - 8,
+      y: y + computedBarHeight / 2,
+      fill: labelColor,
+      'font-size': '11',
+      'font-weight': '600',
+      'font-family': FONT,
+      'text-anchor': 'end',
+      'dominant-baseline': 'central',
     });
+    label.textContent = item.label;
+    svg.appendChild(label);
 
-    if (progress < 1) requestAnimationFrame(draw);
-  }
+    // Bar
+    const pathD = roundRectPath(chartLeft, y, barW, computedBarHeight, 3);
+    if (pathD) {
+      const bar = svgEl('path', {
+        d: pathD,
+        fill: item.color || barColor,
+        class: 'anim-bar-h',
+      });
+      bar.style.animationDelay = `${i * 60}ms`;
+      svg.appendChild(bar);
+    }
 
-  requestAnimationFrame(draw);
-}
-
-function roundRect(ctx, x, y, w, h, r) {
-  if (w < 0) w = 0;
-  r = Math.min(r, w / 2, h / 2);
-  ctx.moveTo(x + r, y);
-  ctx.lineTo(x + w - r, y);
-  ctx.arcTo(x + w, y, x + w, y + r, r);
-  ctx.lineTo(x + w, y + h - r);
-  ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
-  ctx.lineTo(x + r, y + h);
-  ctx.arcTo(x, y + h, x, y + h - r, r);
-  ctx.lineTo(x, y + r);
-  ctx.arcTo(x, y, x + r, y, r);
-  ctx.closePath();
+    // Value
+    const val = svgEl('text', {
+      x: chartLeft + barW + 6,
+      y: y + computedBarHeight / 2,
+      fill: COLORS.muted,
+      'font-size': '10',
+      'font-weight': '500',
+      'font-family': FONT,
+      'text-anchor': 'start',
+      'dominant-baseline': 'central',
+    });
+    val.textContent = valueFormatter(item.value);
+    val.classList.add('anim-fade');
+    val.style.animationDelay = `${i * 60 + 300}ms`;
+    svg.appendChild(val);
+  });
 }

@@ -1,4 +1,6 @@
-// Combo Chart Component — Grouped Bars + Line Overlay
+// Combo Chart Component — Grouped Bars + Line Overlay (SVG)
+
+import { svgEl, roundRectPath, prepareSvg, FONT } from './svg-utils.js';
 
 const COLORS = {
   navy: '#0A5383',
@@ -12,17 +14,16 @@ const COLORS = {
 
 /**
  * Creates a combo chart with grouped vertical bars and a line overlay.
- * @param {HTMLCanvasElement} canvas
+ * @param {HTMLElement} element — canvas (first call) or svg (replay)
  * @param {Array<{label: string, bars: number[], line: number}>} data
  * @param {Object} options
  */
-export function createComboChart(canvas, data, options = {}) {
+export function createComboChart(element, data, options = {}) {
   const {
     barColors = [COLORS.navy, COLORS.navyLight],
     lineColor = COLORS.orange,
     lineWidth = 2.5,
     pointRadius = 4,
-    animationDuration = 1600,
     paddingBottom = 28,
     paddingTop = 28,
     paddingSide = 32,
@@ -32,14 +33,7 @@ export function createComboChart(canvas, data, options = {}) {
     showLineValues = true,
   } = options;
 
-  const ctx = canvas.getContext('2d');
-  const dpr = window.devicePixelRatio || 1;
-
-  const drawWidth = canvas.clientWidth;
-  const drawHeight = canvas.clientHeight;
-  canvas.width = drawWidth * dpr;
-  canvas.height = drawHeight * dpr;
-  ctx.scale(dpr, dpr);
+  const { svg, w: drawWidth, h: drawHeight } = prepareSvg(element);
 
   const chartLeft = paddingSide;
   const chartRight = drawWidth - paddingSide;
@@ -48,7 +42,7 @@ export function createComboChart(canvas, data, options = {}) {
   const chartBottom = drawHeight - paddingBottom;
   const chartHeight = chartBottom - chartTop;
 
-  // Determine scales
+  // Scales
   const allBarValues = data.flatMap((d) => d.bars);
   const maxBarValue = Math.max(...allBarValues) * 1.2;
 
@@ -65,7 +59,7 @@ export function createComboChart(canvas, data, options = {}) {
   const barGap = 2;
   const singleBarWidth = (groupWidth - barGap * (barsPerGroup - 1)) / barsPerGroup;
 
-  // Compute line points (centered on each group)
+  // Line points
   const linePoints = data.map((d, i) => {
     const groupX = chartLeft + groupGap + i * (groupWidth + groupGap);
     const cx = groupX + groupWidth / 2;
@@ -73,122 +67,112 @@ export function createComboChart(canvas, data, options = {}) {
     return { x: cx, y: cy, value: d.line };
   }).filter((p) => p.value != null);
 
-  let startTime = null;
-
-  function easeOutCubic(t) {
-    return 1 - Math.pow(1 - t, 3);
+  // Grid lines
+  for (let i = 0; i <= 4; i++) {
+    const y = chartTop + (chartHeight / 4) * i;
+    svg.appendChild(svgEl('line', {
+      x1: chartLeft, y1: y, x2: chartRight, y2: y,
+      stroke: COLORS.gridLine, 'stroke-width': '0.5',
+    }));
   }
 
-  function draw(now) {
-    if (!startTime) startTime = now;
-    const elapsed = now - startTime;
-    const progress = Math.min(elapsed / animationDuration, 1);
-    const eased = easeOutCubic(progress);
+  // Bars
+  data.forEach((item, gi) => {
+    const groupX = chartLeft + groupGap + gi * (groupWidth + groupGap);
 
-    ctx.clearRect(0, 0, drawWidth, drawHeight);
+    item.bars.forEach((val, bi) => {
+      const x = groupX + bi * (singleBarWidth + barGap);
+      const barH = (val / maxBarValue) * chartHeight;
+      const barY = chartBottom - barH;
 
-    // Grid lines
-    ctx.strokeStyle = COLORS.gridLine;
-    ctx.lineWidth = 0.5;
-    for (let i = 0; i <= 4; i++) {
-      const y = chartTop + (chartHeight / 4) * i;
-      ctx.beginPath();
-      ctx.moveTo(chartLeft, y);
-      ctx.lineTo(chartRight, y);
-      ctx.stroke();
-    }
+      const pathD = roundRectPath(x, barY, singleBarWidth, barH, 3);
+      if (pathD) {
+        const bar = svgEl('path', {
+          d: pathD,
+          fill: barColors[bi % barColors.length],
+          class: 'anim-bar-v',
+        });
+        bar.style.animationDelay = `${gi * 80}ms`;
+        svg.appendChild(bar);
+      }
 
-    // Draw bars
-    data.forEach((item, gi) => {
-      const groupX = chartLeft + groupGap + gi * (groupWidth + groupGap);
-
-      item.bars.forEach((val, bi) => {
-        const x = groupX + bi * (singleBarWidth + barGap);
-        const barH = (val / maxBarValue) * chartHeight * eased;
-        const barY = chartBottom - barH;
-
-        ctx.fillStyle = barColors[bi % barColors.length];
-        ctx.beginPath();
-        roundRectTop(ctx, x, barY, singleBarWidth, barH, 3);
-        ctx.fill();
-
-        if (showBarValues && eased > 0.3) {
-          ctx.fillStyle = COLORS.text;
-          ctx.font = '700 9px Gilroy, Century Gothic, sans-serif';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'bottom';
-          ctx.fillText(barValueFormatter(val), x + singleBarWidth / 2, barY - 2);
-        }
-      });
-
-      // X-axis label
-      ctx.fillStyle = COLORS.muted;
-      ctx.font = '500 9px Gilroy, Century Gothic, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText(item.label, groupX + groupWidth / 2, chartBottom + 6);
+      if (showBarValues) {
+        const bv = svgEl('text', {
+          x: x + singleBarWidth / 2,
+          y: barY - 2,
+          fill: COLORS.text,
+          'font-size': '9',
+          'font-weight': '700',
+          'font-family': FONT,
+          'text-anchor': 'middle',
+        });
+        bv.textContent = barValueFormatter(val);
+        svg.appendChild(bv);
+      }
     });
 
-    // Draw line (progressive reveal)
-    if (linePoints.length > 1) {
-      const visibleCount = Math.floor(eased * linePoints.length) + (eased >= 1 ? 0 : 1);
-      const visiblePoints = linePoints.slice(0, visibleCount);
+    // X-axis label
+    const label = svgEl('text', {
+      x: groupX + groupWidth / 2,
+      y: chartBottom + 6,
+      fill: COLORS.muted,
+      'font-size': '9',
+      'font-weight': '500',
+      'font-family': FONT,
+      'text-anchor': 'middle',
+      'dominant-baseline': 'hanging',
+    });
+    label.textContent = item.label;
+    svg.appendChild(label);
+  });
 
-      // Interpolate partial last point
-      if (visibleCount < linePoints.length && eased < 1) {
-        const segProgress = (eased * linePoints.length) % 1;
-        const from = linePoints[visibleCount - 1];
-        const to = linePoints[visibleCount];
-        if (from && to) {
-          visiblePoints[visiblePoints.length - 1] = {
-            x: from.x + (to.x - from.x) * segProgress,
-            y: from.y + (to.y - from.y) * segProgress,
-            value: from.value,
-          };
-        }
-      }
-
-      // Line path
-      ctx.strokeStyle = lineColor;
-      ctx.lineWidth = lineWidth;
-      ctx.lineJoin = 'round';
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      ctx.moveTo(visiblePoints[0].x, visiblePoints[0].y);
-      for (let i = 1; i < visiblePoints.length; i++) {
-        ctx.lineTo(visiblePoints[i].x, visiblePoints[i].y);
-      }
-      ctx.stroke();
-
-      // Points and values (fully reached only)
-      const fullyReached = eased >= 1 ? linePoints.length : Math.floor(eased * linePoints.length);
-      for (let i = 0; i < fullyReached; i++) {
-        const p = linePoints[i];
-
-        // Open circle
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, pointRadius, 0, Math.PI * 2);
-        ctx.fillStyle = COLORS.white;
-        ctx.fill();
-        ctx.strokeStyle = lineColor;
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        // Value above
-        if (showLineValues) {
-          ctx.fillStyle = lineColor;
-          ctx.font = '700 9px Gilroy, Century Gothic, sans-serif';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'bottom';
-          ctx.fillText(lineValueFormatter(p.value), p.x, p.y - pointRadius - 3);
-        }
-      }
-    }
-
-    if (progress < 1) requestAnimationFrame(draw);
+  // Line path
+  if (linePoints.length > 1) {
+    const pathD = linePoints.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x},${p.y}`).join(' ');
+    const linePath = svgEl('path', {
+      d: pathD,
+      fill: 'none',
+      stroke: lineColor,
+      'stroke-width': lineWidth,
+      'stroke-linejoin': 'round',
+      'stroke-linecap': 'round',
+      class: 'anim-line',
+    });
+    svg.appendChild(linePath);
+    const len = linePath.getTotalLength();
+    linePath.style.strokeDasharray = len;
+    linePath.style.strokeDashoffset = len;
   }
 
-  requestAnimationFrame(draw);
+  // Line points and values
+  linePoints.forEach((p, pi) => {
+    // Open circle
+    const circle = svgEl('circle', {
+      cx: p.x, cy: p.y, r: pointRadius,
+      fill: COLORS.white,
+      stroke: lineColor,
+      'stroke-width': '2',
+      class: 'anim-point',
+    });
+    circle.style.animationDelay = `${400 + pi * 80}ms`;
+    svg.appendChild(circle);
+
+    if (showLineValues) {
+      const lv = svgEl('text', {
+        x: p.x,
+        y: p.y - pointRadius - 3,
+        fill: lineColor,
+        'font-size': '9',
+        'font-weight': '700',
+        'font-family': FONT,
+        'text-anchor': 'middle',
+      });
+      lv.textContent = lineValueFormatter(p.value);
+      lv.classList.add('anim-fade');
+      lv.style.animationDelay = `${500 + pi * 80}ms`;
+      svg.appendChild(lv);
+    }
+  });
 }
 
 /**
@@ -223,17 +207,4 @@ export function createComboLegend(items) {
   });
 
   return legend;
-}
-
-function roundRectTop(ctx, x, y, w, h, r) {
-  if (h < 0) h = 0;
-  r = Math.min(r, w / 2, h / 2);
-  ctx.moveTo(x + r, y);
-  ctx.lineTo(x + w - r, y);
-  ctx.arcTo(x + w, y, x + w, y + r, r);
-  ctx.lineTo(x + w, y + h);
-  ctx.lineTo(x, y + h);
-  ctx.lineTo(x, y + r);
-  ctx.arcTo(x, y, x + r, y, r);
-  ctx.closePath();
 }

@@ -3,26 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contract 1097 — Unified Presentation</title>
+  <title>SES Global Editor</title>
   <link rel="stylesheet" href="../src/styles/design-tokens.css">
   <link rel="stylesheet" href="../src/styles/components.css">
   <link rel="stylesheet" href="../src/styles/flipbook-layout.css">
   <link rel="stylesheet" href="../src/styles/stat-sheet-layout.css">
   <link rel="stylesheet" href="../src/styles/presentation-layout.css">
+  <link rel="stylesheet" href="../src/styles/global-editor.css">
 </head>
 <body>
   <div id="app"></div>
 
   <script type="module">
-    import { renderPresentation } from '../src/templates/presentation/contract-presentation.js';
-
-    const app = document.getElementById('app');
-    renderPresentation(
-      app,
-      '../data/contracts/1097.json',
-      '../data/stat-sheets/1097.json',
-      { title: 'Portfolio' }
-    );
+    import { renderGlobalEditor } from '../src/templates/global/global-editor.js';
+    renderGlobalEditor(document.getElementById('app'));
   </script>
 </body>
 </html>

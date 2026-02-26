@@ -63,31 +63,31 @@ html, body {
   opacity: 0.9;
 }
 
-.cover-page__title {
+.cover-page__contract {
   font-family: var(--font-family);
-  font-size: 32px;
+  font-size: 48px;
   font-weight: 700;
   color: var(--ses-navy);
+  text-align: center;
+  line-height: 1;
+}
+
+.cover-page__program {
+  font-family: var(--font-family);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--ses-text-muted);
   text-align: center;
   line-height: 1.3;
 }
 
 .cover-page__subtitle {
   font-family: var(--font-family);
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--ses-text-muted);
   text-align: center;
-}
-
-.cover-page__badge {
-  background: var(--ses-navy);
-  color: var(--ses-white);
-  font-family: var(--font-family);
-  font-weight: 700;
-  padding: 8px 24px;
-  border-radius: var(--radius);
-  font-size: 16px;
+  opacity: 0.7;
 }
 
 /* Back cover — simpler */
@@ -158,12 +158,15 @@ html, body {
 /* ─── Page Indicator Dots ──────────────────────────────────── */
 .pres-dots {
   position: fixed;
-  bottom: 20px;
+  bottom: 16px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   gap: 10px;
   z-index: 200;
+  background: rgba(10, 83, 131, 0.6);
+  padding: 8px 16px;
+  border-radius: 20px;
 }
 
 .pres-dot {
@@ -189,18 +192,56 @@ html, body {
 /* ─── Section Labels (below dots) ──────────────────────────── */
 .pres-label {
   position: fixed;
-  bottom: 40px;
+  bottom: 50px;
   left: 50%;
   transform: translateX(-50%);
   font-family: var(--font-family);
   font-size: 11px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.85);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   z-index: 200;
   white-space: nowrap;
   pointer-events: none;
+  background: rgba(10, 83, 131, 0.5);
+  padding: 3px 12px;
+  border-radius: 10px;
+}
+
+/* ─── Replay Button ───────────────────────────────────────── */
+.pres-replay {
+  position: fixed;
+  bottom: 18px;
+  right: 20px;
+  z-index: 200;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(10, 83, 131, 0.55);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, opacity 0.15s;
+  opacity: 0.5;
+}
+
+.pres-replay:hover {
+  background: rgba(10, 83, 131, 0.85);
+  opacity: 1;
+}
+
+.pres-replay svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /* ─── Viewer Toolbar (shared with standalone pages) ────────── */
@@ -249,6 +290,7 @@ html, body {
   .pres-nav,
   .pres-dots,
   .pres-label,
+  .pres-replay,
   .viewer-toolbar {
     display: none !important;
   }

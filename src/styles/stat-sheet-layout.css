@@ -75,6 +75,8 @@
 
 .stat-row--halves > * { flex: 1; }
 
+.stat-row--full > * { flex: 1; }
+
 /* Ensure cards inside rows stretch to fill */
 .stat-row > * {
   display: flex;

@@ -1,4 +1,6 @@
-// Stacked Bar Chart Component
+// Stacked Bar Chart Component — SVG
+
+import { svgEl, roundRectPath, roundRectTopPath, prepareSvg, FONT } from './svg-utils.js';
 
 const DEFAULT_TIER_COLORS = [
   '#C5DCE8', // lightest blue
@@ -8,27 +10,16 @@ const DEFAULT_TIER_COLORS = [
   '#0A5383', // darkest blue
 ];
 
-export function createStackedBarChart(canvas, data, options = {}) {
+export function createStackedBarChart(element, data, options = {}) {
   const {
     tierColors = DEFAULT_TIER_COLORS,
-    tierLabels = [],
-    animationDuration = 1400,
     paddingBottom = 28,
     paddingTop = 14,
     paddingSide = 16,
-    valueFormatter = (v) => v.toLocaleString(),
   } = options;
 
-  const ctx = canvas.getContext('2d');
-  const dpr = window.devicePixelRatio || 1;
+  const { svg, w: drawWidth, h: drawHeight } = prepareSvg(element);
 
-  const drawWidth = canvas.clientWidth;
-  const drawHeight = canvas.clientHeight;
-  canvas.width = drawWidth * dpr;
-  canvas.height = drawHeight * dpr;
-  ctx.scale(dpr, dpr);
-
-  // data: [{ label: 'Q1', segments: [val1, val2, ...] }, ...]
   const maxTotal = Math.max(...data.map((d) => d.segments.reduce((a, b) => a + b, 0))) * 1.1;
 
   const chartLeft = paddingSide;
@@ -42,52 +33,52 @@ export function createStackedBarChart(canvas, data, options = {}) {
   const gapWidth = Math.min(chartWidth * 0.12 / (barCount + 1), 10);
   const barWidth = (chartWidth - gapWidth * (barCount + 1)) / barCount;
 
-  let startTime = null;
+  data.forEach((item, i) => {
+    const x = chartLeft + gapWidth + i * (barWidth + gapWidth);
+    let currentY = chartBottom;
 
-  function easeOutCubic(t) {
-    return 1 - Math.pow(1 - t, 3);
-  }
+    const colGroup = svgEl('g');
+    colGroup.classList.add('anim-col-v');
+    colGroup.style.transformOrigin = `${x + barWidth / 2}px ${chartBottom}px`;
+    colGroup.style.animationDelay = `${i * 60}ms`;
 
-  function draw(now) {
-    if (!startTime) startTime = now;
-    const elapsed = now - startTime;
-    const progress = Math.min(elapsed / animationDuration, 1);
-    const eased = easeOutCubic(progress);
+    const lastVisibleIndex = item.segments.reduce((last, v, i) => v > 0 ? i : last, -1);
 
-    ctx.clearRect(0, 0, drawWidth, drawHeight);
+    item.segments.forEach((segValue, si) => {
+      const segH = (segValue / maxTotal) * chartHeight;
+      currentY -= segH;
 
-    data.forEach((item, i) => {
-      const x = chartLeft + gapWidth + i * (barWidth + gapWidth);
-      let currentY = chartBottom;
-
-      item.segments.forEach((segValue, si) => {
-        const segH = (segValue / maxTotal) * chartHeight * eased;
-        currentY -= segH;
-
-        ctx.fillStyle = tierColors[si % tierColors.length];
-        ctx.beginPath();
-
-        // Round top corners only on the last (top) segment
-        if (si === item.segments.length - 1 && segH > 0) {
-          roundRectTop(ctx, x, currentY, barWidth, segH, 3);
-        } else {
-          ctx.rect(x, currentY, barWidth, segH);
+      if (segH > 0) {
+        // Only the topmost visible segment gets rounded top corners
+        const isTop = si === lastVisibleIndex;
+        const pathD = isTop
+          ? roundRectTopPath(x, currentY, barWidth, segH, 3)
+          : `M${x},${currentY} L${x + barWidth},${currentY} L${x + barWidth},${currentY + segH} L${x},${currentY + segH} Z`;
+        if (pathD) {
+          colGroup.appendChild(svgEl('path', {
+            d: pathD,
+            fill: tierColors[si % tierColors.length],
+          }));
         }
-        ctx.fill();
-      });
-
-      // Column label
-      ctx.fillStyle = '#5A7A8F';
-      ctx.font = '500 10px Gilroy, Century Gothic, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText(item.label, x + barWidth / 2, chartBottom + 6);
+      }
     });
 
-    if (progress < 1) requestAnimationFrame(draw);
-  }
+    svg.appendChild(colGroup);
 
-  requestAnimationFrame(draw);
+    // Column label
+    const label = svgEl('text', {
+      x: x + barWidth / 2,
+      y: chartBottom + 6,
+      fill: '#5A7A8F',
+      'font-size': '10',
+      'font-weight': '500',
+      'font-family': FONT,
+      'text-anchor': 'middle',
+      'dominant-baseline': 'hanging',
+    });
+    label.textContent = item.label;
+    svg.appendChild(label);
+  });
 }
 
 export function createChartLegend(tierLabels, tierColors = DEFAULT_TIER_COLORS) {
@@ -111,17 +102,4 @@ export function createChartLegend(tierLabels, tierColors = DEFAULT_TIER_COLORS) 
   });
 
   return legend;
-}
-
-function roundRectTop(ctx, x, y, w, h, r) {
-  if (h < 0) h = 0;
-  r = Math.min(r, w / 2, h / 2);
-  ctx.moveTo(x + r, y);
-  ctx.lineTo(x + w - r, y);
-  ctx.arcTo(x + w, y, x + w, y + r, r);
-  ctx.lineTo(x + w, y + h);
-  ctx.lineTo(x, y + h);
-  ctx.lineTo(x, y + r);
-  ctx.arcTo(x, y, x + r, y, r);
-  ctx.closePath();
 }

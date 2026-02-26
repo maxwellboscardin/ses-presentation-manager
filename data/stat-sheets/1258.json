@@ -148,9 +148,12 @@
 
   "onDeck": {
     "observations": [
-      "Q4 renewal pipeline: 72 accounts ($3.2M premium) up for renewal Oct-Dec",
-      "Carrier capacity expansion meeting scheduled for November",
-      "2026 program structure proposal due to underwriting committee by 12/15"
+      "Ingestion AI",
+      "Google Image Scores",
+      "Retrospective premium refund (no losses)",
+      "GL add-ons",
+      "$2M/$4M option",
+      "SIR option and commission"
     ]
   }
 }

@@ -1,0 +1,11 @@
+{
+  "program": "Portfolio",
+  "note": "Shared across 1258 LOC, 1258 LOM, 1334 CEG, 1097 LOL. Sean to provide.",
+  "sqbTrends": {
+    "period": "9/24-8/25",
+    "months": ["Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
+    "submissions": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    "quotes": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    "binds": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+}

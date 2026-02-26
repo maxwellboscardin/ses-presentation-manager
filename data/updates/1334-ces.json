@@ -1,0 +1,37 @@
+{
+  "contract": "1334",
+  "carrier": "CES",
+  "program": "Individual Asset",
+  "operations": [
+    "YTD Retention Ratio: 74.44% and climbing (80% in July and 86% in August)"
+  ],
+  "riskScores": {
+    "property": {
+      "title": "Property Risk Score",
+      "categories": ["E", "D", "C", "B", "A"],
+      "values": [0, 0, 1, 22, 77]
+    },
+    "windHail": {
+      "title": "Wind/Hail Risk Scores",
+      "categories": ["401-500", "301-400", "201-300", "101-200", "0-100"],
+      "values": [2, 2, 4, 8, 84]
+    },
+    "crime": {
+      "title": "Crime Risk Scores",
+      "categories": ["151-200", "101-150", "51-100", "0-50"],
+      "values": [3, 27, 49, 21]
+    },
+    "wildfire": {
+      "title": "Wildfire Risk Scores",
+      "categories": ["61-70", "51-60", "41-50", "31-40", "0-30"],
+      "values": [1, 4, 15, 10, 69]
+    }
+  },
+  "sqbTrends": {
+    "period": "9/24-8/25",
+    "months": ["Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
+    "submissions": [4443, 4498, 3547, 3845, 5405, 5762, 5402, 4815, 4531, 4523, 4897, 4409],
+    "quotes": [901, 861, 806, 1016, 1214, 1266, 1329, 1189, 1146, 1227, 1245, 1070],
+    "binds": [251, 259, 224, 287, 350, 412, 360, 327, 334, 359, 370, 291]
+  }
+}

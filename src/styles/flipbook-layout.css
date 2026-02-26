@@ -72,6 +72,13 @@ html, body {
   line-height: 1.2;
 }
 
+.page-title__program {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ses-text-muted);
+  margin-left: 8px;
+}
+
 /* Page Content — flexible area filling the page */
 .page-content {
   flex: 1;

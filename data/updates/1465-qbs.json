@@ -1,0 +1,37 @@
+{
+  "contract": "1465",
+  "carrier": "QBS",
+  "program": "Individual Asset",
+  "operations": [
+    "Placeholder — awaiting operations updates"
+  ],
+  "riskScores": {
+    "property": {
+      "title": "Property Risk Score",
+      "categories": ["E", "D", "C", "B", "A"],
+      "values": [0, 0, 0, 0, 0]
+    },
+    "windHail": {
+      "title": "Wind/Hail Risk Scores",
+      "categories": ["401-500", "301-400", "201-300", "101-200", "0-100"],
+      "values": [0, 0, 0, 0, 0]
+    },
+    "crime": {
+      "title": "Crime Risk Scores",
+      "categories": ["151-200", "101-150", "51-100", "0-50"],
+      "values": [0, 0, 0, 0]
+    },
+    "wildfire": {
+      "title": "Wildfire Risk Scores",
+      "categories": ["61-70", "51-60", "41-50", "31-40", "0-30"],
+      "values": [0, 0, 0, 0, 0]
+    }
+  },
+  "sqbTrends": {
+    "period": "9/24-8/25",
+    "months": ["Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
+    "submissions": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    "quotes": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    "binds": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+}

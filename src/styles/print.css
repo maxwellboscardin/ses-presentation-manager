@@ -43,10 +43,21 @@
     print-color-adjust: exact;
   }
 
-  /* Ensure canvas charts are visible in print */
-  canvas {
+  /* Ensure charts are visible in print */
+  canvas, svg {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+  }
+
+  /* Disable chart animations for print */
+  .anim-bar-h, .anim-bar-v, .anim-col-v,
+  .anim-line, .anim-gauge,
+  .anim-point, .anim-fade {
+    animation: none !important;
+  }
+  .anim-line, .anim-gauge {
+    stroke-dashoffset: 0 !important;
+    stroke-dasharray: none !important;
   }
 
   /* ─── Unified Presentation print overrides ─────────────────── */

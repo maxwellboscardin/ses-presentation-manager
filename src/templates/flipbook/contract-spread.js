@@ -6,6 +6,7 @@ import { createVBarChart } from '../../components/v-bar-chart.js';
 import { createStackedBarChart, createChartLegend } from '../../components/stacked-bar-chart.js';
 import { createLineChart } from '../../components/line-chart.js';
 import { createUSMap } from '../../components/us-map.js';
+import { initCardEditor } from '../../components/card-editor.js';
 
 export async function renderContractSpread(container, dataUrl) {
   const res = await fetch(dataUrl);
@@ -38,6 +39,8 @@ export async function renderContractSpread(container, dataUrl) {
     renderPage1Charts(data);
     renderPage2Charts(data);
   });
+
+  initCardEditor();
 }
 
 function buildToolbar(onReplay) {
@@ -84,8 +87,7 @@ export function buildPage1(data) {
   page.innerHTML = `
     <div class="page__inner">
       <div class="page-header">
-        <div class="page-title">${data.title}</div>
-        <span class="contract-badge">${data.contract}</span>
+        <div class="page-title">${data.contract} <span class="page-title__program">${data.title}</span></div>
       </div>
       <div class="page-content">
         <div id="page1-kpis"></div>
@@ -184,20 +186,26 @@ export function buildPage2(data) {
         </div>
         <div class="section-header">Loss Experience</div>
         <div id="page2-loss-kpis"></div>
-        <div class="page-columns">
-          <div class="page-column">
-            <div class="chart-container">
+        <div class="page-columns" style="flex: 1;">
+          <div class="page-column" style="flex: 1; display: flex; flex-direction: column;">
+            <div class="chart-container" style="flex: 1; display: flex; flex-direction: column;">
               <div class="section-header">Annual Loss Ratio</div>
-              <div class="chart-container__body">
+              <div class="chart-container__body" style="flex: 1;">
                 <canvas id="chart-loss-ratio"></canvas>
               </div>
             </div>
           </div>
-          <div class="page-column">
-            <div class="chart-container">
+          <div class="page-column" style="flex: 1; display: flex; flex-direction: column; gap: var(--gap-sm);">
+            <div class="chart-container" style="flex: 1; display: flex; flex-direction: column;">
               <div class="section-header">Top Loss Types (Incurred, $M)</div>
-              <div class="chart-container__body">
+              <div class="chart-container__body" style="flex: 1;">
                 <canvas id="chart-loss-types"></canvas>
+              </div>
+            </div>
+            <div class="chart-container" style="flex: 1; display: flex; flex-direction: column;">
+              <div class="section-header">Property Risk Score</div>
+              <div class="chart-container__body" style="flex: 1;">
+                <canvas id="chart-risk-score"></canvas>
               </div>
             </div>
           </div>
@@ -369,5 +377,17 @@ export function renderPage2Charts(data, root) {
       barHeight: 18,
       barGap: 10,
     });
+  }
+
+  // H-bar — Property Risk Score
+  if (data.propertyRiskScore) {
+    const riskCanvas = el.querySelector('#chart-risk-score');
+    if (riskCanvas) {
+      createHBarChart(riskCanvas, data.propertyRiskScore.data, {
+        valueFormatter: (v) => v + '%',
+        labelWidth: 30,
+        valueWidth: 45,
+      });
+    }
   }
 }

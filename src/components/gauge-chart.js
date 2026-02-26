@@ -1,4 +1,6 @@
-// Semi-Circle Gauge Chart Component
+// Semi-Circle Gauge Chart Component — SVG
+
+import { svgEl, prepareSvg, FONT } from './svg-utils.js';
 
 const COLORS = {
   navy: '#0A5383',
@@ -9,23 +11,15 @@ const COLORS = {
   needle: '#073D62',
 };
 
-export function createGaugeChart(canvas, { currentValue, maxValue, unit, label }, options = {}) {
+export function createGaugeChart(element, { currentValue, maxValue, unit, label }, options = {}) {
   const {
     trackColor = COLORS.navyLight,
     fillColor = COLORS.navy,
     needleColor = COLORS.needle,
-    animationDuration = 1800,
     trackWidth = 14,
   } = options;
 
-  const ctx = canvas.getContext('2d');
-  const dpr = window.devicePixelRatio || 1;
-
-  const drawWidth = canvas.clientWidth;
-  const drawHeight = canvas.clientHeight;
-  canvas.width = drawWidth * dpr;
-  canvas.height = drawHeight * dpr;
-  ctx.scale(dpr, dpr);
+  const { svg, w: drawWidth, h: drawHeight } = prepareSvg(element);
 
   // Gauge geometry — semi-circle centered with room for text below
   const centerX = drawWidth / 2;
@@ -33,82 +27,111 @@ export function createGaugeChart(canvas, { currentValue, maxValue, unit, label }
   const gaugeRadius = Math.max(maxR, 40);
   const centerY = gaugeRadius + trackWidth / 2 + 8;
 
-  const startAngle = Math.PI;       // 9 o'clock
-  const endAngle = Math.PI * 2;     // 3 o'clock
   const fraction = Math.min(currentValue / maxValue, 1);
 
-  let startTime = null;
+  // Arc endpoints
+  const startX = centerX - gaugeRadius;
+  const endX = centerX + gaugeRadius;
 
-  function easeOutCubic(t) {
-    return 1 - Math.pow(1 - t, 3);
+  // Track — full semi-circle (top arc, clockwise: sweep=1)
+  svg.appendChild(svgEl('path', {
+    d: `M${startX},${centerY} A${gaugeRadius},${gaugeRadius} 0 0 1 ${endX},${centerY}`,
+    fill: 'none',
+    stroke: trackColor,
+    'stroke-width': trackWidth,
+    'stroke-linecap': 'round',
+  }));
+
+  // Filled arc
+  if (fraction > 0.005) {
+    const fillAngle = Math.PI + Math.PI * fraction;
+    const fillEndX = centerX + Math.cos(fillAngle) * gaugeRadius;
+    const fillEndY = centerY + Math.sin(fillAngle) * gaugeRadius;
+
+    const fillArc = svgEl('path', {
+      d: `M${startX},${centerY} A${gaugeRadius},${gaugeRadius} 0 0 1 ${fillEndX},${fillEndY}`,
+      fill: 'none',
+      stroke: fillColor,
+      'stroke-width': trackWidth,
+      'stroke-linecap': 'round',
+      class: 'anim-gauge',
+    });
+    svg.appendChild(fillArc);
+    const arcLen = fillArc.getTotalLength();
+    fillArc.style.strokeDasharray = arcLen;
+    fillArc.style.strokeDashoffset = arcLen;
   }
 
-  function draw(now) {
-    if (!startTime) startTime = now;
-    const elapsed = now - startTime;
-    const progress = Math.min(elapsed / animationDuration, 1);
-    const eased = easeOutCubic(progress);
+  // Needle
+  const needleLen = gaugeRadius - trackWidth / 2 - 2;
+  const needleAngle = Math.PI + Math.PI * fraction;
+  const nx = centerX + Math.cos(needleAngle) * needleLen;
+  const ny = centerY + Math.sin(needleAngle) * needleLen;
 
-    ctx.clearRect(0, 0, drawWidth, drawHeight);
+  const needle = svgEl('line', {
+    x1: centerX, y1: centerY, x2: nx, y2: ny,
+    stroke: needleColor,
+    'stroke-width': '2',
+    'stroke-linecap': 'round',
+    class: 'anim-fade',
+  });
+  needle.style.animationDelay = '600ms';
+  svg.appendChild(needle);
 
-    const animatedFraction = fraction * eased;
-    const fillAngle = startAngle + (endAngle - startAngle) * animatedFraction;
+  // Pivot dot
+  const pivot = svgEl('circle', {
+    cx: centerX, cy: centerY, r: 4,
+    fill: needleColor,
+    class: 'anim-fade',
+  });
+  pivot.style.animationDelay = '600ms';
+  svg.appendChild(pivot);
 
-    // Track arc — full semi-circle, round caps
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, gaugeRadius, startAngle, endAngle);
-    ctx.strokeStyle = trackColor;
-    ctx.lineWidth = trackWidth;
-    ctx.lineCap = 'round';
-    ctx.stroke();
+  // Text below gauge
+  const textY = centerY + 12;
 
-    // Filled arc
-    if (animatedFraction > 0.005) {
-      ctx.beginPath();
-      ctx.arc(centerX, centerY, gaugeRadius, startAngle, fillAngle);
-      ctx.strokeStyle = fillColor;
-      ctx.lineWidth = trackWidth;
-      ctx.lineCap = 'round';
-      ctx.stroke();
-    }
+  const valueText = svgEl('text', {
+    x: centerX,
+    y: textY,
+    fill: COLORS.text,
+    'font-size': '20',
+    'font-weight': '700',
+    'font-family': FONT,
+    'text-anchor': 'middle',
+    'dominant-baseline': 'hanging',
+  });
+  valueText.textContent = `${currentValue}${unit}`;
+  valueText.classList.add('anim-fade');
+  valueText.style.animationDelay = '800ms';
+  svg.appendChild(valueText);
 
-    // Needle — from center out to the inner edge of the arc track
-    const needleLen = gaugeRadius - trackWidth / 2 - 2;
-    const nx = centerX + Math.cos(fillAngle) * needleLen;
-    const ny = centerY + Math.sin(fillAngle) * needleLen;
+  const subText = svgEl('text', {
+    x: centerX,
+    y: textY + 24,
+    fill: COLORS.muted,
+    'font-size': '11',
+    'font-weight': '500',
+    'font-family': FONT,
+    'text-anchor': 'middle',
+    'dominant-baseline': 'hanging',
+  });
+  subText.textContent = `of ${maxValue}${unit}`;
+  subText.classList.add('anim-fade');
+  subText.style.animationDelay = '900ms';
+  svg.appendChild(subText);
 
-    ctx.beginPath();
-    ctx.moveTo(centerX, centerY);
-    ctx.lineTo(nx, ny);
-    ctx.strokeStyle = needleColor;
-    ctx.lineWidth = 2;
-    ctx.lineCap = 'round';
-    ctx.stroke();
-
-    // Pivot dot
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, 4, 0, Math.PI * 2);
-    ctx.fillStyle = needleColor;
-    ctx.fill();
-
-    // Text below gauge
-    const textY = centerY + 12;
-
-    ctx.fillStyle = COLORS.text;
-    ctx.font = '700 20px Gilroy, Century Gothic, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'top';
-    ctx.fillText(`${currentValue}${unit}`, centerX, textY);
-
-    ctx.fillStyle = COLORS.muted;
-    ctx.font = '500 11px Gilroy, Century Gothic, sans-serif';
-    ctx.fillText(`of ${maxValue}${unit}`, centerX, textY + 24);
-
-    ctx.font = '600 10px Gilroy, Century Gothic, sans-serif';
-    ctx.fillText(label, centerX, textY + 40);
-
-    if (progress < 1) requestAnimationFrame(draw);
-  }
-
-  requestAnimationFrame(draw);
+  const labelText = svgEl('text', {
+    x: centerX,
+    y: textY + 40,
+    fill: COLORS.muted,
+    'font-size': '10',
+    'font-weight': '600',
+    'font-family': FONT,
+    'text-anchor': 'middle',
+    'dominant-baseline': 'hanging',
+  });
+  labelText.textContent = label;
+  labelText.classList.add('anim-fade');
+  labelText.style.animationDelay = '1000ms';
+  svg.appendChild(labelText);
 }

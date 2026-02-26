@@ -1,4 +1,6 @@
-// Line Chart Component
+// Line Chart Component — SVG
+
+import { svgEl, prepareSvg, FONT } from './svg-utils.js';
 
 const COLORS = {
   navy: '#0A5383',
@@ -8,26 +10,18 @@ const COLORS = {
   white: '#FFFFFF',
 };
 
-export function createLineChart(canvas, data, options = {}) {
+export function createLineChart(element, data, options = {}) {
   const {
     lineColor = COLORS.navy,
     lineWidth = 2.5,
     pointRadius = 4,
-    animationDuration = 1600,
     paddingBottom = 28,
     paddingTop = 28,
     paddingSide = 24,
     valueFormatter = (v) => v.toString(),
   } = options;
 
-  const ctx = canvas.getContext('2d');
-  const dpr = window.devicePixelRatio || 1;
-
-  const drawWidth = canvas.clientWidth;
-  const drawHeight = canvas.clientHeight;
-  canvas.width = drawWidth * dpr;
-  canvas.height = drawHeight * dpr;
-  ctx.scale(dpr, dpr);
+  const { svg, w: drawWidth, h: drawHeight } = prepareSvg(element);
 
   const values = data.map((d) => d.value);
   const minValue = Math.min(...values) * 0.9;
@@ -49,94 +43,73 @@ export function createLineChart(canvas, data, options = {}) {
     value: d.value,
   }));
 
-  let startTime = null;
-
-  function easeOutCubic(t) {
-    return 1 - Math.pow(1 - t, 3);
+  // Grid lines
+  for (let i = 0; i <= 4; i++) {
+    const y = chartTop + (chartHeight / 4) * i;
+    svg.appendChild(svgEl('line', {
+      x1: chartLeft, y1: y, x2: chartRight, y2: y,
+      stroke: COLORS.gridLine, 'stroke-width': '0.5',
+    }));
   }
 
-  function draw(now) {
-    if (!startTime) startTime = now;
-    const elapsed = now - startTime;
-    const progress = Math.min(elapsed / animationDuration, 1);
-    const eased = easeOutCubic(progress);
-
-    ctx.clearRect(0, 0, drawWidth, drawHeight);
-
-    // Grid lines
-    ctx.strokeStyle = COLORS.gridLine;
-    ctx.lineWidth = 0.5;
-    for (let i = 0; i <= 4; i++) {
-      const y = chartTop + (chartHeight / 4) * i;
-      ctx.beginPath();
-      ctx.moveTo(chartLeft, y);
-      ctx.lineTo(chartRight, y);
-      ctx.stroke();
-    }
-
-    // How many points to show based on animation progress
-    const visibleCount = Math.floor(eased * points.length) + (eased >= 1 ? 0 : 1);
-    const visiblePoints = points.slice(0, visibleCount);
-
-    // Partially animated last point
-    if (visibleCount < points.length && eased < 1) {
-      const segProgress = (eased * points.length) % 1;
-      const from = points[visibleCount - 1];
-      const to = points[visibleCount];
-      if (from && to) {
-        visiblePoints[visiblePoints.length - 1] = {
-          x: from.x + (to.x - from.x) * segProgress,
-          y: from.y + (to.y - from.y) * segProgress,
-          label: from.label,
-          value: from.value,
-        };
-      }
-    }
-
-    // Draw line
-    if (visiblePoints.length > 1) {
-      ctx.strokeStyle = lineColor;
-      ctx.lineWidth = lineWidth;
-      ctx.lineJoin = 'round';
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      ctx.moveTo(visiblePoints[0].x, visiblePoints[0].y);
-      for (let i = 1; i < visiblePoints.length; i++) {
-        ctx.lineTo(visiblePoints[i].x, visiblePoints[i].y);
-      }
-      ctx.stroke();
-    }
-
-    // Draw points and labels (only for fully reached points)
-    const fullyReached = eased >= 1 ? points.length : Math.floor(eased * points.length);
-    for (let i = 0; i < fullyReached; i++) {
-      const p = points[i];
-
-      // Open circle point
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, pointRadius, 0, Math.PI * 2);
-      ctx.fillStyle = COLORS.white;
-      ctx.fill();
-      ctx.strokeStyle = lineColor;
-      ctx.lineWidth = 2;
-      ctx.stroke();
-
-      // Value label above
-      ctx.fillStyle = COLORS.text;
-      ctx.font = '700 10px Gilroy, Century Gothic, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText(valueFormatter(p.value), p.x, p.y - pointRadius - 4);
-
-      // X-axis label
-      ctx.fillStyle = COLORS.muted;
-      ctx.font = '500 10px Gilroy, Century Gothic, sans-serif';
-      ctx.textBaseline = 'top';
-      ctx.fillText(p.label, p.x, chartBottom + 6);
-    }
-
-    if (progress < 1) requestAnimationFrame(draw);
+  // Line path
+  if (points.length > 1) {
+    const pathD = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x},${p.y}`).join(' ');
+    const linePath = svgEl('path', {
+      d: pathD,
+      fill: 'none',
+      stroke: lineColor,
+      'stroke-width': lineWidth,
+      'stroke-linejoin': 'round',
+      'stroke-linecap': 'round',
+      class: 'anim-line',
+    });
+    svg.appendChild(linePath);
+    const len = linePath.getTotalLength();
+    linePath.style.strokeDasharray = len;
+    linePath.style.strokeDashoffset = len;
   }
 
-  requestAnimationFrame(draw);
+  // Points and labels
+  points.forEach((p, pi) => {
+    // Open circle point
+    const circle = svgEl('circle', {
+      cx: p.x, cy: p.y, r: pointRadius,
+      fill: COLORS.white,
+      stroke: lineColor,
+      'stroke-width': '2',
+      class: 'anim-point',
+    });
+    circle.style.animationDelay = `${400 + pi * 80}ms`;
+    svg.appendChild(circle);
+
+    // Value above
+    const val = svgEl('text', {
+      x: p.x,
+      y: p.y - pointRadius - 4,
+      fill: COLORS.text,
+      'font-size': '10',
+      'font-weight': '700',
+      'font-family': FONT,
+      'text-anchor': 'middle',
+    });
+    val.textContent = valueFormatter(p.value);
+    val.classList.add('anim-fade');
+    val.style.animationDelay = `${500 + pi * 80}ms`;
+    svg.appendChild(val);
+
+    // X-axis label
+    const label = svgEl('text', {
+      x: p.x,
+      y: chartBottom + 6,
+      fill: COLORS.muted,
+      'font-size': '10',
+      'font-weight': '500',
+      'font-family': FONT,
+      'text-anchor': 'middle',
+      'dominant-baseline': 'hanging',
+    });
+    label.textContent = p.label;
+    svg.appendChild(label);
+  });
 }
