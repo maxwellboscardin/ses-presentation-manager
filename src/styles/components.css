@@ -244,6 +244,7 @@
   gap: var(--gap-sm);
   flex-wrap: nowrap;
   margin-top: var(--gap-xs);
+  margin-bottom: var(--gap-xs);
   font-size: 9px;
   white-space: nowrap;
 }
@@ -358,6 +359,16 @@
   /* width/height set by JS */
 }
 
+/* Contract label — inside section header, right-aligned, global editor only */
+.card-editor-label {
+  float: right;
+  font-size: 7px;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  opacity: 0.6;
+}
+
 /* Close button — on the panel (not scaled) */
 .card-editor-close {
   position: absolute;
@@ -419,8 +430,8 @@
 /* Edit/Done button — on the panel (not scaled) */
 .card-editor-btn {
   position: absolute;
-  top: 14px;
-  right: 52px;
+  bottom: 14px;
+  right: 12px;
   z-index: 2;
   border: none;
   background: var(--ses-navy);
@@ -502,6 +513,46 @@
 .card-editor-input:focus {
   border-color: var(--ses-navy);
   box-shadow: 0 0 0 1px rgba(10, 83, 131, 0.2);
+}
+
+/* Data table (read-only, inside chart editors — copies to Excel as tab-separated) */
+.card-editor-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-family);
+  font-size: 10px;
+  color: var(--ses-text);
+  background: #f5f7f9;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--ses-border);
+}
+
+.card-editor-table th {
+  background: var(--ses-navy);
+  color: var(--ses-white);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  padding: 4px 8px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.card-editor-table td {
+  padding: 3px 8px;
+  border-top: 1px solid var(--ses-border);
+  white-space: nowrap;
+}
+
+.card-editor-table tr:nth-child(even) td {
+  background: rgba(10, 83, 131, 0.03);
+}
+
+.card-editor-table-wrap {
+  max-height: 160px;
+  overflow-y: auto;
+  border-radius: 4px;
 }
 
 /* Print: hide overlay */

@@ -19,9 +19,13 @@ export function createKpiBox(value, label, options = {}) {
   return box;
 }
 
-export function createKpiRow(kpis) {
+export function createKpiRow(kpis, options = {}) {
   const row = document.createElement('div');
   row.className = 'kpi-row';
+
+  if (options.label) {
+    row.setAttribute('data-label', options.label);
+  }
 
   for (const kpi of kpis) {
     row.appendChild(createKpiBox(kpi.value, kpi.label, kpi.options));

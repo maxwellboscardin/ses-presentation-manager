@@ -187,19 +187,47 @@ html, body {
 /* ─── Cross-reference tag ──────────────────────────────────── */
 .ge-xref {
   position: absolute;
-  bottom: 4px;
-  left: 4px;
-  right: 4px;
+  bottom: 6px;
+  left: 6px;
   font-family: var(--font-family);
   font-size: 9px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.7);
-  background: rgba(10, 83, 131, 0.8);
-  padding: 3px 6px;
-  border-radius: 3px;
+  color: #fff;
+  background: rgba(10, 83, 131, 0.75);
+  padding: 2px 8px;
+  border-radius: 10px;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  pointer-events: none;
+}
+
+/* ─── Card-level pills ─────────────────────────────────────── */
+.ge-card-pill {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  font-family: var(--font-family);
+  font-size: 7px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(10, 83, 131, 0.75);
+  padding: 2px 6px;
+  border-radius: 10px;
+  pointer-events: none;
+  z-index: 1;
+  white-space: nowrap;
+}
+
+/* ─── Updated dot ─────────────────────────────────────────── */
+.ge-updated-dot {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  background: #ef4444;
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(239, 68, 68, 0.6);
+  z-index: 2;
   pointer-events: none;
 }
 

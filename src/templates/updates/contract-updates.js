@@ -45,7 +45,7 @@ export function buildUpdatesPage(data) {
           </div>
         </div>
         <!-- S/Q/B Trends -->
-        <div class="chart-container" style="flex: 1;">
+        <div class="chart-container sqb-chart-container" data-chart-type="combo" style="flex: 1;">
           <div class="section-header">Submissions, Quotes, Binds${periodNote}</div>
           <div class="chart-container__body">
             <canvas class="sqb-chart-canvas"></canvas>
@@ -102,7 +102,7 @@ export function buildSqbPage(data) {
         <div class="page-title">${title}</div>
       </div>
       <div class="page-content">
-        <div class="chart-container" style="flex: 1;">
+        <div class="chart-container sqb-chart-container" data-chart-type="combo" style="flex: 1;">
           <div class="section-header">Submissions, Quotes, Binds${periodNote}</div>
           <div class="chart-container__body">
             <canvas class="sqb-chart-canvas"></canvas>
@@ -145,6 +145,13 @@ function renderSqbChart(data, scope) {
     };
   });
 
+  const sqbLegendItems = [
+    { label: 'Submissions', color: '#0A5383', type: 'bar' },
+    { label: 'Quotes', color: '#8FBAD2', type: 'bar' },
+    { label: 'Binds', color: '#E97121', type: 'bar' },
+    { label: 'Bind Ratio', color: '#6BAF4A', type: 'line' },
+  ];
+
   createComboChart(el, comboData, {
     barColors: ['#0A5383', '#8FBAD2', '#E97121'],
     lineColor: '#6BAF4A',
@@ -155,14 +162,16 @@ function renderSqbChart(data, scope) {
     paddingSide: 20,
   });
 
+  // Store data on the chart container for the card editor
+  const chartContainer = scope.querySelector('.sqb-chart-container');
+  if (chartContainer) {
+    chartContainer.setAttribute('data-chart-src', JSON.stringify(comboData));
+    chartContainer.setAttribute('data-chart-legend', JSON.stringify(sqbLegendItems));
+  }
+
   const legendContainer = scope.querySelector('.sqb-legend');
   if (legendContainer && legendContainer.children.length === 0) {
-    legendContainer.appendChild(createComboLegend([
-      { label: 'Submissions', color: '#0A5383', type: 'bar' },
-      { label: 'Quotes', color: '#8FBAD2', type: 'bar' },
-      { label: 'Binds', color: '#E97121', type: 'bar' },
-      { label: 'Bind Ratio', color: '#6BAF4A', type: 'line' },
-    ]));
+    legendContainer.appendChild(createComboLegend(sqbLegendItems));
   }
 }
 

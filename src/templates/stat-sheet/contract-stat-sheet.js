@@ -1,4 +1,4 @@
-// Contract Stat Sheet — Single-Page Dashboard Template
+// Contract Snapshot — Single-Page Dashboard Template
 
 import { createGaugeChart } from '../../components/gauge-chart.js';
 import { createComboChart, createComboLegend } from '../../components/combo-chart.js';
@@ -106,7 +106,7 @@ function buildHeader(data) {
   const header = document.createElement('div');
   header.className = 'page-header';
   header.innerHTML = `
-    <div class="page-title">${data.contract} <span class="page-title__program">${data.title}</span></div>
+    <div class="page-title">${data.contract} <span class="page-title__program">Snapshot</span></div>
   `;
   return header;
 }
@@ -141,6 +141,8 @@ function buildRow2(data) {
   // Capacity Utilization (gauge)
   const gaugeCard = document.createElement('div');
   gaugeCard.className = 'chart-container';
+  gaugeCard.setAttribute('data-chart-type', 'gauge');
+  gaugeCard.setAttribute('data-chart-src', JSON.stringify(data.capacityUtilization));
   gaugeCard.innerHTML = `
     <div class="section-header">Capacity Utilization</div>
     <div class="chart-container__body">
@@ -248,6 +250,9 @@ function buildRow4(data) {
   // Quotes & Binds (combo chart)
   const qbCard = document.createElement('div');
   qbCard.className = 'chart-container';
+  qbCard.setAttribute('data-chart-type', 'combo');
+  qbCard.setAttribute('data-chart-src', JSON.stringify(data.quotesBinds.data));
+  qbCard.setAttribute('data-chart-legend', JSON.stringify(data.quotesBinds.legend));
   qbCard.innerHTML = `
     <div class="section-header">Quotes & Binds</div>
     <div class="chart-container__body">
@@ -260,6 +265,9 @@ function buildRow4(data) {
   // Renewal Retention (combo chart)
   const rrCard = document.createElement('div');
   rrCard.className = 'chart-container';
+  rrCard.setAttribute('data-chart-type', 'combo');
+  rrCard.setAttribute('data-chart-src', JSON.stringify(data.renewalRetention.data));
+  rrCard.setAttribute('data-chart-legend', JSON.stringify(data.renewalRetention.legend));
   rrCard.innerHTML = `
     <div class="section-header">Renewal Retention</div>
     <div class="chart-container__body">
