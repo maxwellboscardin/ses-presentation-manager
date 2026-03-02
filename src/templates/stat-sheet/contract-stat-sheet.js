@@ -72,14 +72,13 @@ export function buildPage(data) {
   const content = document.createElement('div');
   content.className = 'stat-sheet-content';
 
-  // Row 1: Program Update (full width)
+  // Row 1: Capacity Utilization | Premium | Portfolio (thirds)
   content.appendChild(buildRow1(data));
 
-  // Row 2: Capacity Utilization | Premium | Portfolio (thirds)
-  content.appendChild(buildRow2(data));
-
-  // Row 3: Underwriting Update | Organizational Update (halves)
-  content.appendChild(buildRow3(data));
+  // Row 2: Underwriting Update (full width)
+  // Row 3: Organizational Update (full width)
+  content.appendChild(buildRow2UW(data));
+  content.appendChild(buildRow3Org(data));
 
   // Row 4: Quotes & Binds | Renewal Retention (halves)
   content.appendChild(buildRow4(data));
@@ -111,30 +110,9 @@ function buildHeader(data) {
   return header;
 }
 
-// ─── Row 1: Program Update (full width) ──────────────────────
+// ─── Row 1: Capacity | Premium | Portfolio (thirds) ──────────
 
 function buildRow1(data) {
-  const row = document.createElement('div');
-  row.className = 'stat-row stat-row--full';
-
-  const obsPanel = document.createElement('div');
-  obsPanel.className = 'observations-panel';
-  obsPanel.innerHTML = `
-    <div class="section-header">Program Update</div>
-    <div class="observations-panel__body">
-      <ul>
-        ${data.programUpdate.observations.map((o) => `<li>${o}</li>`).join('')}
-      </ul>
-    </div>
-  `;
-  row.appendChild(obsPanel);
-
-  return row;
-}
-
-// ─── Row 2: Capacity | Premium | Portfolio (thirds) ──────────
-
-function buildRow2(data) {
   const row = document.createElement('div');
   row.className = 'stat-row stat-row--thirds';
 
@@ -206,13 +184,12 @@ function buildRow2(data) {
   return row;
 }
 
-// ─── Row 3: UW Update | Org Update (halves) ──────────────────
+// ─── Row 2: Underwriting Update (full width) ─────────────────
 
-function buildRow3(data) {
+function buildRow2UW(data) {
   const row = document.createElement('div');
-  row.className = 'stat-row stat-row--halves';
+  row.className = 'stat-row stat-row--full';
 
-  // UW Update
   const uwPanel = document.createElement('div');
   uwPanel.className = 'observations-panel';
   uwPanel.innerHTML = `
@@ -225,7 +202,15 @@ function buildRow3(data) {
   `;
   row.appendChild(uwPanel);
 
-  // Organizational Update
+  return row;
+}
+
+// ─── Row 3: Organizational Update (full width) ───────────────
+
+function buildRow3Org(data) {
+  const row = document.createElement('div');
+  row.className = 'stat-row stat-row--full';
+
   const orgPanel = document.createElement('div');
   orgPanel.className = 'observations-panel';
   orgPanel.innerHTML = `
@@ -280,11 +265,11 @@ function buildRow4(data) {
   return row;
 }
 
-// ─── Row 5: On the Horizon (full width) ──────────────────────
+// ─── Row 5: On the Horizon | AI Roadmap (halves) ─────────────
 
 function buildRow5(data) {
   const row = document.createElement('div');
-  row.className = 'stat-row stat-row--full';
+  row.className = 'stat-row stat-row--halves';
 
   const horizonPanel = document.createElement('div');
   horizonPanel.className = 'observations-panel';
@@ -297,6 +282,19 @@ function buildRow5(data) {
     </div>
   `;
   row.appendChild(horizonPanel);
+
+  const aiPanel = document.createElement('div');
+  aiPanel.className = 'observations-panel';
+  const aiObs = data.aiRoadmap ? data.aiRoadmap.observations : [];
+  aiPanel.innerHTML = `
+    <div class="section-header">AI Roadmap</div>
+    <div class="observations-panel__body">
+      <ul>
+        ${aiObs.map((o) => `<li>${o}</li>`).join('')}
+      </ul>
+    </div>
+  `;
+  row.appendChild(aiPanel);
 
   return row;
 }

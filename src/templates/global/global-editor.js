@@ -30,14 +30,14 @@ const CONTRACTS = [
 
 // Cross-reference: which presentations each card type appears on
 const XREF = {
-  cover: ['1258', '1334 CEG', '1334 CES', '1465', '1097'],
-  overview: ['1258', '1334 CEG', '1334 CES', '1465', '1097'],
+  cover: ['1258 LOC/LOM', '1334 CEG', '1334 CES', '1465 QBS', '1097 LOL'],
+  overview: ['1258 LOC/LOM', '1334 CEG', '1334 CES', '1465 QBS', '1097 LOL'],
   statSheet: null,
   flipP1: null,
   flipP2: null,
-  updates: ['1334 CES', '1465'],
-  sqbPortfolio: ['1258', '1334 CEG', '1097'],
-  backCover: ['1258', '1334 CEG', '1334 CES', '1465', '1097'],
+  updates: null,
+  sqbPortfolio: ['1258 LOC/LOM', '1334 CEG', '1097 LOL'],
+  backCover: ['1258 LOC/LOM', '1334 CEG', '1334 CES', '1465 QBS', '1097 LOL'],
 };
 
 // Columns: cover + overview + stat + flip1 + flip2 + updates/sqb + (TBD) + back = 8
@@ -136,11 +136,11 @@ export async function renderGlobalEditor(root) {
       addEmptyCell(row);
     }
 
-    // Column 6: MF Composition (if multiFamily data exists)
+    // Column 6: MF Composition (1258 only)
     if (contractData.multiFamily) {
       addCell(row, buildMFPage1(contractData), null);
     } else {
-      addCell(row, buildBlankPage(), null);
+      addEmptyCell(row);
     }
 
     // Column 7: Back Cover
@@ -249,8 +249,9 @@ const PRODUCT_LINE_GROUPS = [
 
 const SHARED_CARDS = [
   { match: '.section-header', text: 'On the Horizon', shares: 'all' },
-  { match: '.section-header', text: 'Underwriting Update', shares: 'productLine' },
-  { match: '.section-header', text: 'Organizational Update', shares: 'productLine' },
+  { match: '.section-header', text: 'AI Roadmap', shares: 'all' },
+  { match: '.section-header', text: 'Underwriting Update', shares: 'all' },
+  { match: '.section-header', text: 'Organizational Update', shares: 'all' },
 ];
 
 function tagSharedCards(page, currentLabel) {

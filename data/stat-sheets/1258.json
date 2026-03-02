@@ -81,8 +81,7 @@
       "AOP deductible options expanded: $2,500 now available for assets < $200K TIV",
       "Ordinance & law coverage increased to 25% across all policies",
       "Sewer backup sublimit raised from $25K to $50K per occurrence",
-      "Equipment breakdown added as standard coverage on all new binds",
-      "Umbrella program launched with $5M limit for accounts > $1M premium"
+      "Equipment breakdown added as standard coverage on all new binds"
     ]
   },
 
@@ -148,12 +147,17 @@
 
   "onDeck": {
     "observations": [
-      "Ingestion AI",
-      "Google Image Scores",
       "Retrospective premium refund (no losses)",
       "GL add-ons",
       "$2M/$4M option",
       "SIR option and commission"
+    ]
+  },
+
+  "aiRoadmap": {
+    "observations": [
+      "Ingestion AI",
+      "Google Image Scores"
     ]
   }
 }

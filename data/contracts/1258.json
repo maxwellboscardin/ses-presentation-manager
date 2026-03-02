@@ -12,7 +12,13 @@
     "avgRate": "0.39",
     "assets": "9,455",
     "accounts": "107",
-    "observations": [],
+    "observations": [
+      "Contract renewed 7/1 with 5% overall rate increase across all lines",
+      "Equipment breakdown coverage added to all SFR policies effective Q3",
+      "New carrier partner onboarded for excess liability layer ($5M xs $5M)",
+      "Premium minimums reduced to $5K driving increased quote volume",
+      "Year-built eligibility expanded from 25 to 30 years for updated systems"
+    ],
     "topStatesByTiv": [
       { "state": "TX", "tivMillions": 620.2 },
       { "state": "OK", "tivMillions": 493.1 },

@@ -221,13 +221,23 @@ export function buildOverviewPage(data) {
       </div>
       <div class="page-content">
 
-        <!-- Top section: KPIs left, narrative right -->
+        <!-- Top section: Narrative left, KPIs right -->
         <div style="display: flex; gap: var(--gap-sm);">
 
-          <!-- Strength in Numbers -->
-          <div style="flex: 2; background: var(--ses-white); border-radius: var(--radius); overflow: hidden; box-shadow: 0 1px 3px rgba(10,83,131,0.1);">
-            <div class="section-header" style="border-radius: 0;">Strength in Numbers</div>
-            <div style="padding: 12px 16px; display: flex; flex-direction: column; gap: 8px;">
+          <!-- Who We Are -->
+          <div class="observations-panel" style="flex: 3; background: var(--ses-white); border-radius: var(--radius); overflow: hidden; box-shadow: 0 1px 3px rgba(10,83,131,0.1); display: flex; flex-direction: column;">
+            <div class="section-header" style="border-radius: 0;">Who We Are</div>
+            <div class="observations-panel__body" style="padding: 14px 16px; font-size: 12px; color: var(--ses-text-muted); line-height: 1.65; flex: 1;">
+              <p style="margin: 0 0 10px 0;">SES is the <strong style="color: var(--ses-text);">largest Master Trust Insurance Program Administrator</strong> in the US and a leading specialist in residential real estate investor insurance. A division of <strong style="color: var(--ses-text);">Alliant Underwriting Solutions</strong>, one of the nation's top 10 MGAs.</p>
+              <p style="margin: 0 0 10px 0;">We differentiate ourselves with <strong style="color: var(--ses-text);">strong performance</strong>, combining meaningful data, technology, and experience. Our <strong style="color: var(--ses-text);">proprietary policy administration system</strong> is API-enabled and offers web-based self-service. We maintain longstanding relationships with the industry's largest and most reputable brokers, wholesalers, and networks.</p>
+              <p style="margin: 0;">Our commitment to <strong style="color: var(--ses-text);">adapting and refining our program in partnership with carriers, agents, and clients</strong> has led to favorable trends in combined ratios, loss experience, and overall program performance.</p>
+            </div>
+          </div>
+
+          <!-- By the Numbers -->
+          <div class="observations-panel" style="flex: 2; background: var(--ses-white); border-radius: var(--radius); overflow: hidden; box-shadow: 0 1px 3px rgba(10,83,131,0.1);">
+            <div class="section-header" style="border-radius: 0;">By the Numbers</div>
+            <div class="observations-panel__body" style="padding: 12px 16px; display: flex; flex-direction: column; gap: 8px;">
               ${overviewStat('35+', 'Years in Business')}
               ${overviewStat('85K+', 'Properties Insured')}
               ${overviewStat('$181M', 'Annual GWP')}
@@ -239,41 +249,44 @@ export function buildOverviewPage(data) {
             </div>
           </div>
 
-          <!-- Narrative -->
-          <div style="flex: 3; display: flex; flex-direction: column; gap: var(--gap-sm);">
-            <div style="background: var(--ses-white); border-radius: var(--radius); overflow: hidden; box-shadow: 0 1px 3px rgba(10,83,131,0.1); flex: 1; display: flex; flex-direction: column;">
-              <div class="section-header" style="border-radius: 0;">Who We Are</div>
-              <div style="padding: 14px 16px; font-size: 12px; color: var(--ses-text-muted); line-height: 1.65; flex: 1;">
-                <p style="margin: 0 0 10px 0;">SES is the <strong style="color: var(--ses-text);">largest Master Trust Insurance Program Administrator</strong> in the US and a leading specialist in residential real estate investor insurance. A division of <strong style="color: var(--ses-text);">Alliant Underwriting Solutions</strong>, one of the nation's top 10 MGAs.</p>
-                <p style="margin: 0 0 10px 0;">We differentiate ourselves with <strong style="color: var(--ses-text);">strong performance</strong>, combining meaningful data, technology, and experience. Our <strong style="color: var(--ses-text);">proprietary policy administration system</strong> is API-enabled and offers web-based self-service. We maintain longstanding relationships with the industry's largest and most reputable brokers, wholesalers, and networks.</p>
-                <p style="margin: 0;">Our commitment to <strong style="color: var(--ses-text);">adapting and refining our program in partnership with carriers, agents, and clients</strong> has led to favorable trends in combined ratios, loss experience, and overall program performance.</p>
-              </div>
-            </div>
-          </div>
-
         </div>
 
-        <!-- Core Competencies — horizontal rows -->
-        <div class="section-header">Core Competencies</div>
-        <div style="display: flex; flex-direction: column; gap: var(--gap-sm); flex: 1;">
-          ${competencyRow('Data-Driven Underwriting', [
-            'In-house actuarial team backed by Alliant Underwriting Solutions',
-            'Technical Pricing Model: loss trend analysis and target loss ratio to monitor rate adequacy',
-            'Advanced Risk Models: AI/ML-powered scoring at the zip-code level using aerial imagery, community data, and proximity signals',
-            'Precision CAT Model: RMS outputs + construction modifiers drive state/county-level CAT loss loads',
-            'Powered by Cognalytics MultiRate, Python & SQL workflows, and third-party data (ISO, Attom, TransUnion, Betterview, Cape Analytics)',
+        <!-- Core Competencies — full width text card -->
+        <div class="observations-panel" style="background: var(--ses-white); border-radius: var(--radius); overflow: hidden; box-shadow: 0 1px 3px rgba(10,83,131,0.1);">
+          <div class="section-header" style="border-radius: 0;">Core Competencies</div>
+          <div class="observations-panel__body" style="padding: 10px 16px; font-size: 11px; color: var(--ses-text-muted); line-height: 1.55; columns: 2; column-gap: 24px;">
+            <p style="margin: 0 0 6px 0;"><strong style="color: var(--ses-text);">Data-Driven Underwriting:</strong> In-house actuarial team backed by Alliant Underwriting Solutions. Technical pricing model with loss trend analysis. AI/ML-powered risk scoring at zip-code level using aerial imagery and proximity signals. Precision CAT modeling via RMS outputs and construction modifiers.</p>
+            <p style="margin: 0 0 6px 0;"><strong style="color: var(--ses-text);">Service & Technology:</strong> Tech-enabled, API-ready solutions with self-service platforms. Proprietary quoting and policy management systems (TIMS, QUBIE). PowerBI dashboards delivering live KPIs. Automated scoring, segmentation, and ML workflows.</p>
+            <p style="margin: 0;"><strong style="color: var(--ses-text);">Distribution:</strong> Longstanding partnerships with top producers across multiple channels. No direct competition with brokers, wholesalers, and networks. Over 18,000 accounts generating nearly $360M in gross written premium.</p>
+          </div>
+        </div>
+
+        <!-- Product Segments — 2x2 grid -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap-sm); flex: 1;">
+          ${productSegmentCard('SFR Portfolio', [
+            '<strong>Premium:</strong> $56M',
+            '<strong>Stats:</strong> $1,100 avg premium, 51k assets, 1,758 accounts, 29 assets/account',
+            '<strong>Scope:</strong> Core business supporting investors with 5+ properties, mid-size portfolios and property managers',
+            '<strong>Strategy:</strong> Expand product offering and geographic spread to achieve performance targets. Establish and market a product designed for large accounts.',
           ])}
-          ${competencyRow('Service & Technology', [
-            'Tech-enabled, API-ready solutions with user-friendly self-service platforms',
-            'Proprietary quoting and policy management systems (TIMS, QUBIE)',
-            'PowerBI dashboards delivering live KPIs to underwriting, pricing, and strategy teams',
-            'Automated scoring, segmentation, and machine learning workflows',
+          ${productSegmentCard('Individual Asset', [
+            '<strong>Premium:</strong> $12M',
+            '<strong>Stats:</strong> $1,852 avg premium, 6,502 assets',
+            '<strong>Scope:</strong> Provides automated, self-service UW platform for brokers and insureds',
+            '<strong>Strategy:</strong> Focus on program reach including geographic expansion and eligibility tiers. Adapt agent journey to improve retention. Tap into different distribution channels and create API connections to serve a wide range of customers.',
           ])}
-          ${competencyRow('Distribution', [
-            'Longstanding partnerships with top producers across multiple channels',
-            'No direct competition with our brokers, wholesalers, and networks',
-            'Over 18,000 accounts generating nearly $360M in gross written premium',
-            'Multiple product development channels serving investors from 1 to 5,000+ properties',
+          ${productSegmentCard('Multi-Family Portfolio', [
+            '<strong>Premium:</strong> $3.9M',
+            '<strong>Stats:</strong> $5,000 avg premium, 770 assets, 179 accounts, avg. of 4 assets/account',
+            '<strong>Scope:</strong> Supports MF portfolios between $1M and $30M',
+            '<strong>Strategy:</strong> Still seeking solutions for large apartment complexes and higher risk locations.',
+          ])}
+          ${productSegmentCard('Road Map for Additional Coverages', [
+            'Build-to-rent',
+            'Property management',
+            'End-to-end builder\'s risk',
+            'Various optional coverages',
+            '<strong>Pursuing strategic partnerships</strong> to offer adjacent coverages such as for short-term rentals, flood, and tenant legal liability',
           ])}
         </div>
 
@@ -292,15 +305,15 @@ function overviewStat(value, label) {
   `;
 }
 
-function competencyRow(title, bullets) {
+function productSegmentCard(title, bullets) {
   return `
-    <div style="flex: 1; display: flex; gap: var(--gap-sm); background: var(--ses-white); border-radius: var(--radius); overflow: hidden; box-shadow: 0 1px 3px rgba(10,83,131,0.1); min-height: 0;">
-      <div style="width: 180px; background: var(--ses-navy); display: flex; align-items: center; justify-content: center; padding: 12px 16px; flex-shrink: 0;">
-        <div style="color: #fff; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; text-align: center; line-height: 1.3;">${title}</div>
-      </div>
-      <ul style="padding: 10px 16px 10px 28px; margin: 0; display: flex; flex-direction: column; justify-content: center; gap: 5px; flex: 1;">
-        ${bullets.map(b => `<li style="font-size: 11.5px; color: var(--ses-text-muted); line-height: 1.45;">${b}</li>`).join('')}
+    <div class="observations-panel" style="background: var(--ses-white); border-radius: var(--radius); overflow: hidden; box-shadow: 0 1px 3px rgba(10,83,131,0.1); display: flex; flex-direction: column; min-height: 0;">
+      <div class="section-header" style="border-radius: 0;">${title}</div>
+      <div class="observations-panel__body" style="padding: 0;">
+      <ul style="padding: 8px 14px 10px 26px; margin: 0; display: flex; flex-direction: column; gap: 4px; flex: 1;">
+        ${bullets.map(b => `<li style="font-size: 10.5px; color: var(--ses-text-muted); line-height: 1.45;">${b}</li>`).join('')}
       </ul>
+      </div>
     </div>
   `;
 }

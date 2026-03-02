@@ -12,7 +12,10 @@
     "avgRate": "0.60",
     "assets": "929",
     "accounts": "233",
-    "observations": [],
+    "observations": [
+      "Placeholder observation 1",
+      "Placeholder observation 2"
+    ],
     "topStatesByTiv": [
       { "state": "TX", "tivMillions": 34.6 },
       { "state": "CA", "tivMillions": 26.5 },
@@ -80,19 +83,6 @@
       { "label": "C", "value": 0, "color": "#5A98B8" },
       { "label": "D", "value": 0, "color": "#8FBAD2" },
       { "label": "E", "value": 0, "color": "#C5DCE8" }
-    ]
-  },
-
-  "multiFamily": {
-    "totalAnnualPremium": "$0.0M",
-    "tiv": "$0M",
-    "avgRate": "0.00",
-    "assets": "0",
-    "accounts": "0",
-    "activeStates": "0",
-    "observations": [
-      "Placeholder observation 1",
-      "Placeholder observation 2"
     ]
   }
 }

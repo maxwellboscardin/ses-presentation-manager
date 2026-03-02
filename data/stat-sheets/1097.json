@@ -56,8 +56,11 @@
 
   "underwritingUpdate": {
     "observations": [
-      "Placeholder observation 1",
-      "Placeholder observation 2"
+      "Wind/hail deductible buydown offered in TX, OK, and KS markets",
+      "AOP deductible options expanded: $2,500 now available for assets < $200K TIV",
+      "Ordinance & law coverage increased to 25% across all policies",
+      "Sewer backup sublimit raised from $25K to $50K per occurrence",
+      "Equipment breakdown added as standard coverage on all new binds"
     ]
   },
 
@@ -115,15 +118,25 @@
 
   "organizationalUpdate": {
     "observations": [
-      "Placeholder observation 1",
-      "Placeholder observation 2"
+      "Dedicated claims adjuster assigned for all 1258 contract losses > $50K",
+      "Quarterly business review cadence established with carrier partners",
+      "New account manager onboarded for Southeast region expansion"
     ]
   },
 
   "onDeck": {
     "observations": [
-      "Placeholder observation 1",
-      "Placeholder observation 2"
+      "Retrospective premium refund (no losses)",
+      "GL add-ons",
+      "$2M/$4M option",
+      "SIR option and commission"
+    ]
+  },
+
+  "aiRoadmap": {
+    "observations": [
+      "Ingestion AI",
+      "Google Image Scores"
     ]
   }
 }

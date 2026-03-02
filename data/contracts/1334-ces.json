@@ -12,7 +12,10 @@
     "avgRate": "0.38",
     "assets": "3,772",
     "accounts": "3,772",
-    "observations": [],
+    "observations": [
+      "Placeholder observation 1",
+      "Placeholder observation 2"
+    ],
     "topStatesByTiv": [
       { "state": "CA", "tivMillions": 1288.8 },
       { "state": "TX", "tivMillions": 294.8 },
