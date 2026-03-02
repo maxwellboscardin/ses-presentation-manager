@@ -82,18 +82,25 @@ function replayAllAnimations(data) {
 // ─── PAGE 1: Portfolio Composition ──────────────────────────────
 
 export function buildPage1(data) {
+  // Pre-compute chart data for embedding as attributes
+  // Replace single quotes with &#39; so they don't break single-quoted HTML attributes
+  const esc = (s) => s.replace(/'/g, '&#39;');
+  const mapSrc = esc(JSON.stringify(data.portfolio.statesTivMap));
+  const mapHighlight = esc(JSON.stringify(data.portfolio.topStatesByTiv.slice(0, 3).map((s) => s.state)));
+  const statesBarData = esc(JSON.stringify(data.portfolio.topStatesByTiv.slice(0, 8).map((s) => ({label: s.state, value: s.tivMillions}))));
+
   const page = document.createElement('div');
   page.className = 'page';
   page.innerHTML = `
     <div class="page__inner">
       <div class="page-header">
-        <div class="page-title">${data.contract} <span class="page-title__program">${data.title}</span></div>
+        <div class="page-title">${data.contract} <span class="page-title__program">${[data.code, data.product, 'Composition'].filter(Boolean).join(' ')}</span></div>
       </div>
       <div class="page-content">
         <div id="page1-kpis"></div>
         <div class="page-columns" style="flex: 0 0 auto;">
           <div class="page-column">
-            <div class="chart-container">
+            <div class="chart-container" data-chart-type="h-bar" data-chart-src='${statesBarData}' data-chart-prefix="$" data-chart-suffix="M" data-chart-decimals="1" data-chart-options='{"labelWidth":40,"valueWidth":60,"barHeight":22,"barGap":12}'>
               <div class="section-header">Top States by TIV</div>
               <div class="chart-container__body">
                 <canvas id="chart-states-bar"></canvas>
@@ -101,10 +108,14 @@ export function buildPage1(data) {
             </div>
           </div>
           <div class="page-column">
-            <div id="page1-observations" style="flex:1;display:flex;flex-direction:column;"></div>
+            <div class="observations-panel" style="flex:1;display:flex;flex-direction:column;">
+              <div class="section-header">Observations</div>
+              <div class="observations-panel__body" id="page1-observations">
+              </div>
+            </div>
           </div>
         </div>
-        <div class="chart-container" style="flex: 1;">
+        <div class="chart-container" data-chart-type="us-map" data-chart-src='${mapSrc}' data-chart-highlight='${mapHighlight}' style="flex: 1;">
           <div class="section-header">TIV Concentration</div>
           <div class="chart-container__body">
             <div id="chart-us-map" style="width:100%;flex:1;min-height:0;display:flex;flex-direction:column;"></div>
@@ -123,49 +134,147 @@ export function buildPage1(data) {
     { value: p.avgRate, label: 'Avg. Rate' },
     { value: p.assets, label: 'Assets' },
     { value: p.accounts, label: 'Accounts' },
-  ]));
+  ], { label: 'Portfolio Summary' }));
 
-  // Multi-Family observations
-  if (data.multiFamily) {
-    const obsContainer = page.querySelector('#page1-observations');
-    const panel = document.createElement('div');
-    panel.className = 'observations-panel';
-    panel.innerHTML = `
-      <div class="section-header">Multi-Family Program</div>
-      <div class="observations-panel__body">
-        <div style="display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap;">
-          ${createMiniKpi('Premium', data.multiFamily.totalAnnualPremium)}
-          ${createMiniKpi('TIV', data.multiFamily.tiv)}
-          ${createMiniKpi('Rate', data.multiFamily.avgRate)}
-          ${createMiniKpi('Assets', data.multiFamily.assets)}
-        </div>
-        <ul>
-          ${data.multiFamily.observations.map((o) => `<li>${o}</li>`).join('')}
-        </ul>
-      </div>
-    `;
-    obsContainer.appendChild(panel);
+  // Observations
+  const obsBody = page.querySelector('#page1-observations');
+  if (p.observations && p.observations.length > 0) {
+    obsBody.innerHTML = `<ul>${p.observations.map((o) => `<li>${o}</li>`).join('')}</ul>`;
   }
 
   return page;
 }
 
-function createMiniKpi(label, value) {
-  return `<span style="font-size:10px; font-weight:600; color:#0A5383;"><span style="font-weight:700;">${value}</span> ${label}</span>`;
+// ─── MF PAGE 1: LOM Multifamily Composition ─────────────────────
+
+export function buildMFPage1(data) {
+  const mf = data.multiFamily;
+  const esc = (s) => s.replace(/'/g, '&#39;');
+  const mfBarData = esc(JSON.stringify((mf.topStatesByTiv || []).slice(0, 8).map((s) => ({label: s.state, value: s.tivMillions}))));
+  const mfMapSrc = esc(JSON.stringify(mf.statesTivMap || {}));
+  const mfMapHighlight = esc(JSON.stringify((mf.topStatesByTiv || []).slice(0, 3).map((s) => s.state)));
+
+  const page = document.createElement('div');
+  page.className = 'page';
+  page.innerHTML = `
+    <div class="page__inner">
+      <div class="page-header">
+        <div class="page-title">${data.contract} <span class="page-title__program">${[mf.code, mf.product, 'Composition'].filter(Boolean).join(' ')}</span></div>
+      </div>
+      <div class="page-content">
+        <div id="mf-kpis"></div>
+        <div class="page-columns" style="flex: 0 0 auto;">
+          <div class="page-column">
+            <div class="chart-container" data-chart-type="h-bar" data-chart-src='${mfBarData}' data-chart-prefix="$" data-chart-suffix="M" data-chart-decimals="1" data-chart-options='{"labelWidth":40,"valueWidth":60,"barHeight":22,"barGap":12}'>
+              <div class="section-header">Top States by TIV</div>
+              <div class="chart-container__body">
+                <canvas id="mf-chart-states-bar"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="page-column">
+            <div class="observations-panel" style="flex:1;display:flex;flex-direction:column;">
+              <div class="section-header">Observations</div>
+              <div class="observations-panel__body">
+                <ul>
+                  ${mf.observations.map((o) => `<li>${o}</li>`).join('')}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chart-container" data-chart-type="us-map" data-chart-src='${mfMapSrc}' data-chart-highlight='${mfMapHighlight}' style="flex: 1;">
+          <div class="section-header">TIV Concentration</div>
+          <div class="chart-container__body">
+            <div id="mf-chart-us-map" style="width:100%;flex:1;min-height:0;display:flex;flex-direction:column;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // KPI Row
+  const kpiContainer = page.querySelector('#mf-kpis');
+  kpiContainer.appendChild(createKpiRow([
+    { value: mf.totalAnnualPremium, label: 'Premium' },
+    { value: mf.tiv, label: 'TIV' },
+    { value: mf.avgRate, label: 'Avg. Rate' },
+    { value: mf.assets, label: 'Assets' },
+    { value: mf.accounts, label: 'Accounts' },
+  ], { label: 'Multifamily Summary' }));
+
+  return page;
+}
+
+export function renderMFPage1Charts(data, root) {
+  const el = root || document;
+  const mf = data.multiFamily;
+
+  // Top States bar chart
+  const statesCanvas = el.querySelector('#mf-chart-states-bar');
+  if (statesCanvas && mf.topStatesByTiv) {
+    const statesData = mf.topStatesByTiv.slice(0, 8).map((s) => ({
+      label: s.state,
+      value: s.tivMillions,
+    }));
+    createHBarChart(statesCanvas, statesData, {
+      valueFormatter: (v) => `$${v.toFixed(1)}M`,
+      labelWidth: 40,
+      valueWidth: 60,
+      barHeight: 22,
+      barGap: 12,
+    });
+  }
+
+  // US SVG map
+  const mapContainer = el.querySelector('#mf-chart-us-map');
+  if (mapContainer && mf.statesTivMap) {
+    const topStates = (mf.topStatesByTiv || []).slice(0, 3).map((s) => s.state);
+    createUSMap(mapContainer, mf.statesTivMap, {
+      highlightStates: topStates,
+    });
+  }
 }
 
 // ─── PAGE 2: Performance Data ───────────────────────────────────
 
 export function buildPage2(data) {
+  // Pre-compute chart data for embedding as attributes
+  const lossRatioData = data.lossExperience.annualRatios.map((r) => ({
+    label: r.year,
+    value: r.ratio,
+  }));
+
+  const esc = (s) => s.replace(/'/g, '&#39;');
+
+  const stackedData = esc(JSON.stringify(data.deductibles.quarters.map((q, qi) => ({
+    label: q.replace('20', "'"),
+    segments: data.deductibles.tiers.map((t) => t.values[qi]),
+  }))));
+  const tierLabels = esc(JSON.stringify(data.deductibles.tiers.map((t) => t.label)));
+
+  const lineData = esc(JSON.stringify(data.averageRates.chartQuarters.map((q, i) => ({
+    label: q, value: data.averageRates.chartRates[i],
+  }))));
+
+  const lossTypesData = esc(JSON.stringify(data.lossExperience.topLossTypes.map((lt) => ({
+    label: lt.type, value: lt.amountMillions,
+  }))));
+
+  const riskScoreData = esc(JSON.stringify(data.propertyRiskScore ? data.propertyRiskScore.data : []));
+
   const page = document.createElement('div');
   page.className = 'page';
   page.innerHTML = `
     <div class="page__inner">
+      <div class="page-header">
+        <div class="page-title">${data.contract} <span class="page-title__program">${[data.code, data.product, 'Performance'].filter(Boolean).join(' ')}</span></div>
+      </div>
       <div class="page-content">
         <div class="section-header">Deductibles & Average Rates</div>
         <div class="page-columns">
           <div class="page-column">
-            <div class="chart-container">
+            <div class="chart-container" data-chart-type="stacked-bar" data-chart-src='${stackedData}' data-chart-tiers='${tierLabels}'>
               <div class="section-header">Deductible Distribution</div>
               <div class="chart-container__body">
                 <div id="deductible-table-container"></div>
@@ -175,7 +284,7 @@ export function buildPage2(data) {
             </div>
           </div>
           <div class="page-column">
-            <div class="chart-container">
+            <div class="chart-container" data-chart-type="line" data-chart-src='${lineData}' data-chart-decimals="2">
               <div class="section-header">Average Rates</div>
               <div class="chart-container__body">
                 <div id="rate-table-container"></div>
@@ -188,7 +297,7 @@ export function buildPage2(data) {
         <div id="page2-loss-kpis"></div>
         <div class="page-columns" style="flex: 1;">
           <div class="page-column" style="flex: 1; display: flex; flex-direction: column;">
-            <div class="chart-container" style="flex: 1; display: flex; flex-direction: column;">
+            <div class="chart-container" data-chart-type="v-bar" data-chart-suffix="%" data-chart-src='${JSON.stringify(lossRatioData)}' style="flex: 1; display: flex; flex-direction: column;">
               <div class="section-header">Annual Loss Ratio</div>
               <div class="chart-container__body" style="flex: 1;">
                 <canvas id="chart-loss-ratio"></canvas>
@@ -196,13 +305,13 @@ export function buildPage2(data) {
             </div>
           </div>
           <div class="page-column" style="flex: 1; display: flex; flex-direction: column; gap: var(--gap-sm);">
-            <div class="chart-container" style="flex: 1; display: flex; flex-direction: column;">
+            <div class="chart-container" data-chart-type="h-bar" data-chart-src='${lossTypesData}' data-chart-prefix="$" data-chart-suffix="M" data-chart-decimals="2" data-chart-options='{"barColor":"#E97121","labelWidth":90,"valueWidth":55,"barHeight":18,"barGap":10}' style="flex: 1; display: flex; flex-direction: column;">
               <div class="section-header">Top Loss Types (Incurred, $M)</div>
               <div class="chart-container__body" style="flex: 1;">
                 <canvas id="chart-loss-types"></canvas>
               </div>
             </div>
-            <div class="chart-container" style="flex: 1; display: flex; flex-direction: column;">
+            <div class="chart-container" data-chart-type="h-bar" data-chart-src='${riskScoreData}' data-chart-suffix="%" data-chart-options='{"labelWidth":30,"valueWidth":45}' style="flex: 1; display: flex; flex-direction: column;">
               <div class="section-header">Property Risk Score</div>
               <div class="chart-container__body" style="flex: 1;">
                 <canvas id="chart-risk-score"></canvas>
@@ -222,7 +331,7 @@ export function buildPage2(data) {
     { value: l.earnedPremium5yr, label: 'Earned Premium (5yr)' },
     { value: l.incurredLosses5yr, label: 'Incurred Losses (5yr)' },
     { value: l.lossRatio5yr, label: 'Loss Ratio (5yr)' },
-  ]));
+  ], { label: 'Loss Experience' }));
 
   // Deductible table
   const dedTableContainer = page.querySelector('#deductible-table-container');
@@ -234,8 +343,8 @@ export function buildPage2(data) {
 
   // Stacked bar legend
   const legendContainer = page.querySelector('#stacked-legend');
-  const tierLabels = data.deductibles.tiers.map((t) => t.label);
-  legendContainer.appendChild(createChartLegend(tierLabels));
+  const legendTierLabels = data.deductibles.tiers.map((t) => t.label);
+  legendContainer.appendChild(createChartLegend(legendTierLabels));
 
   return page;
 }

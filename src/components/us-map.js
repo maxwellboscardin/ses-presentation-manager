@@ -79,10 +79,8 @@ export async function createUSMap(container, stateData, options = {}) {
 
     const value = stateData[stateId] || 0;
 
-    if (highlightSet.has(stateId)) {
-      path.style.fill = highlightColor;
-    } else if (!value || value <= 0) {
-      // No policies = white (no fill)
+    // Color by TIV intensity
+    if (!value || value <= 0) {
       path.style.fill = '#FFFFFF';
     } else {
       const ratio = value / maxValue;
@@ -95,6 +93,17 @@ export async function createUSMap(container, stateData, options = {}) {
 
     // Hover cursor
     path.style.cursor = 'pointer';
+  });
+
+  // Move growth target paths to end of SVG so their strokes render on top
+  paths.forEach((path) => {
+    const stateId = path.id.toUpperCase();
+    if (highlightSet.has(stateId) && path.parentNode) {
+      path.style.stroke = highlightColor;
+      path.style.strokeWidth = '4';
+      path.dataset.growthTarget = '1';
+      path.parentNode.appendChild(path);
+    }
   });
 
   // Re-query paths after removing AK/HI
@@ -129,13 +138,19 @@ export async function createUSMap(container, stateData, options = {}) {
   visiblePaths.forEach((path) => {
     const stateId = path.id.toUpperCase();
     const value = stateData[stateId] || 0;
+    if (value <= 0) return; // No tooltip for states without policies
+
     const name = STATE_NAMES[stateId] || stateId;
-    const tivText = value > 0 ? valueFormatter(value) : 'No policies';
+    const tivText = valueFormatter(value);
+
+    path.setAttribute('data-tooltip', `${name}: ${tivText}`);
 
     path.addEventListener('mouseenter', (e) => {
       tooltip.textContent = `${name}: ${tivText}`;
       tooltip.style.opacity = '1';
-      path.style.strokeWidth = '2';
+      if (!path.dataset.growthTarget) {
+        path.style.strokeWidth = '2';
+      }
     });
 
     path.addEventListener('mousemove', (e) => {
@@ -146,7 +161,9 @@ export async function createUSMap(container, stateData, options = {}) {
 
     path.addEventListener('mouseleave', () => {
       tooltip.style.opacity = '0';
-      path.style.strokeWidth = '';
+      if (!path.dataset.growthTarget) {
+        path.style.strokeWidth = '';
+      }
     });
   });
 
@@ -190,7 +207,7 @@ function buildLegend(highlightColor) {
     <span>High</span>
     <div style="width:1px;height:12px;background:#B8CDD9;margin:0 4px;"></div>
     <div style="display:flex;align-items:center;gap:4px;">
-      <div style="width:10px;height:10px;border-radius:2px;background:${highlightColor};"></div>
+      <div style="width:10px;height:10px;border-radius:2px;border:3px solid ${highlightColor};background:transparent;"></div>
       <span>Growth Targets</span>
     </div>
   `;

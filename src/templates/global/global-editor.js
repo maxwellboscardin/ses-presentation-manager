@@ -1,18 +1,31 @@
 // Global Editor — Matrix view: rows = contracts, columns = pages
-// Each row: cover | overview | stat sheet | flip p1 | flip p2 | [updates | sqb] | back cover
+// Each row: cover | overview | snapshot | composition | performance | [updates | sqb] | back cover
 
-import { buildPage1 as buildFlipbookPage1, buildPage2 as buildFlipbookPage2, renderPage1Charts as renderFlipbookPage1Charts, renderPage2Charts as renderFlipbookPage2Charts } from '../flipbook/contract-spread.js';
+import { buildPage1 as buildFlipbookPage1, buildPage2 as buildFlipbookPage2, renderPage1Charts as renderFlipbookPage1Charts, renderPage2Charts as renderFlipbookPage2Charts, buildMFPage1, renderMFPage1Charts } from '../flipbook/contract-spread.js';
 import { buildPage as buildStatPage, renderAllCharts as renderStatCharts } from '../stat-sheet/contract-stat-sheet.js';
 import { buildOverviewPage, buildCoverPage, buildBackCoverPage, buildBlankPage } from '../presentation/contract-presentation.js';
 import { buildUpdatesPage, renderUpdatesCharts, buildSqbPage, renderSqbCharts } from '../updates/contract-updates.js';
 import { initCardEditor, replayAnimations } from '../../components/card-editor.js';
 
+// Maps _updated keys from JSON to card header text(s) in the rendered pages
+const UPDATED_KEY_TO_HEADERS = {
+  statesTivMap: ['TIV Concentration', 'Top States by TIV'],
+  topStatesByTiv: ['Top States by TIV'],
+  portfolio: ['Portfolio Summary', 'TIV Concentration', 'Top States by TIV'],
+  portfolioKpis: ['Portfolio Summary'],
+  multiFamily: ['Multifamily Summary', 'Top States by TIV', 'TIV Concentration'],
+  deductibles: ['Deductibles & Average Rates', 'Deductible Distribution'],
+  averageRates: ['Average Rates'],
+  lossExperience: ['Loss Experience', 'Annual Loss Ratio', 'Top Loss Types (Incurred, $M)'],
+  propertyRiskScore: ['Property Risk Score'],
+};
+
 const CONTRACTS = [
-  { id: '1258', shortLabel: '1258 LOC/LOM', title: 'Portfolio + Multifamily', contract: '../data/contracts/1258.json', stat: '../data/stat-sheets/1258.json' },
-  { id: '1334-ceg', shortLabel: '1334 CEG', title: 'Portfolio', contract: '../data/contracts/1334.json', stat: '../data/stat-sheets/1334.json' },
-  { id: '1334-ces', shortLabel: '1334 CES', title: 'Individual Asset', contract: '../data/contracts/1334.json', stat: '../data/stat-sheets/1334.json', updates: '../data/updates/1334-ces.json' },
-  { id: '1465', shortLabel: '1465 QBS', title: 'Individual Asset', contract: '../data/contracts/1465.json', stat: '../data/stat-sheets/1465.json', updates: '../data/updates/1465-qbs.json' },
-  { id: '1097', shortLabel: '1097 LOL', title: 'Portfolio', contract: '../data/contracts/1097.json', stat: '../data/stat-sheets/1097.json' },
+  { id: '1258', shortLabel: '1258 LOC/LOM', code: 'LOC', product: 'Portfolio', title: 'Portfolio + Multifamily', contract: '../data/contracts/1258.json', stat: '../data/stat-sheets/1258.json' },
+  { id: '1334-ceg', shortLabel: '1334 CEG', code: 'CEG', product: 'Portfolio', title: 'Portfolio', contract: '../data/contracts/1334-ceg.json', stat: '../data/stat-sheets/1334.json' },
+  { id: '1334-ces', shortLabel: '1334 CES', code: 'CES', product: 'Individual Asset', title: 'Individual Asset', contract: '../data/contracts/1334-ces.json', stat: '../data/stat-sheets/1334.json', updates: '../data/updates/1334-ces.json' },
+  { id: '1465', shortLabel: '1465 QBS', code: 'QBS', product: 'Individual Asset', title: 'Individual Asset', contract: '../data/contracts/1465.json', stat: '../data/stat-sheets/1465.json', updates: '../data/updates/1465-qbs.json' },
+  { id: '1097', shortLabel: '1097 LOL', code: 'LOL', product: 'Portfolio', title: 'Portfolio', contract: '../data/contracts/1097.json', stat: '../data/stat-sheets/1097.json' },
 ];
 
 // Cross-reference: which presentations each card type appears on
@@ -28,7 +41,7 @@ const XREF = {
 };
 
 // Columns: cover + overview + stat + flip1 + flip2 + updates/sqb + (TBD) + back = 8
-const COL_LABELS = ['Cover', 'SES Overview', 'Stat Sheet', 'Portfolio P1', 'Portfolio P2', 'Updates / S/Q/B', 'TBD', 'Back Cover'];
+const COL_LABELS = ['Cover', 'SES Overview', 'Snapshot', 'Composition', 'Performance', 'Updates / S/Q/B', 'MF Composition', 'Back Cover'];
 const PAGE_W = 816;
 const PAGE_H = 1056;
 const ZOOM_LEVELS = [0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.6, 0.75, 1];
@@ -72,6 +85,8 @@ export async function renderGlobalEditor(root) {
     const contractData = await responses[0].json();
     const statData = await responses[1].json();
     contractData.title = entry.title;
+    contractData.code = entry.code;
+    contractData.product = entry.product;
 
     let updatesData = null;
     let sqbData = null;
@@ -82,6 +97,7 @@ export async function renderGlobalEditor(root) {
     const row = document.createElement('div');
     row.className = 'ge-row';
     row.id = `ge-${entry.id}`;
+    row.setAttribute('data-contract-label', `${entry.shortLabel} ${entry.title}`);
 
     // Row label
     const label = makeEl('div', 'ge-row-label');
@@ -100,13 +116,15 @@ export async function renderGlobalEditor(root) {
     // Column 1: Overview
     addCell(row, buildOverviewPage(contractData), xrefTag('overview', entry.shortLabel));
 
-    // Column 2: Stat Sheet
-    addCell(row, buildStatPage(statData), null);
+    // Column 2: Snapshot
+    const statPage = buildStatPage(statData);
+    tagSharedCards(statPage, entry.shortLabel);
+    addCell(row, statPage, null);
 
-    // Column 3: Flipbook P1
+    // Column 3: Composition
     addCell(row, buildFlipbookPage1(contractData), null);
 
-    // Column 4: Flipbook P2
+    // Column 4: Performance
     addCell(row, buildFlipbookPage2(contractData), null);
 
     // Column 5: Updates (Individual Asset) or S/Q/B (Portfolio)
@@ -118,8 +136,12 @@ export async function renderGlobalEditor(root) {
       addEmptyCell(row);
     }
 
-    // Column 6: Blank / TBD
-    addCell(row, buildBlankPage(), null);
+    // Column 6: MF Composition (if multiFamily data exists)
+    if (contractData.multiFamily) {
+      addCell(row, buildMFPage1(contractData), null);
+    } else {
+      addCell(row, buildBlankPage(), null);
+    }
 
     // Column 7: Back Cover
     addCell(row, buildBackCoverPage(), xrefTag('backCover', entry.shortLabel));
@@ -132,12 +154,18 @@ export async function renderGlobalEditor(root) {
       renderStatCharts(statData, row);
       renderFlipbookPage1Charts(contractData, row);
       renderFlipbookPage2Charts(contractData, row);
+      if (contractData.multiFamily) {
+        renderMFPage1Charts(contractData, row);
+      }
       if (updatesData) {
         renderUpdatesCharts(updatesData, row);
       } else if (sqbData) {
         renderSqbCharts(sqbData, row);
       }
     });
+
+    // Stamp red dots on updated cards
+    stampUpdatedDots(row, contractData._updated);
   }
 
   function addCell(row, page, tag) {
@@ -208,8 +236,84 @@ function xrefTag(cardType, currentLabel) {
   if (!refs) return null; // unique per-contract, no tag needed
   const others = refs.filter(r => r !== currentLabel.split(' ').slice(0, 2).join(' '));
   if (others.length === 0) return null;
-  if (others.length === refs.length - 1 && refs.length >= 4) return `Shared: all ${refs.length}`;
   return `Also: ${others.join(', ')}`;
+}
+
+// ─── Card-level shared pills ─────────────────────────────────
+
+const PRODUCT_LINE_GROUPS = [
+  ['1334 CEG', '1097 LOL'],     // Portfolio
+  ['1334 CES', '1465 QBS'],     // Individual Asset / QUBIE
+  // 1258 LOC/LOM has its own version — not in any group
+];
+
+const SHARED_CARDS = [
+  { match: '.section-header', text: 'On the Horizon', shares: 'all' },
+  { match: '.section-header', text: 'Underwriting Update', shares: 'productLine' },
+  { match: '.section-header', text: 'Organizational Update', shares: 'productLine' },
+];
+
+function tagSharedCards(page, currentLabel) {
+  SHARED_CARDS.forEach(({ match, text, shares }) => {
+    let others;
+    if (shares === 'all') {
+      others = CONTRACTS.map(c => c.shortLabel).filter(l => l !== currentLabel);
+    } else if (shares === 'productLine') {
+      const group = PRODUCT_LINE_GROUPS.find(g => g.includes(currentLabel));
+      if (!group) return; // 1258 is alone, no pill
+      others = group.filter(l => l !== currentLabel);
+    }
+
+    if (!others || others.length === 0) return;
+    const tag = `Also: ${others.join(', ')}`;
+
+    const headers = page.querySelectorAll(match);
+    headers.forEach(header => {
+      if (header.textContent.trim() === text) {
+        const card = header.closest('.observations-panel, .chart-container, .kpi-stack, .icon-kpi-card');
+        if (card) {
+          card.style.position = 'relative';
+          const pill = makeEl('span', 'ge-card-pill');
+          pill.textContent = tag;
+          card.appendChild(pill);
+        }
+      }
+    });
+  });
+}
+
+// ─── Updated dots ─────────────────────────────────────────────
+
+function stampUpdatedDots(row, updatedKeys) {
+  if (!updatedKeys || updatedKeys.length === 0) return;
+  const headerTexts = new Set();
+  updatedKeys.forEach(key => {
+    const headers = UPDATED_KEY_TO_HEADERS[key];
+    if (headers) headers.forEach(h => headerTexts.add(h));
+  });
+  if (headerTexts.size === 0) return;
+
+  const allHeaders = row.querySelectorAll('.section-header');
+  allHeaders.forEach(header => {
+    if (headerTexts.has(header.textContent.trim())) {
+      const card = header.closest('.observations-panel, .chart-container, .kpi-stack, .icon-kpi-card, .kpi-row');
+      if (card) {
+        card.style.position = 'relative';
+        const dot = makeEl('div', 'ge-updated-dot');
+        card.appendChild(dot);
+      }
+    }
+  });
+
+  // KPI rows use data-label instead of .section-header
+  const kpiRows = row.querySelectorAll('.kpi-row[data-label]');
+  kpiRows.forEach(kpiRow => {
+    if (headerTexts.has(kpiRow.getAttribute('data-label'))) {
+      kpiRow.style.position = 'relative';
+      const dot = makeEl('div', 'ge-updated-dot');
+      kpiRow.appendChild(dot);
+    }
+  });
 }
 
 // ─── Helpers ──────────────────────────────────────────────────

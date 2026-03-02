@@ -1,6 +1,6 @@
 // Contract Presentation — Unified Flipbook with Navigation
 
-import { buildPage1 as buildFlipbookPage1, buildPage2 as buildFlipbookPage2, renderPage1Charts as renderFlipbookPage1Charts, renderPage2Charts as renderFlipbookPage2Charts } from '../flipbook/contract-spread.js';
+import { buildPage1 as buildFlipbookPage1, buildPage2 as buildFlipbookPage2, renderPage1Charts as renderFlipbookPage1Charts, renderPage2Charts as renderFlipbookPage2Charts, buildMFPage1, renderMFPage1Charts } from '../flipbook/contract-spread.js';
 import { buildPage as buildStatPage, renderAllCharts as renderStatCharts } from '../stat-sheet/contract-stat-sheet.js';
 import { buildUpdatesPage, renderUpdatesCharts, buildSqbPage, renderSqbCharts } from '../updates/contract-updates.js';
 import { initCardEditor, replayAnimations } from '../../components/card-editor.js';
@@ -21,10 +21,12 @@ export async function renderPresentation(container, contractDataUrl, statSheetDa
   if (config.updatesDataUrl) { updatesData = await responses[ri++].json(); }
   if (config.sqbDataUrl) { sqbData = await responses[ri++].json(); }
 
-  // Allow title override from config (e.g. for 1334 CEG vs CES)
+  // Allow overrides from config (e.g. for 1334 CEG vs CES)
   if (config.title) contractData.title = config.title;
+  if (config.code) contractData.code = config.code;
+  if (config.product) contractData.product = config.product;
 
-  const sectionLabels = ['Cover', 'Stat Sheet', 'Portfolio'];
+  const sectionLabels = ['Cover', 'Snapshot', 'Composition'];
   const chartRenderers = [];
   let currentIndex = 0;
 
@@ -34,7 +36,7 @@ export async function renderPresentation(container, contractDataUrl, statSheetDa
   const coverSection = buildSection('single');
   coverSection.appendChild(buildCoverPage(contractData));
 
-  // Section 1: Spread 1 — overview (left) + stat sheet (right)
+  // Section 1: Spread 1 — overview (left) + snapshot (right)
   const spread1Section = buildSection('spread');
   spread1Section.appendChild(buildOverviewPage(contractData));
   spread1Section.appendChild(buildStatPage(statData));
@@ -52,6 +54,19 @@ export async function renderPresentation(container, contractDataUrl, statSheetDa
     renderFlipbookPage1Charts(contractData, spread2Section);
     renderFlipbookPage2Charts(contractData, spread2Section);
   };
+
+  // ─── Conditional MF Composition spread ──────────────────────
+
+  if (contractData.multiFamily) {
+    const mfSpread = buildSection('spread');
+    mfSpread.appendChild(buildMFPage1(contractData));
+    mfSpread.appendChild(buildBlankPage());
+    sections.push(mfSpread);
+    sectionLabels.push('MF Composition');
+    chartRenderers[sections.length - 1] = () => {
+      renderMFPage1Charts(contractData, mfSpread);
+    };
+  }
 
   // ─── Conditional extra spreads ────────────────────────────────
 
