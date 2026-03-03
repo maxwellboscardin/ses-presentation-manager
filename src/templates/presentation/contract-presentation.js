@@ -224,13 +224,13 @@ export function buildOverviewPage(data) {
       <div class="page-content">
 
         <!-- Top section: Narrative left, KPIs right -->
-        <div style="display: flex; gap: var(--gap-sm);">
+        <div style="display: flex; gap: var(--gap-sm); flex: 3;">
 
           <!-- Who We Are -->
           <div class="observations-panel" style="flex: 3; background: var(--ses-white); border-radius: var(--radius); overflow: hidden; box-shadow: 0 1px 3px rgba(10,83,131,0.1); display: flex; flex-direction: column;">
             <div class="section-header" style="border-radius: 0;">Who We Are</div>
-            <div class="observations-panel__body" style="padding: 16px; font-size: 14px; color: var(--ses-text-muted); line-height: 1.7; flex: 1;">
-              <p style="margin: 0 0 12px 0;">As a program manager, we differentiate ourselves with <strong style="color: var(--ses-text);">strong performance</strong>, made possible by our emphasis on <strong style="color: var(--ses-text);">risk management strategies</strong>, combining meaningful data, technology, and experience. Our <strong style="color: var(--ses-text);">proprietary policy administration system</strong> is API-enabled and offers web-based self-service. We pride ourselves in maintaining longstanding relationships with many of the industry's largest and most reputable brokers, wholesalers, and networks to distribute our program to their investor-clients.</p>
+            <div class="observations-panel__body" style="padding: 14px 16px; font-size: 12px; color: var(--ses-text-muted); line-height: 1.6; flex: 1; display: flex; flex-direction: column; justify-content: center;">
+              <p style="margin: 0 0 8px 0;">As a program manager, we differentiate ourselves with <strong style="color: var(--ses-text);">strong performance</strong>, made possible by our emphasis on <strong style="color: var(--ses-text);">risk management strategies</strong>, combining meaningful data, technology, and experience. Our <strong style="color: var(--ses-text);">proprietary policy administration system</strong> is API-enabled and offers web-based self-service. We pride ourselves in maintaining longstanding relationships with many of the industry's largest and most reputable brokers, wholesalers, and networks to distribute our program to their investor-clients.</p>
               <p style="margin: 0;">SES has a history of serving <strong style="color: var(--ses-text);">niche insurance markets</strong>. Our core programs are designed to insure properties held in trust and owned by real estate investors. In our REI program, we focus on <strong style="color: var(--ses-text);">innovation, risk management, and client solutions</strong> to serve the ever-changing market.</p>
             </div>
           </div>
@@ -238,7 +238,7 @@ export function buildOverviewPage(data) {
           <!-- By the Numbers -->
           <div class="observations-panel" style="flex: 2; background: var(--ses-white); border-radius: var(--radius); overflow: hidden; box-shadow: 0 1px 3px rgba(10,83,131,0.1);">
             <div class="section-header" style="border-radius: 0;">By the Numbers</div>
-            <div class="observations-panel__body" style="padding: 24px; display: flex; flex-direction: column; justify-content: space-evenly; flex: 1;">
+            <div class="observations-panel__body" style="padding: 14px; display: flex; flex-direction: column; justify-content: space-evenly; flex: 1;">
               ${overviewStat('35+', 'Years in Business')}
               ${overviewStat('85K+', 'Properties Insured')}
               ${overviewStat('$181M', 'Annual GWP')}
@@ -253,17 +253,19 @@ export function buildOverviewPage(data) {
         </div>
 
         <!-- Core Competencies — full width text card -->
-        <div class="observations-panel" style="background: var(--ses-white); border-radius: var(--radius); overflow: hidden; box-shadow: 0 1px 3px rgba(10,83,131,0.1);">
+        <div class="observations-panel" style="flex: 2; background: var(--ses-white); border-radius: var(--radius); overflow: hidden; box-shadow: 0 1px 3px rgba(10,83,131,0.1); display: flex; flex-direction: column;">
           <div class="section-header" style="border-radius: 0;">Core Competencies</div>
-          <div class="observations-panel__body" style="padding: 12px 16px; font-size: 10.5px; color: var(--ses-text-muted); line-height: 1.5; flex: 1; columns: 2; column-gap: 24px;">
-            <p style="margin: 0 0 8px 0;"><strong style="color: var(--ses-text);">Data-Driven Underwriting:</strong> In-house actuarial team backed by Alliant Underwriting Solutions. Technical pricing model with loss trend analysis. AI/ML-powered risk scoring at zip-code level using aerial imagery and proximity signals. Precision CAT modeling via RMS outputs and construction modifiers.</p>
-            <p style="margin: 0 0 8px 0;"><strong style="color: var(--ses-text);">Service & Technology:</strong> Tech-enabled, API-ready solutions with self-service platforms. Proprietary quoting and policy management systems (TIMS, QUBIE). PowerBI dashboards delivering live KPIs. Automated scoring, segmentation, and ML workflows.</p>
-            <p style="margin: 0;"><strong style="color: var(--ses-text);">Distribution:</strong> Longstanding partnerships with top producers across multiple channels. No direct competition with brokers, wholesalers, and networks. Over 18,000 accounts generating nearly $360M in gross written premium.</p>
+          <div class="observations-panel__body" style="padding: 10px 16px; flex: 1; display: flex; flex-direction: column; justify-content: center;">
+            <div style="font-size: 11px; color: var(--ses-text-muted); line-height: 1.5;">
+              <p style="margin: 0 0 5px 0;"><strong style="color: var(--ses-text);">Data-Driven Underwriting:</strong> In-house actuarial team backed by Alliant Underwriting Solutions. Technical pricing model with loss trend analysis. AI/ML-powered risk scoring at zip-code level using aerial imagery and proximity signals. Precision CAT modeling via RMS outputs and construction modifiers.</p>
+              <p style="margin: 0 0 5px 0;"><strong style="color: var(--ses-text);">Service & Technology:</strong> Tech-enabled, API-ready solutions with self-service platforms. Proprietary quoting and policy management systems (TIMS, QUBIE). PowerBI dashboards delivering live KPIs. Automated scoring, segmentation, and ML workflows.</p>
+              <p style="margin: 0;"><strong style="color: var(--ses-text);">Distribution:</strong> Longstanding partnerships with top producers across multiple channels. No direct competition with brokers, wholesalers, and networks. Over 18,000 accounts generating nearly $360M in gross written premium.</p>
+            </div>
           </div>
         </div>
 
         <!-- Product Segments — 2x2 grid -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap-sm); flex: 1;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: var(--gap-sm); flex: 5;">
           ${productSegmentCard('SFR Portfolio', [
             '<strong>Premium:</strong> $56M',
             '<strong>Stats:</strong> $1,100 avg premium, 51k assets, 1,758 accounts, 29 assets/account',
@@ -282,12 +284,15 @@ export function buildOverviewPage(data) {
             '<strong>Scope:</strong> Supports MF portfolios between $1M and $30M',
             '<strong>Strategy:</strong> Still seeking solutions for large apartment complexes and higher risk locations.',
           ])}
-          ${productSegmentCard('Road Map for Additional Coverages', [
-            'Build-to-rent',
-            'Property management',
-            'End-to-end builder\'s risk',
-            'Various optional coverages',
-            '<strong>Pursuing strategic partnerships</strong> to offer adjacent coverages such as for short-term rentals, flood, and tenant legal liability',
+          ${productSegmentCard('Roadmap to Continued Market Relevance', [
+            'Large account and BTR solutions',
+            'Expanded eligibility criteria for individual asset program',
+            'General Liability coverage considerations (GSE compliant)',
+            'Retrospective refunds for loss free/low loss results (property-only)',
+            'Focus on targeted growth states and improved spread of risk',
+            'Exploring various optional coverages',
+            'Enhanced user experience across platforms',
+            'Integration of automation, AI, and expanded machine learning',
           ])}
         </div>
 
@@ -300,8 +305,8 @@ export function buildOverviewPage(data) {
 function overviewStat(value, label) {
   return `
     <div style="display: flex; align-items: center; gap: 12px;">
-      <div style="min-width: 64px; background: var(--ses-navy); color: #fff; padding: 5px 10px; border-radius: 6px; font-size: 14px; font-weight: 700; text-align: center;">${value}</div>
-      <div style="font-size: 12px; font-weight: 600; color: var(--ses-text); text-transform: uppercase; letter-spacing: 0.3px;">${label}</div>
+      <div style="min-width: 56px; background: var(--ses-navy); color: #fff; padding: 3px 8px; border-radius: 5px; font-size: 12px; font-weight: 700; text-align: center;">${value}</div>
+      <div style="font-size: 11px; font-weight: 600; color: var(--ses-text); text-transform: uppercase; letter-spacing: 0.3px;">${label}</div>
     </div>
   `;
 }
@@ -311,8 +316,8 @@ function productSegmentCard(title, bullets) {
     <div class="observations-panel" style="background: var(--ses-white); border-radius: var(--radius); overflow: hidden; box-shadow: 0 1px 3px rgba(10,83,131,0.1); display: flex; flex-direction: column; min-height: 0;">
       <div class="section-header" style="border-radius: 0;">${title}</div>
       <div class="observations-panel__body" style="padding: 0;">
-      <ul style="padding: 8px 14px 10px 26px; margin: 0; display: flex; flex-direction: column; gap: 4px; flex: 1;">
-        ${bullets.map(b => `<li style="font-size: 10.5px; color: var(--ses-text-muted); line-height: 1.45;">${b}</li>`).join('')}
+      <ul style="padding: 6px 12px 8px 24px; margin: 0; display: flex; flex-direction: column; gap: 2px; flex: 1;">
+        ${bullets.map(b => `<li style="font-size: 10px; color: var(--ses-text-muted); line-height: 1.4;">${b}</li>`).join('')}
       </ul>
       </div>
     </div>

@@ -264,13 +264,14 @@ const PRODUCT_LINE_GROUPS = [
 ];
 
 const PORTFOLIO_QB_GROUP = ['1258 LOC/LOM', '1334 CEG', '1097 LOL'];
+const QB_DISPLAY_LABEL = { '1258 LOC/LOM': '1258 LOC' }; // override badge text
 
 const SHARED_CARDS = [
   { match: '.section-header', text: 'On the Horizon', shares: 'all' },
   { match: '.section-header', text: 'AI Roadmap', shares: 'all' },
   { match: '.section-header', text: 'Underwriting Update', shares: 'all' },
   { match: '.section-header', text: 'Organizational Update', shares: 'all' },
-  { match: '.section-header', text: 'Quotes & Binds', shares: 'portfolioQB' },
+  { match: '.section-header', text: 'Submissions, Quotes & Binds', shares: 'portfolioQB' },
 ];
 
 function tagSharedCards(page, currentLabel) {
@@ -284,7 +285,7 @@ function tagSharedCards(page, currentLabel) {
       others = group.filter(l => l !== currentLabel);
     } else if (shares === 'portfolioQB') {
       if (!PORTFOLIO_QB_GROUP.includes(currentLabel)) return;
-      others = PORTFOLIO_QB_GROUP.filter(l => l !== currentLabel);
+      others = PORTFOLIO_QB_GROUP.filter(l => l !== currentLabel).map(l => QB_DISPLAY_LABEL[l] || l);
     }
 
     if (!others || others.length === 0) return;

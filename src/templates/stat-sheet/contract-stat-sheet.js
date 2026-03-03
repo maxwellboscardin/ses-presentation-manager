@@ -239,7 +239,7 @@ function buildRow4(data) {
   qbCard.setAttribute('data-chart-src', JSON.stringify(data.quotesBinds.data));
   qbCard.setAttribute('data-chart-legend', JSON.stringify(data.quotesBinds.legend));
   qbCard.innerHTML = `
-    <div class="section-header">Quotes & Binds</div>
+    <div class="section-header">Submissions, Quotes & Binds</div>
     <div class="chart-container__body">
       <div class="chart-canvas-wrap"><canvas id="chart-quotes-binds"></canvas></div>
       <div id="legend-quotes-binds"></div>
