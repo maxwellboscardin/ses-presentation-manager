@@ -86,7 +86,7 @@ export function buildPage1(data) {
   // Replace single quotes with &#39; so they don't break single-quoted HTML attributes
   const esc = (s) => s.replace(/'/g, '&#39;');
   const mapSrc = esc(JSON.stringify(data.portfolio.statesTivMap));
-  const mapHighlight = esc(JSON.stringify(data.portfolio.topStatesByTiv.slice(0, 3).map((s) => s.state)));
+  const mapHighlight = esc(JSON.stringify(data.growthTargets || data.portfolio.topStatesByTiv.slice(0, 3).map((s) => s.state)));
   const statesBarData = esc(JSON.stringify(data.portfolio.topStatesByTiv.slice(0, 8).map((s) => ({label: s.state, value: s.tivMillions}))));
 
   const page = document.createElement('div');
@@ -152,7 +152,7 @@ export function buildMFPage1(data) {
   const esc = (s) => s.replace(/'/g, '&#39;');
   const mfBarData = esc(JSON.stringify((mf.topStatesByTiv || []).slice(0, 8).map((s) => ({label: s.state, value: s.tivMillions}))));
   const mfMapSrc = esc(JSON.stringify(mf.statesTivMap || {}));
-  const mfMapHighlight = esc(JSON.stringify((mf.topStatesByTiv || []).slice(0, 3).map((s) => s.state)));
+  const mfMapHighlight = esc(JSON.stringify(data.growthTargets || (mf.topStatesByTiv || []).slice(0, 3).map((s) => s.state)));
 
   const page = document.createElement('div');
   page.className = 'page';
@@ -229,7 +229,7 @@ export function renderMFPage1Charts(data, root) {
   // US SVG map
   const mapContainer = el.querySelector('#mf-chart-us-map');
   if (mapContainer && mf.statesTivMap) {
-    const topStates = (mf.topStatesByTiv || []).slice(0, 3).map((s) => s.state);
+    const topStates = data.growthTargets || (mf.topStatesByTiv || []).slice(0, 3).map((s) => s.state);
     createUSMap(mapContainer, mf.statesTivMap, {
       highlightStates: topStates,
     });
@@ -425,7 +425,7 @@ export function renderPage1Charts(data, root) {
   // US SVG map — only created once on initial load
   const mapContainer = el.querySelector('#chart-us-map');
   if (mapContainer) {
-    const topStates = data.portfolio.topStatesByTiv.slice(0, 3).map((s) => s.state);
+    const topStates = data.growthTargets || data.portfolio.topStatesByTiv.slice(0, 3).map((s) => s.state);
     createUSMap(mapContainer, data.portfolio.statesTivMap, {
       highlightStates: topStates,
     });

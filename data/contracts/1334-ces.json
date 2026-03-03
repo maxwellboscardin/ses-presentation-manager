@@ -5,6 +5,7 @@
   "title": "SFR Portfolio",
   "lastUpdated": "2025-09-01",
   "_updated": ["statesTivMap", "portfolioKpis", "lossExperience", "deductibles", "averageRates"],
+  "growthTargets": ["WA", "OR", "NV", "AZ", "OH", "NC", "SC", "CO", "GA"],
 
   "portfolio": {
     "totalAnnualPremium": "$7M",
@@ -75,9 +76,9 @@
 
   "propertyRiskScore": {
     "data": [
-      { "label": "A", "value": 0, "color": "#0A5383" },
-      { "label": "B", "value": 0, "color": "#2E7BA0" },
-      { "label": "C", "value": 0, "color": "#5A98B8" },
+      { "label": "A", "value": 72, "color": "#0A5383" },
+      { "label": "B", "value": 25, "color": "#2E7BA0" },
+      { "label": "C", "value": 3, "color": "#5A98B8" },
       { "label": "D", "value": 0, "color": "#8FBAD2" },
       { "label": "E", "value": 0, "color": "#C5DCE8" }
     ]

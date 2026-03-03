@@ -763,6 +763,10 @@ CHART_EDITORS['us-map'] = {
     const textarea = body.querySelector('.card-editor-textarea');
     const pastedText = textarea ? textarea.value.trim() : '';
 
+    // Read growth targets BEFORE restoring HTML (form gets destroyed)
+    const growthInput = clone.querySelector('#growth-targets-input');
+    const growthValue = growthInput ? growthInput.value.trim() : '';
+
     // Restore clone body
     if (body._savedHTML) {
       body.innerHTML = body._savedHTML;
@@ -788,11 +792,10 @@ CHART_EDITORS['us-map'] = {
 
     if (Object.keys(newData).length === 0) return;
 
-    // Read growth targets from the manual input field (or fall back to top 3 by TIV)
-    const growthInput = clone.querySelector('#growth-targets-input');
+    // Use growth targets from the manual input field (or fall back to top 3 by TIV)
     let topStates;
-    if (growthInput && growthInput.value.trim()) {
-      topStates = growthInput.value.split(',').map(s => s.trim().toUpperCase()).filter(Boolean);
+    if (growthValue) {
+      topStates = growthValue.split(',').map(s => s.trim().toUpperCase()).filter(Boolean);
     } else {
       topStates = Object.entries(newData)
         .sort((a, b) => b[1] - a[1])

@@ -9,22 +9,22 @@
     "property": {
       "title": "Property Risk Score",
       "categories": ["E", "D", "C", "B", "A"],
-      "values": [0, 0, 1, 22, 77]
+      "values": [0, 0, 3, 25, 72]
     },
     "windHail": {
       "title": "Wind/Hail Risk Scores",
-      "categories": ["401-500", "301-400", "201-300", "101-200", "0-100"],
-      "values": [2, 2, 4, 8, 84]
+      "categories": ["201+", "151-200", "101-150", "51-100", "0-50"],
+      "values": [31, 4, 15, 12, 38]
     },
     "crime": {
       "title": "Crime Risk Scores",
       "categories": ["151-200", "101-150", "51-100", "0-50"],
-      "values": [3, 27, 49, 21]
+      "values": [8, 37, 39, 16]
     },
     "wildfire": {
       "title": "Wildfire Risk Scores",
       "categories": ["61-70", "51-60", "41-50", "31-40", "0-30"],
-      "values": [1, 4, 15, 10, 69]
+      "values": [1, 4, 13, 9, 73]
     }
   },
   "sqbTrends": {
