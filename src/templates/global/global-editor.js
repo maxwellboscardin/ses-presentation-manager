@@ -40,8 +40,6 @@ const XREF = {
   backCover: ['1258 LOC/LOM', '1334 CEG', '1334 CES', '1465 QBS', '1097 LOL'],
 };
 
-// Columns: cover + overview + stat + flip1 + flip2 + updates/sqb + (TBD) + back = 8
-const COL_LABELS = ['Cover', 'SES Overview', 'Snapshot', 'Composition', 'Performance', 'Updates / S/Q/B', 'MF Composition', 'Back Cover'];
 const PAGE_W = 816;
 const PAGE_H = 1056;
 const ZOOM_LEVELS = [0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.6, 0.75, 1];
@@ -62,14 +60,25 @@ export async function renderGlobalEditor(root) {
   matrix.className = 'ge-matrix';
   viewport.appendChild(matrix);
 
-  // Column headers
+  // Column headers — grouped by spread
+  const SPREAD_GROUPS = [
+    ['Cover'],
+    ['SES Overview', 'Snapshot'],
+    ['Composition', 'Performance'],
+    ['Updates / S/Q/B', 'MF Composition'],
+    ['Back Cover'],
+  ];
   const headerRow = document.createElement('div');
   headerRow.className = 'ge-row ge-row--header';
   headerRow.appendChild(makeEl('div', 'ge-row-label'));
-  COL_LABELS.forEach(label => {
-    const h = makeEl('div', 'ge-col-header');
-    h.textContent = label;
-    headerRow.appendChild(h);
+  SPREAD_GROUPS.forEach(group => {
+    const spread = makeEl('div', 'ge-spread');
+    group.forEach(label => {
+      const h = makeEl('div', 'ge-col-header');
+      h.textContent = label;
+      spread.appendChild(h);
+    });
+    headerRow.appendChild(spread);
   });
   matrix.appendChild(headerRow);
 
@@ -110,41 +119,45 @@ export async function renderGlobalEditor(root) {
     label.appendChild(replayBtn);
     row.appendChild(label);
 
-    // Column 0: Cover
-    addCell(row, buildCoverPage(contractData), xrefTag('cover', entry.shortLabel));
+    // Column 0: Cover (single)
+    const coverSpread = makeEl('div', 'ge-spread');
+    addCell(coverSpread, buildCoverPage(contractData), xrefTag('cover', entry.shortLabel));
+    row.appendChild(coverSpread);
 
-    // Column 1: Overview
-    addCell(row, buildOverviewPage(contractData), xrefTag('overview', entry.shortLabel));
-
-    // Column 2: Snapshot
+    // Spread 1: Overview (left) + Snapshot (right)
+    const spread1 = makeEl('div', 'ge-spread');
+    addCell(spread1, buildOverviewPage(contractData), xrefTag('overview', entry.shortLabel));
     const statPage = buildStatPage(statData);
     tagSharedCards(statPage, entry.shortLabel);
-    addCell(row, statPage, null);
+    addCell(spread1, statPage, null, 'right');
+    row.appendChild(spread1);
 
-    // Column 3: Composition
-    addCell(row, buildFlipbookPage1(contractData), null);
+    // Spread 2: Composition (left) + Performance (right)
+    const spread2 = makeEl('div', 'ge-spread');
+    addCell(spread2, buildFlipbookPage1(contractData), null);
+    addCell(spread2, buildFlipbookPage2(contractData), null, 'right');
+    row.appendChild(spread2);
 
-    // Column 4: Performance
-    addCell(row, buildFlipbookPage2(contractData), null);
-
-    // Column 5: Updates (Individual Asset) or S/Q/B (Portfolio)
+    // Spread 3: Updates/SQB (left) + MF Composition (right, 1258 only)
+    const spread3 = makeEl('div', 'ge-spread');
     if (updatesData) {
-      addCell(row, buildUpdatesPage(updatesData), xrefTag('updates', entry.shortLabel));
+      addCell(spread3, buildUpdatesPage(updatesData), xrefTag('updates', entry.shortLabel));
     } else if (sqbData) {
-      addCell(row, buildSqbPage(sqbData), xrefTag('sqbPortfolio', entry.shortLabel));
+      addCell(spread3, buildSqbPage(sqbData), xrefTag('sqbPortfolio', entry.shortLabel));
     } else {
-      addEmptyCell(row);
+      addEmptyCell(spread3);
     }
-
-    // Column 6: MF Composition (1258 only)
     if (contractData.multiFamily) {
-      addCell(row, buildMFPage1(contractData), null);
+      addCell(spread3, buildMFPage1(contractData), null, 'right');
     } else {
-      addEmptyCell(row);
+      addEmptyCell(spread3);
     }
+    row.appendChild(spread3);
 
-    // Column 7: Back Cover
-    addCell(row, buildBackCoverPage(), xrefTag('backCover', entry.shortLabel));
+    // Back Cover (single)
+    const backSpread = makeEl('div', 'ge-spread');
+    addCell(backSpread, buildBackCoverPage(), xrefTag('backCover', entry.shortLabel));
+    row.appendChild(backSpread);
 
     matrix.appendChild(row);
     sectionEls.push({ id: entry.id, el: row });
@@ -168,21 +181,24 @@ export async function renderGlobalEditor(root) {
     stampUpdatedDots(row, contractData._updated);
   }
 
-  function addCell(row, page, tag) {
+  function addCell(parent, page, tag, position) {
     const cell = makeEl('div', 'ge-cell');
+    if (position === 'right' && page.classList.contains('page')) {
+      page.classList.add('page--right');
+    }
     cell.appendChild(page);
     if (tag) {
       const tagEl = makeEl('div', 'ge-xref');
       tagEl.textContent = tag;
       cell.appendChild(tagEl);
     }
-    row.appendChild(cell);
+    parent.appendChild(cell);
     cells.push(cell);
   }
 
-  function addEmptyCell(row) {
+  function addEmptyCell(parent) {
     const cell = makeEl('div', 'ge-cell ge-cell--empty');
-    row.appendChild(cell);
+    parent.appendChild(cell);
     cells.push(cell);
   }
 
@@ -204,7 +220,7 @@ export async function renderGlobalEditor(root) {
       }
     });
 
-    headerRow.querySelectorAll('.ge-col-header').forEach(h => {
+    document.querySelectorAll('.ge-col-header').forEach(h => {
       h.style.width = scaledW + 'px';
     });
 

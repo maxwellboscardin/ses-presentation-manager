@@ -128,10 +128,17 @@ html, body {
   padding: 20px 20px 100px;
 }
 
+/* ─── Spread group — pages within a spread touch at the spine */
+.ge-spread {
+  display: flex;
+  gap: 0;
+  flex-shrink: 0;
+}
+
 /* ─── Row ──────────────────────────────────────────────────── */
 .ge-row {
   display: flex;
-  gap: 8px;
+  gap: 24px;
   align-items: flex-start;
 }
 
@@ -178,10 +185,43 @@ html, body {
   position: relative;
 }
 
+/* Spread shadow on group, not individual cells — seamless spine */
+.ge-spread {
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.ge-spread > .ge-cell {
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.ge-spread > .ge-cell:first-child {
+  border-radius: 4px 0 0 4px;
+}
+
+.ge-spread > .ge-cell:last-child {
+  border-radius: 0 4px 4px 0;
+}
+
+.ge-spread > .ge-cell:only-child {
+  border-radius: 4px;
+}
+
 .ge-cell--empty {
   box-shadow: none;
   background: rgba(255, 255, 255, 0.03);
   border: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+/* Empty cells in spreads keep their own shadow/border */
+.ge-spread:has(.ge-cell--empty) {
+  box-shadow: none;
+}
+
+.ge-spread > .ge-cell--empty {
+  box-shadow: none;
+  border-radius: 4px;
 }
 
 /* ─── Cross-reference tag ──────────────────────────────────── */

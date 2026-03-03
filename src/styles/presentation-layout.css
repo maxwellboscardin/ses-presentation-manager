@@ -23,9 +23,20 @@ html, body {
   align-items: center;
 }
 
-/* Spread sections: two pages side by side */
+/* Spread sections: two pages side by side, touching at spine */
 .pres-section--spread {
-  gap: 2px;
+  gap: 0;
+}
+
+/* Remove inner shadow at spine so backgrounds align seamlessly */
+.pres-section--spread > .page:first-child,
+.pres-section--spread > .cover-page:first-child {
+  box-shadow: -2px 2px 12px rgba(0, 0, 0, 0.15);
+}
+
+.pres-section--spread > .page:last-child,
+.pres-section--spread > .cover-page:last-child {
+  box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Single-page sections */
@@ -37,30 +48,32 @@ html, body {
 .cover-page {
   width: 816px;
   height: 1056px;
-  background:
-    repeating-linear-gradient(
-      -55deg,
-      transparent,
-      transparent 40px,
-      rgba(255, 255, 255, 0.06) 40px,
-      rgba(255, 255, 255, 0.06) 80px
-    ),
-    linear-gradient(135deg, #D8E6F0 0%, #c5d8e8 100%);
+  background: url('../../assets/bg-cover.png') center / cover no-repeat;
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+/* Cover card — standard card (white, rounded, shadow) centered on the cover */
+.cover-card {
+  background: var(--ses-white);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 3px rgba(10, 83, 131, 0.1);
+  padding: 48px 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 24px;
+  max-width: 420px;
 }
 
 .cover-page__logo {
-  height: 72px;
+  height: 48px;
   width: auto;
-  opacity: 0.9;
 }
 
 .cover-page__contract {

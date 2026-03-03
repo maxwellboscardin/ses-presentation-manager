@@ -137,7 +137,7 @@ export async function renderPresentation(container, contractDataUrl, statSheetDa
   function autoScale() {
     sections.forEach((section, i) => {
       const isSpread = section.classList.contains('pres-section--spread');
-      const contentW = isSpread ? (816 * 2 + 2 + 48) : (816 + 48);
+      const contentW = isSpread ? (816 * 2 + 48) : (816 + 48);
       const contentH = 1056 + 48;
       const scale = Math.min(window.innerWidth / contentW, window.innerHeight / contentH, 1);
       section.style.transform = `translate(-50%, -50%) scale(${scale})`;
@@ -201,10 +201,12 @@ export function buildCoverPage(data) {
   const page = document.createElement('div');
   page.className = 'cover-page';
   page.innerHTML = `
-    <img class="cover-page__logo" src="../assets/ses-logo.dark.png" alt="SES Risk Solutions">
-    <div class="cover-page__contract">${data.contract}</div>
-    <div class="cover-page__program">${data.title}</div>
-    <div class="cover-page__subtitle">Contract Portfolio Review</div>
+    <div class="cover-card">
+      <img class="cover-page__logo" src="../assets/ses-logo.svg" alt="SES Risk Solutions">
+      <div class="cover-page__contract">${data.contract}</div>
+      <div class="cover-page__program">${data.title}</div>
+      <div class="cover-page__subtitle">Contract Portfolio Review</div>
+    </div>
   `;
   return page;
 }
@@ -227,17 +229,16 @@ export function buildOverviewPage(data) {
           <!-- Who We Are -->
           <div class="observations-panel" style="flex: 3; background: var(--ses-white); border-radius: var(--radius); overflow: hidden; box-shadow: 0 1px 3px rgba(10,83,131,0.1); display: flex; flex-direction: column;">
             <div class="section-header" style="border-radius: 0;">Who We Are</div>
-            <div class="observations-panel__body" style="padding: 14px 16px; font-size: 12px; color: var(--ses-text-muted); line-height: 1.65; flex: 1;">
-              <p style="margin: 0 0 10px 0;">SES is the <strong style="color: var(--ses-text);">largest Master Trust Insurance Program Administrator</strong> in the US and a leading specialist in residential real estate investor insurance. A division of <strong style="color: var(--ses-text);">Alliant Underwriting Solutions</strong>, one of the nation's top 10 MGAs.</p>
-              <p style="margin: 0 0 10px 0;">We differentiate ourselves with <strong style="color: var(--ses-text);">strong performance</strong>, combining meaningful data, technology, and experience. Our <strong style="color: var(--ses-text);">proprietary policy administration system</strong> is API-enabled and offers web-based self-service. We maintain longstanding relationships with the industry's largest and most reputable brokers, wholesalers, and networks.</p>
-              <p style="margin: 0;">Our commitment to <strong style="color: var(--ses-text);">adapting and refining our program in partnership with carriers, agents, and clients</strong> has led to favorable trends in combined ratios, loss experience, and overall program performance.</p>
+            <div class="observations-panel__body" style="padding: 16px; font-size: 14px; color: var(--ses-text-muted); line-height: 1.7; flex: 1;">
+              <p style="margin: 0 0 12px 0;">As a program manager, we differentiate ourselves with <strong style="color: var(--ses-text);">strong performance</strong>, made possible by our emphasis on <strong style="color: var(--ses-text);">risk management strategies</strong>, combining meaningful data, technology, and experience. Our <strong style="color: var(--ses-text);">proprietary policy administration system</strong> is API-enabled and offers web-based self-service. We pride ourselves in maintaining longstanding relationships with many of the industry's largest and most reputable brokers, wholesalers, and networks to distribute our program to their investor-clients.</p>
+              <p style="margin: 0;">SES has a history of serving <strong style="color: var(--ses-text);">niche insurance markets</strong>. Our core programs are designed to insure properties held in trust and owned by real estate investors. In our REI program, we focus on <strong style="color: var(--ses-text);">innovation, risk management, and client solutions</strong> to serve the ever-changing market.</p>
             </div>
           </div>
 
           <!-- By the Numbers -->
           <div class="observations-panel" style="flex: 2; background: var(--ses-white); border-radius: var(--radius); overflow: hidden; box-shadow: 0 1px 3px rgba(10,83,131,0.1);">
             <div class="section-header" style="border-radius: 0;">By the Numbers</div>
-            <div class="observations-panel__body" style="padding: 12px 16px; display: flex; flex-direction: column; gap: 8px;">
+            <div class="observations-panel__body" style="padding: 24px; display: flex; flex-direction: column; justify-content: space-evenly; flex: 1;">
               ${overviewStat('35+', 'Years in Business')}
               ${overviewStat('85K+', 'Properties Insured')}
               ${overviewStat('$181M', 'Annual GWP')}
@@ -254,9 +255,9 @@ export function buildOverviewPage(data) {
         <!-- Core Competencies — full width text card -->
         <div class="observations-panel" style="background: var(--ses-white); border-radius: var(--radius); overflow: hidden; box-shadow: 0 1px 3px rgba(10,83,131,0.1);">
           <div class="section-header" style="border-radius: 0;">Core Competencies</div>
-          <div class="observations-panel__body" style="padding: 10px 16px; font-size: 11px; color: var(--ses-text-muted); line-height: 1.55; columns: 2; column-gap: 24px;">
-            <p style="margin: 0 0 6px 0;"><strong style="color: var(--ses-text);">Data-Driven Underwriting:</strong> In-house actuarial team backed by Alliant Underwriting Solutions. Technical pricing model with loss trend analysis. AI/ML-powered risk scoring at zip-code level using aerial imagery and proximity signals. Precision CAT modeling via RMS outputs and construction modifiers.</p>
-            <p style="margin: 0 0 6px 0;"><strong style="color: var(--ses-text);">Service & Technology:</strong> Tech-enabled, API-ready solutions with self-service platforms. Proprietary quoting and policy management systems (TIMS, QUBIE). PowerBI dashboards delivering live KPIs. Automated scoring, segmentation, and ML workflows.</p>
+          <div class="observations-panel__body" style="padding: 12px 16px; font-size: 10.5px; color: var(--ses-text-muted); line-height: 1.5; flex: 1; columns: 2; column-gap: 24px;">
+            <p style="margin: 0 0 8px 0;"><strong style="color: var(--ses-text);">Data-Driven Underwriting:</strong> In-house actuarial team backed by Alliant Underwriting Solutions. Technical pricing model with loss trend analysis. AI/ML-powered risk scoring at zip-code level using aerial imagery and proximity signals. Precision CAT modeling via RMS outputs and construction modifiers.</p>
+            <p style="margin: 0 0 8px 0;"><strong style="color: var(--ses-text);">Service & Technology:</strong> Tech-enabled, API-ready solutions with self-service platforms. Proprietary quoting and policy management systems (TIMS, QUBIE). PowerBI dashboards delivering live KPIs. Automated scoring, segmentation, and ML workflows.</p>
             <p style="margin: 0;"><strong style="color: var(--ses-text);">Distribution:</strong> Longstanding partnerships with top producers across multiple channels. No direct competition with brokers, wholesalers, and networks. Over 18,000 accounts generating nearly $360M in gross written premium.</p>
           </div>
         </div>
@@ -331,8 +332,8 @@ export function buildBackCoverPage() {
   const page = document.createElement('div');
   page.className = 'cover-page';
   page.innerHTML = `
-    <div class="back-cover-content">
-      <img class="cover-page__logo" src="../assets/ses-logo.dark.png" alt="SES Risk Solutions">
+    <div class="cover-card">
+      <img class="cover-page__logo" src="../assets/ses-logo.svg" alt="SES Risk Solutions">
       <div class="back-cover-content__text">Thank you</div>
     </div>
   `;
