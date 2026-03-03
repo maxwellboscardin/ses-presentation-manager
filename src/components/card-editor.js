@@ -788,11 +788,17 @@ CHART_EDITORS['us-map'] = {
 
     if (Object.keys(newData).length === 0) return;
 
-    // Compute top 3 states by TIV
-    const topStates = Object.entries(newData)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 3)
-      .map(e => e[0]);
+    // Read growth targets from the manual input field (or fall back to top 3 by TIV)
+    const growthInput = clone.querySelector('#growth-targets-input');
+    let topStates;
+    if (growthInput && growthInput.value.trim()) {
+      topStates = growthInput.value.split(',').map(s => s.trim().toUpperCase()).filter(Boolean);
+    } else {
+      topStates = Object.entries(newData)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 3)
+        .map(e => e[0]);
+    }
 
     // Re-render original map
     const origMap = originalCard.querySelector('#chart-us-map');
