@@ -76,33 +76,25 @@
 
   "quotesBinds": {
     "data": [
-      { "label": "Q1 '24", "bars": [0, 0], "line": 0 },
-      { "label": "Q2 '24", "bars": [0, 0], "line": 0 },
-      { "label": "Q3 '24", "bars": [0, 0], "line": 0 },
-      { "label": "Q4 '24", "bars": [0, 0], "line": 0 },
-      { "label": "Q1 '25", "bars": [0, 0], "line": 0 },
-      { "label": "Q2 '25", "bars": [0, 0], "line": 0 },
-      { "label": "Q3 '25", "bars": [0, 0], "line": 0 }
+      { "label": "Q1", "bars": [12207, 2636, 841], "line": 32 },
+      { "label": "Q2", "bars": [6997, 1820, 481], "line": 26 },
+      { "label": "Q3", "bars": [6911, 1741, 509], "line": 29 },
+      { "label": "Q4", "bars": [5578, 1386, 329], "line": 24 }
     ],
     "legend": [
-      { "label": "Quotes", "color": "#0A5383", "type": "bar" },
-      { "label": "Binds", "color": "#8FBAD2", "type": "bar" },
+      { "label": "Submissions", "color": "#0A5383", "type": "bar" },
+      { "label": "Quotes", "color": "#8FBAD2", "type": "bar" },
+      { "label": "Binds", "color": "#E97121", "type": "bar" },
       { "label": "Bind %", "color": "#E97121", "type": "line" }
     ]
   },
 
   "renewalRetention": {
     "data": [
-      { "label": "Apr", "bars": [0, 0], "line": 0 },
-      { "label": "May", "bars": [0, 0], "line": 0 },
-      { "label": "Jun", "bars": [0, 0], "line": 0 },
-      { "label": "Jul", "bars": [0, 0], "line": 0 },
-      { "label": "Aug", "bars": [0, 0], "line": 0 }
+      { "label": "Q4", "line": 63 }
     ],
     "legend": [
-      { "label": "Renewal", "color": "#0A5383", "type": "bar" },
-      { "label": "Retained", "color": "#8FBAD2", "type": "bar" },
-      { "label": "Ret. %", "color": "#E97121", "type": "line" }
+      { "label": "Retention %", "color": "#E97121", "type": "line" }
     ]
   },
 
@@ -135,8 +127,9 @@
 
   "aiRoadmap": {
     "observations": [
-      "Ingestion AI",
-      "Google Image Scores"
+      "<strong>Submission Ingestion:</strong> Automated data enrichment, completeness checks, data extraction, prioritization optimization, and appetite & guideline screening",
+      "<strong>Image Scoring:</strong> AI-powered property analysis covering exterior, perimeter, roof, foundation, and hazard detection",
+      "<strong>On Deck:</strong> Loss history interpretation, claims analytics, bind probability modeling, expanded illogical conditions suite"
     ]
   }
 }

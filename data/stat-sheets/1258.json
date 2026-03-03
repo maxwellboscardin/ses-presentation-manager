@@ -97,33 +97,28 @@
 
   "quotesBinds": {
     "data": [
-      { "label": "Q1 '24", "bars": [120, 45], "line": 37.5 },
-      { "label": "Q2 '24", "bars": [135, 52], "line": 38.5 },
-      { "label": "Q3 '24", "bars": [148, 61], "line": 41.2 },
-      { "label": "Q4 '24", "bars": [110, 48], "line": 43.6 },
-      { "label": "Q1 '25", "bars": [165, 72], "line": 43.6 },
-      { "label": "Q2 '25", "bars": [180, 84], "line": 46.7 },
-      { "label": "Q3 '25", "bars": [158, 68], "line": 43.0 }
+      { "label": "Q1", "bars": [849, 87, 328], "line": 39 },
+      { "label": "Q2", "bars": [731, 112, 339], "line": 46 },
+      { "label": "Q3", "bars": [626, 90, 317], "line": 51 },
+      { "label": "Q4", "bars": [592, 149, 368], "line": 62 }
     ],
     "legend": [
-      { "label": "Quotes", "color": "#0A5383", "type": "bar" },
-      { "label": "Binds", "color": "#8FBAD2", "type": "bar" },
-      { "label": "Bind %", "color": "#E97121", "type": "line" }
+      { "label": "Submissions", "color": "#0A5383", "type": "bar" },
+      { "label": "Quotes", "color": "#8FBAD2", "type": "bar" },
+      { "label": "Binds", "color": "#E97121", "type": "bar" },
+      { "label": "Bind %", "color": "#4CAF50", "type": "line" }
     ]
   },
 
   "renewalRetention": {
     "data": [
-      { "label": "Apr", "bars": [42, 38], "line": 90.5 },
-      { "label": "May", "bars": [51, 46], "line": 90.2 },
-      { "label": "Jun", "bars": [38, 35], "line": 92.1 },
-      { "label": "Jul", "bars": [65, 59], "line": 90.8 },
-      { "label": "Aug", "bars": [44, 41], "line": 93.2 }
+      { "label": "Q1", "line": 93 },
+      { "label": "Q2", "line": 97 },
+      { "label": "Q3", "line": 92 },
+      { "label": "Q4", "line": 83 }
     ],
     "legend": [
-      { "label": "Renewal", "color": "#0A5383", "type": "bar" },
-      { "label": "Retained", "color": "#8FBAD2", "type": "bar" },
-      { "label": "Ret. %", "color": "#E97121", "type": "line" }
+      { "label": "Retention %", "color": "#E97121", "type": "line" }
     ]
   },
 
@@ -156,8 +151,9 @@
 
   "aiRoadmap": {
     "observations": [
-      "Ingestion AI",
-      "Google Image Scores"
+      "<strong>Submission Ingestion:</strong> Automated data enrichment, completeness checks, data extraction, prioritization optimization, and appetite & guideline screening",
+      "<strong>Image Scoring:</strong> AI-powered property analysis covering exterior, perimeter, roof, foundation, and hazard detection",
+      "<strong>On Deck:</strong> Loss history interpretation, claims analytics, bind probability modeling, expanded illogical conditions suite"
     ]
   }
 }

@@ -76,33 +76,28 @@
 
   "quotesBinds": {
     "data": [
-      { "label": "Q1 '24", "bars": [0, 0], "line": 0 },
-      { "label": "Q2 '24", "bars": [0, 0], "line": 0 },
-      { "label": "Q3 '24", "bars": [0, 0], "line": 0 },
-      { "label": "Q4 '24", "bars": [0, 0], "line": 0 },
-      { "label": "Q1 '25", "bars": [0, 0], "line": 0 },
-      { "label": "Q2 '25", "bars": [0, 0], "line": 0 },
-      { "label": "Q3 '25", "bars": [0, 0], "line": 0 }
+      { "label": "Q1", "bars": [849, 87, 328], "line": 39 },
+      { "label": "Q2", "bars": [731, 112, 339], "line": 46 },
+      { "label": "Q3", "bars": [626, 90, 317], "line": 51 },
+      { "label": "Q4", "bars": [592, 149, 368], "line": 62 }
     ],
     "legend": [
-      { "label": "Quotes", "color": "#0A5383", "type": "bar" },
-      { "label": "Binds", "color": "#8FBAD2", "type": "bar" },
-      { "label": "Bind %", "color": "#E97121", "type": "line" }
+      { "label": "Submissions", "color": "#0A5383", "type": "bar" },
+      { "label": "Quotes", "color": "#8FBAD2", "type": "bar" },
+      { "label": "Binds", "color": "#E97121", "type": "bar" },
+      { "label": "Bind %", "color": "#4CAF50", "type": "line" }
     ]
   },
 
   "renewalRetention": {
     "data": [
-      { "label": "Apr", "bars": [0, 0], "line": 0 },
-      { "label": "May", "bars": [0, 0], "line": 0 },
-      { "label": "Jun", "bars": [0, 0], "line": 0 },
-      { "label": "Jul", "bars": [0, 0], "line": 0 },
-      { "label": "Aug", "bars": [0, 0], "line": 0 }
+      { "label": "Q1", "line": 100 },
+      { "label": "Q2", "line": 100 },
+      { "label": "Q3", "line": 100 },
+      { "label": "Q4", "line": 100 }
     ],
     "legend": [
-      { "label": "Renewal", "color": "#0A5383", "type": "bar" },
-      { "label": "Retained", "color": "#8FBAD2", "type": "bar" },
-      { "label": "Ret. %", "color": "#E97121", "type": "line" }
+      { "label": "Retention %", "color": "#E97121", "type": "line" }
     ]
   },
 
@@ -135,8 +130,9 @@
 
   "aiRoadmap": {
     "observations": [
-      "Ingestion AI",
-      "Google Image Scores"
+      "<strong>Submission Ingestion:</strong> Automated data enrichment, completeness checks, data extraction, prioritization optimization, and appetite & guideline screening",
+      "<strong>Image Scoring:</strong> AI-powered property analysis covering exterior, perimeter, roof, foundation, and hazard detection",
+      "<strong>On Deck:</strong> Loss history interpretation, claims analytics, bind probability modeling, expanded illogical conditions suite"
     ]
   }
 }

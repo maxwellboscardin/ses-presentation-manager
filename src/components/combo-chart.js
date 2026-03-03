@@ -35,96 +35,160 @@ export function createComboChart(element, data, options = {}) {
 
   const { svg, w: drawWidth, h: drawHeight } = prepareSvg(element);
 
-  const chartLeft = paddingSide;
+  // Detect line-only mode (no bars in data)
+  const hasBars = data[0].bars && data[0].bars.length > 0;
+  const axisPadding = hasBars ? 0 : 30;
+
+  const chartLeft = paddingSide + axisPadding;
   const chartRight = drawWidth - paddingSide;
   const chartWidth = chartRight - chartLeft;
   const chartTop = paddingTop;
   const chartBottom = drawHeight - paddingBottom;
   const chartHeight = chartBottom - chartTop;
 
-  // Scales
-  const allBarValues = data.flatMap((d) => d.bars);
-  const maxBarValue = Math.max(...allBarValues) * 1.2;
-
+  // Line scale
   const allLineValues = data.map((d) => d.line).filter((v) => v != null);
-  const maxLineValue = allLineValues.length > 0 ? Math.max(...allLineValues) * 1.15 : 1;
-  const minLineValue = allLineValues.length > 0 ? Math.min(...allLineValues) * 0.85 : 0;
+  const rawMax = allLineValues.length > 0 ? Math.max(...allLineValues) : 100;
+  const rawMin = allLineValues.length > 0 ? Math.min(...allLineValues) : 0;
+
+  let maxLineValue, minLineValue;
+  if (!hasBars) {
+    // Line-only: use nice round axis bounds
+    const range = rawMax - rawMin || 10;
+    const padding = range * 0.15;
+    minLineValue = Math.max(0, Math.floor((rawMin - padding) / 5) * 5);
+    maxLineValue = Math.min(100, Math.ceil((rawMax + padding) / 5) * 5);
+    if (maxLineValue === minLineValue) maxLineValue = minLineValue + 10;
+  } else {
+    maxLineValue = rawMax * 1.15;
+    minLineValue = rawMin * 0.85;
+  }
   const lineRange = maxLineValue - minLineValue || 1;
 
-  // Bar layout
-  const groupCount = data.length;
-  const barsPerGroup = data[0].bars.length;
-  const groupGap = chartWidth * 0.12 / (groupCount + 1);
-  const groupWidth = (chartWidth - groupGap * (groupCount + 1)) / groupCount;
-  const barGap = 2;
-  const singleBarWidth = (groupWidth - barGap * (barsPerGroup - 1)) / barsPerGroup;
-
-  // Line points
-  const linePoints = data.map((d, i) => {
-    const groupX = chartLeft + groupGap + i * (groupWidth + groupGap);
-    const cx = groupX + groupWidth / 2;
-    const cy = chartTop + (1 - (d.line - minLineValue) / lineRange) * chartHeight;
-    return { x: cx, y: cy, value: d.line };
-  }).filter((p) => p.value != null);
-
   // Grid lines
-  for (let i = 0; i <= 4; i++) {
-    const y = chartTop + (chartHeight / 4) * i;
+  const gridCount = 4;
+  for (let i = 0; i <= gridCount; i++) {
+    const y = chartTop + (chartHeight / gridCount) * i;
     svg.appendChild(svgEl('line', {
       x1: chartLeft, y1: y, x2: chartRight, y2: y,
       stroke: COLORS.gridLine, 'stroke-width': '0.5',
     }));
+
+    // Y-axis labels in line-only mode
+    if (!hasBars) {
+      const axisVal = maxLineValue - (i / gridCount) * (maxLineValue - minLineValue);
+      const axisLabel = svgEl('text', {
+        x: chartLeft - 6,
+        y: y,
+        fill: COLORS.muted,
+        'font-size': '8',
+        'font-weight': '500',
+        'font-family': FONT,
+        'text-anchor': 'end',
+        'dominant-baseline': 'central',
+      });
+      axisLabel.textContent = Math.round(axisVal) + '%';
+      svg.appendChild(axisLabel);
+    }
   }
 
-  // Bars
-  data.forEach((item, gi) => {
-    const groupX = chartLeft + groupGap + gi * (groupWidth + groupGap);
+  const groupCount = data.length;
 
-    item.bars.forEach((val, bi) => {
-      const x = groupX + bi * (singleBarWidth + barGap);
-      const barH = (val / maxBarValue) * chartHeight;
-      const barY = chartBottom - barH;
+  if (hasBars) {
+    // Bar layout
+    const barsPerGroup = data[0].bars.length;
+    const allBarValues = data.flatMap((d) => d.bars);
+    const maxBarValue = Math.max(...allBarValues) * 1.2;
+    const groupGap = chartWidth * 0.12 / (groupCount + 1);
+    const groupWidth = (chartWidth - groupGap * (groupCount + 1)) / groupCount;
+    const barGap = 2;
+    const singleBarWidth = (groupWidth - barGap * (barsPerGroup - 1)) / barsPerGroup;
 
-      const pathD = roundRectPath(x, barY, singleBarWidth, barH, 3);
-      if (pathD) {
-        const bar = svgEl('path', {
-          d: pathD,
-          fill: barColors[bi % barColors.length],
-          class: 'anim-bar-v',
-        });
-        bar.style.animationDelay = `${gi * 80}ms`;
-        svg.appendChild(bar);
-      }
+    // Bars
+    data.forEach((item, gi) => {
+      const groupX = chartLeft + groupGap + gi * (groupWidth + groupGap);
 
-      if (showBarValues) {
-        const bv = svgEl('text', {
-          x: x + singleBarWidth / 2,
-          y: barY - 2,
-          fill: COLORS.text,
-          'font-size': '9',
-          'font-weight': '700',
-          'font-family': FONT,
-          'text-anchor': 'middle',
-        });
-        bv.textContent = barValueFormatter(val);
-        svg.appendChild(bv);
-      }
+      item.bars.forEach((val, bi) => {
+        const x = groupX + bi * (singleBarWidth + barGap);
+        const barH = (val / maxBarValue) * chartHeight;
+        const barY = chartBottom - barH;
+
+        const pathD = roundRectPath(x, barY, singleBarWidth, barH, 3);
+        if (pathD) {
+          const bar = svgEl('path', {
+            d: pathD,
+            fill: barColors[bi % barColors.length],
+            class: 'anim-bar-v',
+          });
+          bar.style.animationDelay = `${gi * 80}ms`;
+          svg.appendChild(bar);
+        }
+
+        if (showBarValues) {
+          const bv = svgEl('text', {
+            x: x + singleBarWidth / 2,
+            y: barY - 2,
+            fill: COLORS.text,
+            'font-size': '9',
+            'font-weight': '700',
+            'font-family': FONT,
+            'text-anchor': 'middle',
+          });
+          bv.textContent = barValueFormatter(val);
+          svg.appendChild(bv);
+        }
+      });
+
+      // X-axis label
+      const label = svgEl('text', {
+        x: groupX + groupWidth / 2,
+        y: chartBottom + 6,
+        fill: COLORS.muted,
+        'font-size': '9',
+        'font-weight': '500',
+        'font-family': FONT,
+        'text-anchor': 'middle',
+        'dominant-baseline': 'hanging',
+      });
+      label.textContent = item.label;
+      svg.appendChild(label);
     });
 
-    // X-axis label
-    const label = svgEl('text', {
-      x: groupX + groupWidth / 2,
-      y: chartBottom + 6,
-      fill: COLORS.muted,
-      'font-size': '9',
-      'font-weight': '500',
-      'font-family': FONT,
-      'text-anchor': 'middle',
-      'dominant-baseline': 'hanging',
+    // Line points (bar mode — centered on groups)
+    var linePoints = data.map((d, i) => {
+      const groupX = chartLeft + groupGap + i * (groupWidth + groupGap);
+      const cx = groupX + groupWidth / 2;
+      const cy = chartTop + (1 - (d.line - minLineValue) / lineRange) * chartHeight;
+      return { x: cx, y: cy, value: d.line };
+    }).filter((p) => p.value != null);
+
+  } else {
+    // Line-only mode — evenly space points
+    const pointSpacing = groupCount > 1 ? chartWidth / (groupCount - 1) : 0;
+
+    data.forEach((item, i) => {
+      const cx = groupCount > 1 ? chartLeft + i * pointSpacing : chartLeft + chartWidth / 2;
+      // X-axis label
+      const label = svgEl('text', {
+        x: cx,
+        y: chartBottom + 6,
+        fill: COLORS.muted,
+        'font-size': '9',
+        'font-weight': '500',
+        'font-family': FONT,
+        'text-anchor': 'middle',
+        'dominant-baseline': 'hanging',
+      });
+      label.textContent = item.label;
+      svg.appendChild(label);
     });
-    label.textContent = item.label;
-    svg.appendChild(label);
-  });
+
+    var linePoints = data.map((d, i) => {
+      const cx = groupCount > 1 ? chartLeft + i * pointSpacing : chartLeft + chartWidth / 2;
+      const cy = chartTop + (1 - (d.line - minLineValue) / lineRange) * chartHeight;
+      return { x: cx, y: cy, value: d.line };
+    }).filter((p) => p.value != null);
+  }
 
   // Line path
   if (linePoints.length > 1) {

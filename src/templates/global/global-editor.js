@@ -263,11 +263,14 @@ const PRODUCT_LINE_GROUPS = [
   // 1258 LOC/LOM has its own version — not in any group
 ];
 
+const PORTFOLIO_QB_GROUP = ['1258 LOC/LOM', '1334 CEG', '1097 LOL'];
+
 const SHARED_CARDS = [
   { match: '.section-header', text: 'On the Horizon', shares: 'all' },
   { match: '.section-header', text: 'AI Roadmap', shares: 'all' },
   { match: '.section-header', text: 'Underwriting Update', shares: 'all' },
   { match: '.section-header', text: 'Organizational Update', shares: 'all' },
+  { match: '.section-header', text: 'Quotes & Binds', shares: 'portfolioQB' },
 ];
 
 function tagSharedCards(page, currentLabel) {
@@ -279,6 +282,9 @@ function tagSharedCards(page, currentLabel) {
       const group = PRODUCT_LINE_GROUPS.find(g => g.includes(currentLabel));
       if (!group) return; // 1258 is alone, no pill
       others = group.filter(l => l !== currentLabel);
+    } else if (shares === 'portfolioQB') {
+      if (!PORTFOLIO_QB_GROUP.includes(currentLabel)) return;
+      others = PORTFOLIO_QB_GROUP.filter(l => l !== currentLabel);
     }
 
     if (!others || others.length === 0) return;

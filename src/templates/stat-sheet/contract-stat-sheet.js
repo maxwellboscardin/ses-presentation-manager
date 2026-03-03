@@ -313,8 +313,11 @@ export function renderAllCharts(data, root) {
   // Combo — Quotes & Binds
   const qbCanvas = el.querySelector('#chart-quotes-binds');
   if (qbCanvas) {
+    const qbHas3Bars = data.quotesBinds.data[0].bars.length >= 3;
     createComboChart(qbCanvas, data.quotesBinds.data, {
-      lineValueFormatter: (v) => v.toFixed(1) + '%',
+      barColors: qbHas3Bars ? ['#0A5383', '#8FBAD2', '#E97121'] : ['#0A5383', '#8FBAD2'],
+      lineColor: qbHas3Bars ? '#4CAF50' : '#E97121',
+      lineValueFormatter: (v) => Math.round(v) + '%',
       showLineValues: true,
     });
     const legendContainer = el.querySelector('#legend-quotes-binds');
@@ -328,7 +331,7 @@ export function renderAllCharts(data, root) {
   const rrCanvas = el.querySelector('#chart-renewal-retention');
   if (rrCanvas) {
     createComboChart(rrCanvas, data.renewalRetention.data, {
-      lineValueFormatter: (v) => v.toFixed(1) + '%',
+      lineValueFormatter: (v) => Math.round(v) + '%',
       showLineValues: true,
     });
     const legendContainer = el.querySelector('#legend-renewal-retention');
