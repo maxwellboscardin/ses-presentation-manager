@@ -167,6 +167,32 @@
   left: 0;
 }
 
+/* ─── Claims Table ───────────────────────────────────────────*/
+.claims-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 9px;
+  margin-top: 4px;
+}
+.claims-table th,
+.claims-table td {
+  padding: 2px 8px;
+  text-align: center;
+  border: 1px solid var(--ses-border, #D8E6F0);
+}
+.claims-table th {
+  background: var(--ses-navy);
+  color: #fff;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.claims-table__label {
+  text-align: left !important;
+  font-weight: 600;
+  color: var(--ses-text);
+}
+
 /* ─── Data Table ──────────────────────────────────────────────*/
 .data-table {
   width: 100%;

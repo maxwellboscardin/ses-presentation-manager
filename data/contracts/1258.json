@@ -83,6 +83,14 @@
     ]
   },
 
+  "carrierClaimCount": {
+    "data": [
+      { "label": "2023", "line": 93 },
+      { "label": "2024", "line": 63 },
+      { "label": "2025", "line": 20 }
+    ]
+  },
+
   "propertyRiskScore": {
     "data": [
       { "label": "A", "value": 41, "color": "#0A5383" },

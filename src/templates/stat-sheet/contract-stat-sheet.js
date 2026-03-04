@@ -205,11 +205,11 @@ function buildRow2UW(data) {
   return row;
 }
 
-// ─── Row 3: Organizational Update (full width) ───────────────
+// ─── Row 3: Organizational Update | Claims Insights (halves) ──
 
 function buildRow3Org(data) {
   const row = document.createElement('div');
-  row.className = 'stat-row stat-row--full';
+  row.className = 'stat-row stat-row--halves';
 
   const orgPanel = document.createElement('div');
   orgPanel.className = 'observations-panel';
@@ -222,6 +222,26 @@ function buildRow3Org(data) {
     </div>
   `;
   row.appendChild(orgPanel);
+
+  const claimsObs = data.claimsInsights ? data.claimsInsights.observations : [];
+  const claimsTable = data.claimsInsights ? data.claimsInsights.table : null;
+  const claimsPanel = document.createElement('div');
+  claimsPanel.className = 'observations-panel';
+  claimsPanel.innerHTML = `
+    <div class="section-header">Claims Insights</div>
+    <div class="observations-panel__body">
+      <ul>
+        ${claimsObs.map((o) => `<li>${o}</li>`).join('')}
+      </ul>
+      ${claimsTable ? `
+        <table class="claims-table">
+          <thead><tr><th></th>${claimsTable.columns.map(c => `<th>${c}</th>`).join('')}</tr></thead>
+          <tbody>${claimsTable.rows.map(r => `<tr><td class="claims-table__label">${r.label}</td>${r.values.map(v => `<td>${v}</td>`).join('')}</tr>`).join('')}</tbody>
+        </table>
+      ` : ''}
+    </div>
+  `;
+  row.appendChild(claimsPanel);
 
   return row;
 }

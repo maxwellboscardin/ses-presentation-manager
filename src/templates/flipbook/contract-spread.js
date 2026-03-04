@@ -5,6 +5,7 @@ import { createHBarChart } from '../../components/h-bar-chart.js';
 import { createVBarChart } from '../../components/v-bar-chart.js';
 import { createStackedBarChart, createChartLegend } from '../../components/stacked-bar-chart.js';
 import { createLineChart } from '../../components/line-chart.js';
+import { createComboChart } from '../../components/combo-chart.js';
 import { createUSMap } from '../../components/us-map.js';
 import { initCardEditor } from '../../components/card-editor.js';
 
@@ -359,6 +360,33 @@ export function buildPage2(data, updatesData = null) {
             </div>
           </div>
         </div>
+        ` : data.carrierClaimCount ? `
+        <div style="display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: var(--gap-sm); flex: 1;">
+          <div class="chart-container" data-chart-type="v-bar" data-chart-suffix="%" data-chart-src='${JSON.stringify(lossRatioData)}' style="display: flex; flex-direction: column;">
+            <div class="section-header">Annual Loss Ratio</div>
+            <div class="chart-container__body" style="flex: 1;">
+              <canvas id="chart-loss-ratio"></canvas>
+            </div>
+          </div>
+          <div class="chart-container" data-chart-type="h-bar" data-chart-src='${lossTypesData}' data-chart-prefix="$" data-chart-suffix="M" data-chart-decimals="2" data-chart-options='{"barColor":"#E97121","labelWidth":90,"valueWidth":55,"barHeight":18,"barGap":10}' style="display: flex; flex-direction: column;">
+            <div class="section-header">Top Loss Types (Incurred, $M)</div>
+            <div class="chart-container__body" style="flex: 1;">
+              <canvas id="chart-loss-types"></canvas>
+            </div>
+          </div>
+          <div class="chart-container" data-chart-type="combo" data-chart-src='${esc(JSON.stringify(data.carrierClaimCount.data))}' style="display: flex; flex-direction: column;">
+            <div class="section-header">Carrier Claim Count</div>
+            <div class="chart-container__body" style="flex: 1;">
+              <canvas id="chart-claim-count"></canvas>
+            </div>
+          </div>
+          <div class="chart-container" data-chart-type="h-bar" data-chart-src='${riskScoreData}' data-chart-suffix="%" data-chart-options='{"labelWidth":30,"valueWidth":45}' style="display: flex; flex-direction: column;">
+            <div class="section-header">Property Risk Score</div>
+            <div class="chart-container__body" style="flex: 1;">
+              <canvas id="chart-risk-score"></canvas>
+            </div>
+          </div>
+        </div>
         ` : `
         <div class="page-columns" style="flex: 1;">
           <div class="page-column" style="flex: 1; display: flex; flex-direction: column;">
@@ -551,6 +579,17 @@ export function renderPage2Charts(data, root, updatesData = null) {
       barHeight: 18,
       barGap: 10,
     });
+  }
+
+  // Combo line — Carrier Claim Count (1258 LOC only)
+  if (data.carrierClaimCount) {
+    const ccCanvas = el.querySelector('#chart-claim-count');
+    if (ccCanvas) {
+      createComboChart(ccCanvas, data.carrierClaimCount.data, {
+        lineValueFormatter: (v) => Math.round(v).toString(),
+        showLineValues: true,
+      });
+    }
   }
 
   // H-bar — Property Risk Score (portfolio layout only)

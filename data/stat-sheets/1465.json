@@ -115,10 +115,27 @@
 
   "organizationalUpdate": {
     "observations": [
-      "Dedicated claims adjuster assigned for all 1258 contract losses > $50K",
-      "Quarterly business review cadence established with carrier partners",
-      "New account manager onboarded for Southeast region expansion"
+      "Operational restructuring has driven efficiency, dexterity, and alignment in sales, UW, and renewals",
+      "Expanded distribution and products through integration of Orarius and New Jersey Package into the SES program",
+      "Tremendous potential to expand our business offering, enable scale, and introduce new competencies through insurance tracking capabilities",
+      "BPO (RSP) moving from China to Malaysia in 2027 – transition underway"
     ]
+  },
+
+  "claimsInsights": {
+    "observations": [
+      "Slip & Fall and BI make up 70% of claims",
+      "100% of Animal Bite and 88% of BI Claims are under $25K",
+      "NJ, CT and PA (NE) make up over 40% of all GL claims",
+      "$25K-$100K and $10K-$25K make up 80% of claims"
+    ],
+    "table": {
+      "columns": ["2023", "2024", "2025"],
+      "rows": [
+        { "label": "Property", "values": ["1,009", "731", "409"] },
+        { "label": "Liability", "values": ["64", "65", "29"] }
+      ]
+    }
   },
 
   "onDeck": {
