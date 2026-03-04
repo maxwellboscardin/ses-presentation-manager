@@ -6,6 +6,7 @@ import { createVBarChart } from '../../components/v-bar-chart.js';
 import { createStackedBarChart, createChartLegend } from '../../components/stacked-bar-chart.js';
 import { createLineChart } from '../../components/line-chart.js';
 import { createComboChart } from '../../components/combo-chart.js';
+import { createPieChart } from '../../components/pie-chart.js';
 import { createUSMap } from '../../components/us-map.js';
 import { initCardEditor } from '../../components/card-editor.js';
 
@@ -604,7 +605,7 @@ export function renderPage2Charts(data, root, updatesData = null) {
     }
   }
 
-  // Risk score charts (individual asset layout)
+  // Risk score pie charts (individual asset layout)
   if (updatesData && updatesData.riskScores) {
     ['property', 'windHail', 'crime', 'wildfire'].forEach(key => {
       const container = el.querySelector(`[data-risk="${key}"]`);
@@ -616,11 +617,9 @@ export function renderPage2Charts(data, root, updatesData = null) {
         label: cat,
         value: rs.values[ci],
       }));
-      createHBarChart(canvas, chartData, {
-        valueFormatter: v => v + '%',
-        labelWidth: 42,
-        valueWidth: 32,
-      });
+      // Reverse colors so best category (last) gets darkest navy
+      const pieColors = ['#C5DCE8', '#8FBAD2', '#5A98B8', '#2E7BA0', '#0A5383'];
+      createPieChart(canvas, chartData, { colors: pieColors });
     });
   }
 }

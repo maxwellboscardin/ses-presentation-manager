@@ -77,13 +77,12 @@
 
   "underwritingUpdate": {
     "observations": [
-      "Refining program offering to align with current market conditions while maintaining consecutive profitability",
-      "Target bind ratios identified by state; internal processes retooled to calibrate accordingly",
-      "Expanding London UW collaboration; explicit relay of terms needed to win accounts",
-      "Renewal workflow improvements driving strong retention; 60-75 day head start with weekly strategic calls",
-      "Evolving broker management approach across wholesale and retail partnerships",
-      "Building UW playbook, refining onboarding, investing in training and peer reviews",
-      "Proactively quoting excess liability to close gaps on upfront due diligence"
+      "Expanded collaboration with Underwriters on renewals and new business opportunities",
+      "A long track record of profitability demonstrates our underwriting discipline. Seeking increased flexibility to refine and adjust to changing market conditions.",
+      "Committed to regular ITV evaluations for new business.",
+      "We have applied correlations between rates and target bind ratios at the state level.",
+      "Weekly strategy calls and thoughtful, detailed submissions are driving strong renewal results.",
+      "Exploring ways to improve our ability to quote strong excess liability options."
     ]
   },
 
@@ -164,7 +163,8 @@
       "Salesforce implementation planned for late Q2",
       "Actuarial model refresh exercises planned throughout the year",
       "Coherent Spark live for QUBIE as of Nov 2025. Phase two planning underway to move away from hardcoded risk modeling for all products",
-      "Broker portal that supports appointments and submissions"
+      "Broker portal that supports appointments and submissions",
+      "Redeveloping and consolidating our portfolio and MF applications into a customer-friendly dynamic webform"
     ]
   },
 
