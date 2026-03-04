@@ -1,10 +1,10 @@
 // Global Editor — Matrix view: rows = contracts, columns = pages
 // Each row: cover | overview | snapshot | composition | performance | [updates | sqb] | back cover
 
-import { buildPage1 as buildFlipbookPage1, buildPage2 as buildFlipbookPage2, renderPage1Charts as renderFlipbookPage1Charts, renderPage2Charts as renderFlipbookPage2Charts, buildMFPage1, renderMFPage1Charts } from '../flipbook/contract-spread.js';
+import { buildPage1 as buildFlipbookPage1, buildPage2 as buildFlipbookPage2, renderPage1Charts as renderFlipbookPage1Charts, renderPage2Charts as renderFlipbookPage2Charts, buildMFPage1, buildMFPage2, renderMFPage1Charts } from '../flipbook/contract-spread.js';
 import { buildPage as buildStatPage, renderAllCharts as renderStatCharts } from '../stat-sheet/contract-stat-sheet.js';
 import { buildOverviewPage, buildCoverPage, buildBackCoverPage, buildBlankPage } from '../presentation/contract-presentation.js';
-import { buildUpdatesPage, renderUpdatesCharts, buildSqbPage, renderSqbCharts } from '../updates/contract-updates.js';
+import { buildSqbPage, renderSqbCharts } from '../updates/contract-updates.js';
 import { initCardEditor, replayAnimations } from '../../components/card-editor.js';
 
 // Maps _updated keys from JSON to card header text(s) in the rendered pages
@@ -135,21 +135,22 @@ export async function renderGlobalEditor(root) {
     // Spread 2: Composition (left) + Performance (right)
     const spread2 = makeEl('div', 'ge-spread');
     addCell(spread2, buildFlipbookPage1(contractData), null);
-    addCell(spread2, buildFlipbookPage2(contractData), null, 'right');
+    addCell(spread2, buildFlipbookPage2(contractData, updatesData), null, 'right');
     row.appendChild(spread2);
 
-    // Spread 3: Updates/SQB (left) + MF Composition (right, 1258 only)
+    // Spread 3: Updates/SQB or MF Composition
     const spread3 = makeEl('div', 'ge-spread');
-    if (updatesData) {
-      addCell(spread3, buildUpdatesPage(updatesData), xrefTag('updates', entry.shortLabel));
-    } else if (sqbData) {
-      addCell(spread3, buildSqbPage(sqbData), xrefTag('sqbPortfolio', entry.shortLabel));
-    } else {
-      addEmptyCell(spread3);
-    }
     if (contractData.multiFamily) {
-      addCell(spread3, buildMFPage1(contractData), null, 'right');
+      addCell(spread3, buildMFPage1(contractData), null);
+      addCell(spread3, buildMFPage2(contractData), null, 'right');
     } else {
+      if (updatesData) {
+        addEmptyCell(spread3);
+      } else if (sqbData) {
+        addCell(spread3, buildSqbPage(sqbData), xrefTag('sqbPortfolio', entry.shortLabel));
+      } else {
+        addEmptyCell(spread3);
+      }
       addEmptyCell(spread3);
     }
     row.appendChild(spread3);
@@ -166,13 +167,11 @@ export async function renderGlobalEditor(root) {
     requestAnimationFrame(() => {
       renderStatCharts(statData, row);
       renderFlipbookPage1Charts(contractData, row);
-      renderFlipbookPage2Charts(contractData, row);
+      renderFlipbookPage2Charts(contractData, row, updatesData);
       if (contractData.multiFamily) {
         renderMFPage1Charts(contractData, row);
       }
-      if (updatesData) {
-        renderUpdatesCharts(updatesData, row);
-      } else if (sqbData) {
+      if (sqbData) {
         renderSqbCharts(sqbData, row);
       }
     });

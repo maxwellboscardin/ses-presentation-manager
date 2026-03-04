@@ -1,17 +1,29 @@
 // Contract Presentation — Unified Flipbook with Navigation
 
-import { buildPage1 as buildFlipbookPage1, buildPage2 as buildFlipbookPage2, renderPage1Charts as renderFlipbookPage1Charts, renderPage2Charts as renderFlipbookPage2Charts, buildMFPage1, renderMFPage1Charts } from '../flipbook/contract-spread.js';
+import { buildPage1 as buildFlipbookPage1, buildPage2 as buildFlipbookPage2, renderPage1Charts as renderFlipbookPage1Charts, renderPage2Charts as renderFlipbookPage2Charts, buildMFPage1, buildMFPage2, renderMFPage1Charts } from '../flipbook/contract-spread.js';
 import { buildPage as buildStatPage, renderAllCharts as renderStatCharts } from '../stat-sheet/contract-stat-sheet.js';
-import { buildUpdatesPage, renderUpdatesCharts, buildSqbPage, renderSqbCharts } from '../updates/contract-updates.js';
+import { buildSqbPage, renderSqbCharts } from '../updates/contract-updates.js';
 import { initCardEditor, replayAnimations } from '../../components/card-editor.js';
 
 export async function renderPresentation(container, contractDataUrl, statSheetDataUrl, config = {}) {
+  // Hide container until background images are preloaded
+  container.style.opacity = '0';
+
+  // Preload background images in parallel with data fetches
+  const bgImages = ['../assets/bg-cover.png', '../assets/bg-left.png', '../assets/bg-right.png'];
+  const preloads = bgImages.map(src => new Promise(resolve => {
+    const img = new Image();
+    img.onload = resolve;
+    img.onerror = resolve; // don't block on failure
+    img.src = src;
+  }));
+
   // Fetch data files in parallel
   const fetches = [fetch(contractDataUrl), fetch(statSheetDataUrl)];
   if (config.updatesDataUrl) fetches.push(fetch(config.updatesDataUrl));
   if (config.sqbDataUrl) fetches.push(fetch(config.sqbDataUrl));
 
-  const responses = await Promise.all(fetches);
+  const [responses] = await Promise.all([Promise.all(fetches), ...preloads]);
   const contractData = await responses[0].json();
   const statData = await responses[1].json();
   let updatesData = null;
@@ -26,7 +38,6 @@ export async function renderPresentation(container, contractDataUrl, statSheetDa
   if (config.code) contractData.code = config.code;
   if (config.product) contractData.product = config.product;
 
-  const sectionLabels = ['Cover', 'Snapshot', 'Composition'];
   const chartRenderers = [];
   let currentIndex = 0;
 
@@ -44,7 +55,7 @@ export async function renderPresentation(container, contractDataUrl, statSheetDa
   // Section 2: Spread 2 — existing flipbook pages
   const spread2Section = buildSection('spread');
   spread2Section.appendChild(buildFlipbookPage1(contractData));
-  spread2Section.appendChild(buildFlipbookPage2(contractData));
+  spread2Section.appendChild(buildFlipbookPage2(contractData, updatesData));
 
   const sections = [coverSection, spread1Section, spread2Section];
 
@@ -52,7 +63,7 @@ export async function renderPresentation(container, contractDataUrl, statSheetDa
   chartRenderers[1] = () => renderStatCharts(statData, spread1Section);
   chartRenderers[2] = () => {
     renderFlipbookPage1Charts(contractData, spread2Section);
-    renderFlipbookPage2Charts(contractData, spread2Section);
+    renderFlipbookPage2Charts(contractData, spread2Section, updatesData);
   };
 
   // ─── Conditional MF Composition spread ──────────────────────
@@ -60,9 +71,9 @@ export async function renderPresentation(container, contractDataUrl, statSheetDa
   if (contractData.multiFamily) {
     const mfSpread = buildSection('spread');
     mfSpread.appendChild(buildMFPage1(contractData));
-    mfSpread.appendChild(buildBlankPage());
+    mfSpread.appendChild(buildMFPage2(contractData));
     sections.push(mfSpread);
-    sectionLabels.push('MF Composition');
+
     chartRenderers[sections.length - 1] = () => {
       renderMFPage1Charts(contractData, mfSpread);
     };
@@ -70,22 +81,11 @@ export async function renderPresentation(container, contractDataUrl, statSheetDa
 
   // ─── Conditional extra spreads ────────────────────────────────
 
-  if (updatesData) {
-    // Individual Asset: risk scores + S/Q/B on one page, blank right page
-    const updatesSpread = buildSection('spread');
-    updatesSpread.appendChild(buildUpdatesPage(updatesData));
-    updatesSpread.appendChild(buildBlankPage());
-    sections.push(updatesSpread);
-    sectionLabels.push('Updates');
-    chartRenderers[sections.length - 1] = () => {
-      renderUpdatesCharts(updatesData, updatesSpread);
-    };
-  } else if (sqbData) {
+  if (sqbData) {
     // Portfolio contracts: standalone S/Q/B page
     const sqbSection = buildSection('single');
     sqbSection.appendChild(buildSqbPage(sqbData));
     sections.push(sqbSection);
-    sectionLabels.push('S/Q/B Trends');
     chartRenderers[sections.length - 1] = () => renderSqbCharts(sqbData, sqbSection);
   }
 
@@ -93,7 +93,6 @@ export async function renderPresentation(container, contractDataUrl, statSheetDa
   const backSection = buildSection('single');
   backSection.appendChild(buildBackCoverPage());
   sections.push(backSection);
-  sectionLabels.push('Back Cover');
 
   const chartsRendered = new Array(sections.length).fill(false);
 
@@ -106,23 +105,6 @@ export async function renderPresentation(container, contractDataUrl, statSheetDa
   const nextBtn = buildNavButton('next');
   container.appendChild(prevBtn);
   container.appendChild(nextBtn);
-
-  const dots = buildDots(sections.length);
-  container.appendChild(dots);
-  // Wire dot clicks to goTo
-  dots.querySelectorAll('.pres-dot').forEach((dot, i) => {
-    dot.addEventListener('click', () => goTo(i));
-  });
-
-  const label = document.createElement('div');
-  label.className = 'pres-label';
-  container.appendChild(label);
-
-  const replayBtn = document.createElement('button');
-  replayBtn.className = 'pres-replay';
-  replayBtn.innerHTML = `<svg viewBox="0 0 16 16"><path d="M1.5 1.5v5h5"/><path d="M3.5 10.5a6 6 0 1 0 1.3-6.6L1.5 6.5"/></svg>`;
-  replayBtn.addEventListener('click', () => replayAnimations(sections[currentIndex]));
-  container.appendChild(replayBtn);
 
   prevBtn.addEventListener('click', () => goTo(currentIndex - 1));
   nextBtn.addEventListener('click', () => goTo(currentIndex + 1));
@@ -171,20 +153,16 @@ export async function renderPresentation(container, contractDataUrl, statSheetDa
   function updateNav() {
     prevBtn.disabled = currentIndex === 0;
     nextBtn.disabled = currentIndex === sections.length - 1;
-
-    // Update dots
-    dots.querySelectorAll('.pres-dot').forEach((dot, i) => {
-      dot.classList.toggle('active', i === currentIndex);
-    });
-
-    // Update label
-    label.textContent = sectionLabels[currentIndex];
   }
 
   // ─── Initialize ─────────────────────────────────────────────
 
   goTo(0);
-  initCardEditor();
+  initCardEditor({ readOnly: true });
+
+  // Reveal now that backgrounds are loaded
+  container.style.transition = 'opacity 0.3s';
+  container.style.opacity = '1';
 }
 
 // ─── Section Builder ──────────────────────────────────────────
@@ -243,8 +221,8 @@ export function buildOverviewPage(data) {
               ${overviewStat('85K+', 'Properties Insured')}
               ${overviewStat('$181M', 'Annual GWP')}
               ${overviewStat('$15B', 'Total Insured Value')}
-              ${overviewStat('18.2%', 'CAGR, Past 5 Years')}
-              ${overviewStat('82.4%', 'Account Retention')}
+              ${overviewStat('21.4%', 'CAGR, Past 5 Years')}
+              ${overviewStat('81.6%', 'Account Retention')}
               ${overviewStat('1K+', 'Agent Relationships')}
               ${overviewStat('8K+', 'Investor Clients')}
             </div>
@@ -292,7 +270,7 @@ export function buildOverviewPage(data) {
             'Focus on targeted growth states and improved spread of risk',
             'Exploring various optional coverages',
             'Enhanced user experience across platforms',
-            'Integration of automation, AI, and expanded machine learning',
+            'AI/ML with expanded analytics',
           ])}
         </div>
 
@@ -358,15 +336,3 @@ function buildNavButton(direction) {
   return btn;
 }
 
-// ─── Page Indicator Dots ──────────────────────────────────────
-
-function buildDots(count) {
-  const container = document.createElement('div');
-  container.className = 'pres-dots';
-  for (let i = 0; i < count; i++) {
-    const dot = document.createElement('button');
-    dot.className = 'pres-dot';
-    container.appendChild(dot);
-  }
-  return container;
-}

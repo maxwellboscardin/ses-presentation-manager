@@ -22,6 +22,7 @@ const CARD_SELECTORS = [
 const EDITABLE_TYPES = ['observations-panel', 'kpi-stack', 'icon-kpi-card', 'kpi-row'];
 
 let activeOverlay = null;
+let editorReadOnly = false;
 
 const ANIM_SELECTOR = '.anim-bar-h, .anim-bar-v, .anim-col-v, .anim-line, .anim-gauge, .anim-point, .anim-fade';
 
@@ -115,7 +116,8 @@ function formatGrowthValue(current, { arrow, sign, pct, decimals }) {
   return `${arrow}${sign}${num}${pct}`;
 }
 
-export function initCardEditor() {
+export function initCardEditor(options = {}) {
+  if (options.readOnly) editorReadOnly = true;
   document.addEventListener('click', handleCardClick);
 }
 
@@ -242,7 +244,7 @@ function openOverlay(originalCard) {
 
   // Edit button — for editable card types and chart types with registered editors
   const chartType = clone.getAttribute('data-chart-type');
-  const canEdit = EDITABLE_TYPES.includes(cardType) || (chartType && CHART_EDITORS[chartType]);
+  const canEdit = !editorReadOnly && (EDITABLE_TYPES.includes(cardType) || (chartType && CHART_EDITORS[chartType]));
   if (canEdit) {
     const editBtn = document.createElement('button');
     editBtn.className = 'card-editor-btn';
@@ -1391,6 +1393,9 @@ function getChartOptions(el) {
 
 // Tooltip hover for cloned map cards — lives on the panel (unscaled)
 function initClonedMapTooltips(panel) {
+  // Remove stale tooltips carried over from the original map
+  panel.querySelectorAll('.us-map-tooltip').forEach(el => el.remove());
+
   const tip = document.createElement('div');
   tip.style.cssText = `
     position:absolute;pointer-events:none;opacity:0;

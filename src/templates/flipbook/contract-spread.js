@@ -145,12 +145,11 @@ export function buildPage1(data) {
   return page;
 }
 
-// ─── MF PAGE 1: LOM Multifamily Composition ─────────────────────
+// ─── MF PAGE 1 (left): KPIs + Map ───────────────────────────────
 
 export function buildMFPage1(data) {
   const mf = data.multiFamily;
   const esc = (s) => s.replace(/'/g, '&#39;');
-  const mfBarData = esc(JSON.stringify((mf.topStatesByTiv || []).slice(0, 8).map((s) => ({label: s.state, value: s.tivMillions}))));
   const mfMapSrc = esc(JSON.stringify(mf.statesTivMap || {}));
   const mfMapHighlight = esc(JSON.stringify(data.growthTargets || (mf.topStatesByTiv || []).slice(0, 3).map((s) => s.state)));
 
@@ -163,26 +162,6 @@ export function buildMFPage1(data) {
       </div>
       <div class="page-content">
         <div id="mf-kpis"></div>
-        <div class="page-columns" style="flex: 0 0 auto;">
-          <div class="page-column">
-            <div class="chart-container" data-chart-type="h-bar" data-chart-src='${mfBarData}' data-chart-prefix="$" data-chart-suffix="M" data-chart-decimals="1" data-chart-options='{"labelWidth":40,"valueWidth":60,"barHeight":22,"barGap":12}'>
-              <div class="section-header">Top States by TIV</div>
-              <div class="chart-container__body">
-                <canvas id="mf-chart-states-bar"></canvas>
-              </div>
-            </div>
-          </div>
-          <div class="page-column">
-            <div class="observations-panel" style="flex:1;display:flex;flex-direction:column;">
-              <div class="section-header">Observations</div>
-              <div class="observations-panel__body">
-                <ul>
-                  ${mf.observations.map((o) => `<li>${o}</li>`).join('')}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
         <div class="chart-container" data-chart-type="us-map" data-chart-src='${mfMapSrc}' data-chart-highlight='${mfMapHighlight}' style="flex: 1;">
           <div class="section-header">TIV Concentration</div>
           <div class="chart-container__body">
@@ -202,6 +181,46 @@ export function buildMFPage1(data) {
     { value: mf.assets, label: 'Assets' },
     { value: mf.accounts, label: 'Accounts' },
   ], { label: 'Multifamily Summary' }));
+
+  return page;
+}
+
+// ─── MF PAGE 2 (right): Top States + Observations ──────────────
+
+export function buildMFPage2(data) {
+  const mf = data.multiFamily;
+  const esc = (s) => s.replace(/'/g, '&#39;');
+  const mfBarData = esc(JSON.stringify((mf.topStatesByTiv || []).slice(0, 8).map((s) => ({label: s.state, value: s.tivMillions}))));
+
+  const page = document.createElement('div');
+  page.className = 'page';
+  page.innerHTML = `
+    <div class="page__inner">
+      <div class="page-header">
+        <div class="page-title">${data.contract} <span class="page-title__program">${[mf.code, mf.product, 'Composition'].filter(Boolean).join(' ')}</span></div>
+      </div>
+      <div class="page-content">
+        <div class="chart-container" data-chart-type="h-bar" data-chart-src='${mfBarData}' data-chart-prefix="$" data-chart-suffix="M" data-chart-decimals="1" data-chart-options='{"labelWidth":40,"valueWidth":60}' style="flex: 1; display: flex; flex-direction: column;">
+          <div class="section-header">Top States by TIV</div>
+          <div class="chart-container__body" style="flex: 1;">
+            <canvas id="mf-chart-states-bar"></canvas>
+          </div>
+        </div>
+        <div class="observations-panel" style="flex:1;display:flex;flex-direction:column;">
+          <div class="section-header">Observations</div>
+          <div class="observations-panel__body" id="mf-observations" style="font-size: 22px; line-height: 2; padding: 24px 28px; display: flex; flex-direction: column; justify-content: center; flex: 1;">
+          </div>
+        </div>
+      </div>
+      <img class="page-logo" src="../../assets/ses-logo.dark.png" alt="SES Logo">
+    </div>
+  `;
+
+  // Observations
+  const obsBody = page.querySelector('#mf-observations');
+  if (mf.observations && mf.observations.length > 0) {
+    obsBody.innerHTML = `<ul>${mf.observations.map((o) => `<li>${o}</li>`).join('')}</ul>`;
+  }
 
   return page;
 }
@@ -238,7 +257,7 @@ export function renderMFPage1Charts(data, root) {
 
 // ─── PAGE 2: Performance Data ───────────────────────────────────
 
-export function buildPage2(data) {
+export function buildPage2(data, updatesData = null) {
   // Pre-compute chart data for embedding as attributes
   const lossRatioData = data.lossExperience.annualRatios.map((r) => ({
     label: r.year,
@@ -295,6 +314,52 @@ export function buildPage2(data) {
         </div>
         <div class="section-header">Loss Experience</div>
         <div id="page2-loss-kpis"></div>
+        ${updatesData && updatesData.riskScores ? `
+        <div class="page-columns" style="flex: 0 0 auto;">
+          <div class="page-column" style="flex: 1; display: flex; flex-direction: column;">
+            <div class="chart-container" data-chart-type="v-bar" data-chart-suffix="%" data-chart-src='${JSON.stringify(lossRatioData)}' style="flex: 1; display: flex; flex-direction: column;">
+              <div class="section-header">Annual Loss Ratio</div>
+              <div class="chart-container__body" style="flex: 1;">
+                <canvas id="chart-loss-ratio"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="page-column" style="flex: 1; display: flex; flex-direction: column;">
+            <div class="chart-container" data-chart-type="h-bar" data-chart-src='${lossTypesData}' data-chart-prefix="$" data-chart-suffix="M" data-chart-decimals="2" data-chart-options='{"barColor":"#E97121","labelWidth":90,"valueWidth":55,"barHeight":18,"barGap":10}' style="flex: 1; display: flex; flex-direction: column;">
+              <div class="section-header">Top Loss Types (Incurred, $M)</div>
+              <div class="chart-container__body" style="flex: 1;">
+                <canvas id="chart-loss-types"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; gap: var(--gap-sm); flex: 1;">
+          <div class="chart-container" data-risk="property" style="flex: 1; display: flex; flex-direction: column;">
+            <div class="section-header" style="font-size: 9px; white-space: nowrap;">${updatesData.riskScores.property.title}</div>
+            <div class="chart-container__body" style="flex: 1;">
+              <canvas class="risk-chart-canvas"></canvas>
+            </div>
+          </div>
+          <div class="chart-container" data-risk="windHail" style="flex: 1; display: flex; flex-direction: column;">
+            <div class="section-header" style="font-size: 9px; white-space: nowrap;">${updatesData.riskScores.windHail.title}</div>
+            <div class="chart-container__body" style="flex: 1;">
+              <canvas class="risk-chart-canvas"></canvas>
+            </div>
+          </div>
+          <div class="chart-container" data-risk="crime" style="flex: 1; display: flex; flex-direction: column;">
+            <div class="section-header" style="font-size: 9px; white-space: nowrap;">${updatesData.riskScores.crime.title}</div>
+            <div class="chart-container__body" style="flex: 1;">
+              <canvas class="risk-chart-canvas"></canvas>
+            </div>
+          </div>
+          <div class="chart-container" data-risk="wildfire" style="flex: 1; display: flex; flex-direction: column;">
+            <div class="section-header" style="font-size: 9px; white-space: nowrap;">${updatesData.riskScores.wildfire.title}</div>
+            <div class="chart-container__body" style="flex: 1;">
+              <canvas class="risk-chart-canvas"></canvas>
+            </div>
+          </div>
+        </div>
+        ` : `
         <div class="page-columns" style="flex: 1;">
           <div class="page-column" style="flex: 1; display: flex; flex-direction: column;">
             <div class="chart-container" data-chart-type="v-bar" data-chart-suffix="%" data-chart-src='${JSON.stringify(lossRatioData)}' style="flex: 1; display: flex; flex-direction: column;">
@@ -318,7 +383,7 @@ export function buildPage2(data) {
               </div>
             </div>
           </div>
-        </div>
+        </div>`}
       </div>
       <img class="page-logo" src="../../assets/ses-logo.dark.png" alt="SES Logo">
     </div>
@@ -432,7 +497,7 @@ export function renderPage1Charts(data, root) {
   }
 }
 
-export function renderPage2Charts(data, root) {
+export function renderPage2Charts(data, root, updatesData = null) {
   const el = root || document;
   // Stacked bar chart — deductibles
   const stackedCanvas = el.querySelector('#chart-stacked-bar');
@@ -488,7 +553,7 @@ export function renderPage2Charts(data, root) {
     });
   }
 
-  // H-bar — Property Risk Score
+  // H-bar — Property Risk Score (portfolio layout only)
   if (data.propertyRiskScore) {
     const riskCanvas = el.querySelector('#chart-risk-score');
     if (riskCanvas) {
@@ -498,5 +563,25 @@ export function renderPage2Charts(data, root) {
         valueWidth: 45,
       });
     }
+  }
+
+  // Risk score charts (individual asset layout)
+  if (updatesData && updatesData.riskScores) {
+    ['property', 'windHail', 'crime', 'wildfire'].forEach(key => {
+      const container = el.querySelector(`[data-risk="${key}"]`);
+      if (!container) return;
+      const canvas = container.querySelector('.risk-chart-canvas');
+      if (!canvas) return;
+      const rs = updatesData.riskScores[key];
+      const chartData = rs.categories.map((cat, ci) => ({
+        label: cat,
+        value: rs.values[ci],
+      }));
+      createHBarChart(canvas, chartData, {
+        valueFormatter: v => v + '%',
+        labelWidth: 42,
+        valueWidth: 32,
+      });
+    });
   }
 }

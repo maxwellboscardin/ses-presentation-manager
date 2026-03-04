@@ -331,7 +331,7 @@ export function renderAllCharts(data, root) {
   const rrCanvas = el.querySelector('#chart-renewal-retention');
   if (rrCanvas) {
     createComboChart(rrCanvas, data.renewalRetention.data, {
-      lineValueFormatter: (v) => Math.round(v) + '%',
+      lineValueFormatter: (v) => v.toFixed(1) + '%',
       showLineValues: true,
     });
     const legendContainer = el.querySelector('#legend-renewal-retention');

@@ -125,6 +125,7 @@ export async function createUSMap(container, stateData, options = {}) {
 
   // Tooltip
   const tooltip = document.createElement('div');
+  tooltip.className = 'us-map-tooltip';
   tooltip.style.cssText = `
     position:absolute;pointer-events:none;opacity:0;
     background:#0A5383;color:#fff;padding:4px 10px;border-radius:4px;
