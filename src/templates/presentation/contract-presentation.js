@@ -277,7 +277,7 @@ export function buildOverviewPage(data) {
             '<strong>Scope:</strong> Provides automated, self-service UW platform for brokers and insureds',
             '<strong>Strategy:</strong> Focus on program reach including geographic expansion and eligibility tiers. Adapt user experience to improve retention. Tap into different distribution channels and create API connections to serve a wide range of customers.',
           ])}
-          ${productSegmentCard('Multi-Family Portfolio', [
+          ${productSegmentCard('Multifamily Portfolio', [
             '<strong>Premium:</strong> $3.9M',
             '<strong>Stats:</strong> $5,000 avg premium, 770 assets, 179 accounts, avg. of 4 assets/account',
             '<strong>Scope:</strong> Supports MF portfolios between $1M and $30M',
