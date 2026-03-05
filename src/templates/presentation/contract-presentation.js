@@ -204,7 +204,7 @@ export function buildCoverPage(data) {
       <img class="cover-page__logo" src="../assets/ses-logo.svg" alt="SES Risk Solutions">
       <div class="cover-page__contract">${data.contract}</div>
       <div class="cover-page__program">${data.title}</div>
-      <div class="cover-page__subtitle">Contract Portfolio Review</div>
+      <div class="cover-page__subtitle">Contract Review</div>
     </div>
   `;
   return page;
