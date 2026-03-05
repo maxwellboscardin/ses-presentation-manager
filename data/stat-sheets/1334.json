@@ -78,10 +78,10 @@
 
   "quotesBinds": {
     "data": [
-      { "label": "Q1", "bars": [4360, 1169, 279], "line": 24 },
-      { "label": "Q2", "bars": [6865, 1731, 533], "line": 31 },
-      { "label": "Q3", "bars": [6608, 1597, 486], "line": 30 },
-      { "label": "Q4", "bars": [4887, 1127, 283], "line": 25 }
+      { "label": "Q1", "bars": [849, 87, 328], "line": 39 },
+      { "label": "Q2", "bars": [731, 112, 339], "line": 46 },
+      { "label": "Q3", "bars": [626, 90, 317], "line": 51 },
+      { "label": "Q4", "bars": [592, 149, 368], "line": 62 }
     ],
     "legend": [
       { "label": "Submissions", "color": "#0A5383", "type": "bar" },
