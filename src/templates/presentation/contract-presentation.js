@@ -298,7 +298,7 @@ function productSegmentCard(title, bullets) {
       <div class="section-header" style="border-radius: 0;">${title}</div>
       <div class="observations-panel__body" style="padding: 0;">
       <ul style="padding: 6px 12px 8px 24px; margin: 0; display: flex; flex-direction: column; gap: 2px; flex: 1;">
-        ${bullets.map(b => `<li style="font-size: 10px; color: var(--ses-text-muted); line-height: 1.4;">${b}</li>`).join('')}
+        ${bullets.map(b => `<li style="font-size: 16px; color: var(--ses-text-muted); line-height: 1.4;">${b}</li>`).join('')}
       </ul>
       </div>
     </div>
