@@ -185,7 +185,7 @@
 }
 
 .growth-indicator--down {
-  color: #C53030;
+  color: var(--ses-text-muted);
 }
 
 .growth-indicator--flat {
