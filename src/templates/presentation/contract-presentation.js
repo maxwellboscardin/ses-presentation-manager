@@ -119,16 +119,11 @@ export async function renderPresentation(container, contractDataUrl, statSheetDa
 
   const prevBtn = buildNavButton('prev');
   const nextBtn = buildNavButton('next');
-  const homeBtn = buildHomeButton();
   container.appendChild(prevBtn);
   container.appendChild(nextBtn);
-  container.appendChild(homeBtn);
 
   prevBtn.addEventListener('click', () => goTo(currentIndex - 1));
   nextBtn.addEventListener('click', () => goTo(currentIndex + 1));
-  homeBtn.addEventListener('click', () => {
-    window.location.href = 'index.html';
-  });
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowLeft') goTo(currentIndex - 1);
@@ -355,11 +350,12 @@ function buildNavButton(direction) {
   return btn;
 }
 
-function buildHomeButton() {
-  const btn = document.createElement('button');
-  btn.className = 'pres-home';
-  btn.title = 'Return to Home';
-  btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`;
-  return btn;
-}
+// Home button removed - users should not navigate back to index from presentations
+// function buildHomeButton() {
+//   const btn = document.createElement('button');
+//   btn.className = 'pres-home';
+//   btn.title = 'Return to Home';
+//   btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`;
+//   return btn;
+// }
 
