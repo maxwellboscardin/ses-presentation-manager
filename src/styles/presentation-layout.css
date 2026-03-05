@@ -222,6 +222,41 @@ html, body {
   border-radius: 10px;
 }
 
+/* ─── Home Button ─────────────────────────────────────────── */
+.pres-home {
+  position: fixed;
+  top: 18px;
+  left: 20px;
+  z-index: 200;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(10, 83, 131, 0.55);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, opacity 0.15s;
+  opacity: 0.5;
+}
+
+.pres-home:hover {
+  background: rgba(10, 83, 131, 0.85);
+  opacity: 1;
+}
+
+.pres-home svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 /* ─── Replay Button ───────────────────────────────────────── */
 .pres-replay {
   position: fixed;
@@ -303,6 +338,7 @@ html, body {
   .pres-nav,
   .pres-dots,
   .pres-label,
+  .pres-home,
   .pres-replay,
   .viewer-toolbar {
     display: none !important;
