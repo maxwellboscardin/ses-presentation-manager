@@ -238,10 +238,10 @@ export function buildOverviewPage(data) {
         <!-- Core Competencies — full width text card -->
         <div class="observations-panel" style="flex: 2; background: var(--ses-white); border-radius: var(--radius); overflow: hidden; box-shadow: 0 1px 3px rgba(10,83,131,0.1); display: flex; flex-direction: column;">
           <div class="section-header" style="border-radius: 0;">Core Competencies</div>
-          <div class="observations-panel__body" style="padding: 8px 16px; flex: 1; display: flex; flex-direction: column; justify-content: center;">
-            <div style="font-size: 10px; color: var(--ses-text-muted); line-height: 1.4;">
-              <p style="margin: 0 0 4px 0;"><strong style="color: var(--ses-text);">Data-Driven Underwriting:</strong> In-house actuarial team backed by Alliant Underwriting Solutions. Technical pricing model with loss trend analysis. AI/ML-powered risk scoring at zip-code level using aerial imagery and proximity signals. Precision CAT modeling via RMS outputs and construction modifiers.</p>
-              <p style="margin: 0 0 4px 0;"><strong style="color: var(--ses-text);">Service & Technology:</strong> Tech-enabled, API-ready solutions with self-service platforms. Proprietary quoting and policy management systems (TIMS, QUBIE). PowerBI dashboards delivering live KPIs. Automated scoring, segmentation, and ML workflows.</p>
+          <div class="observations-panel__body" style="padding: 10px 16px; flex: 1; display: flex; flex-direction: column; justify-content: center;">
+            <div style="font-size: 12px; color: var(--ses-text-muted); line-height: 1.45;">
+              <p style="margin: 0 0 5px 0;"><strong style="color: var(--ses-text);">Data-Driven Underwriting:</strong> In-house actuarial team backed by Alliant Underwriting Solutions. Technical pricing model with loss trend analysis. AI/ML-powered risk scoring at zip-code level using aerial imagery and proximity signals. Precision CAT modeling via RMS outputs and construction modifiers.</p>
+              <p style="margin: 0 0 5px 0;"><strong style="color: var(--ses-text);">Service & Technology:</strong> Tech-enabled, API-ready solutions with self-service platforms. Proprietary quoting and policy management systems (TIMS, QUBIE). PowerBI dashboards delivering live KPIs. Automated scoring, segmentation, and ML workflows.</p>
               <p style="margin: 0;"><strong style="color: var(--ses-text);">Distribution:</strong> Longstanding partnerships with top producers across multiple channels. No direct competition with brokers, wholesalers, and networks. Over 18,000 accounts generating nearly $360M in gross written premium.</p>
             </div>
           </div>
@@ -298,7 +298,7 @@ function productSegmentCard(title, bullets) {
       <div class="section-header" style="border-radius: 0;">${title}</div>
       <div class="observations-panel__body" style="padding: 0;">
       <ul style="padding: 6px 12px 8px 24px; margin: 0; display: flex; flex-direction: column; gap: 2px; flex: 1;">
-        ${bullets.map(b => `<li style="font-size: 16px; color: var(--ses-text-muted); line-height: 1.4;">${b}</li>`).join('')}
+        ${bullets.map(b => `<li style="font-size: 14px; color: var(--ses-text-muted); line-height: 1.4;">${b}</li>`).join('')}
       </ul>
       </div>
     </div>
