@@ -1,5 +1,5 @@
 {
-  "contract": "1097",
+  "contract": "1334",
   "title": "Portfolio",
   "lastUpdated": "2025-09-01",
 
@@ -11,7 +11,7 @@
   },
 
   "capacityUtilization": {
-    "currentValue": 0.445,
+    "currentValue": 1.9,
     "maxValue": 5.4,
     "unit": "B",
     "label": "Top 5 States"
@@ -36,22 +36,22 @@
 
   "ctdPremium": {
     "kpis": [
-      { "label": "New Business", "value": "$0", "change": "N/A", "direction": "flat" },
-      { "label": "Retained", "value": "$1.7M", "change": "49.0%", "direction": "up" }
+      { "label": "New Business", "value": "$3.3M", "change": "62.0%", "direction": "down" },
+      { "label": "Retained", "value": "$4.4M", "change": "100%", "direction": "up" }
     ]
   },
 
   "inForcePremium": {
     "kpis": [
-      { "label": "Property", "value": "$2.2M", "change": "26.0%", "direction": "down" },
-      { "label": "GL", "value": "$232K", "change": "2.0%", "direction": "up" }
+      { "label": "Property", "value": "$6.5M", "change": "6.0%", "direction": "up" },
+      { "label": "GL", "value": "$572K", "change": "3.0%", "direction": "up" }
     ]
   },
 
   "iconKpis": [
-    { "icon": "map-pin", "label": "States", "value": "8", "change": "0.0%", "direction": "flat" },
-    { "icon": "building", "label": "Assets", "value": "1,762", "change": "17.0%", "direction": "down" },
-    { "icon": "users", "label": "Accounts", "value": "13", "change": "8.0%", "direction": "down" }
+    { "icon": "map-pin", "label": "States", "value": "39", "change": "3.0%", "direction": "up" },
+    { "icon": "building", "label": "Assets", "value": "3,779", "change": "7.0%", "direction": "up" },
+    { "icon": "users", "label": "Accounts", "value": "3,779", "change": "7.0%", "direction": "up" }
   ],
 
   "underwritingUpdate": {
@@ -93,10 +93,10 @@
 
   "renewalRetention": {
     "data": [
-      { "label": "Q1", "line": 100 },
-      { "label": "Q2", "line": 100 },
-      { "label": "Q3", "line": 100 },
-      { "label": "Q4", "line": 100 }
+      { "label": "Q1", "line": 86 },
+      { "label": "Q2", "line": 80 },
+      { "label": "Q3", "line": 86 },
+      { "label": "Q4", "line": 80 }
     ],
     "legend": [
       { "label": "Retention %", "color": "#E97121", "type": "line" }

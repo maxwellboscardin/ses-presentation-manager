@@ -29,15 +29,17 @@ export function createComboChart(element, data, options = {}) {
     paddingSide = 32,
     barValueFormatter = (v) => v.toString(),
     lineValueFormatter = (v) => v.toString(),
+    yAxisFormatter = (v) => Math.round(v) + '%',
     showBarValues = false,
     showLineValues = true,
+    showYAxis = true,
   } = options;
 
   const { svg, w: drawWidth, h: drawHeight } = prepareSvg(element);
 
   // Detect line-only mode (no bars in data)
   const hasBars = data[0].bars && data[0].bars.length > 0;
-  const axisPadding = hasBars ? 0 : 30;
+  const axisPadding = (!hasBars && showYAxis) ? 30 : 0;
 
   const chartLeft = paddingSide + axisPadding;
   const chartRight = drawWidth - paddingSide;
@@ -75,7 +77,7 @@ export function createComboChart(element, data, options = {}) {
     }));
 
     // Y-axis labels in line-only mode
-    if (!hasBars) {
+    if (!hasBars && showYAxis) {
       const axisVal = maxLineValue - (i / gridCount) * (maxLineValue - minLineValue);
       const axisLabel = svgEl('text', {
         x: chartLeft - 6,
@@ -87,7 +89,7 @@ export function createComboChart(element, data, options = {}) {
         'text-anchor': 'end',
         'dominant-baseline': 'central',
       });
-      axisLabel.textContent = Math.round(axisVal) + '%';
+      axisLabel.textContent = yAxisFormatter(axisVal);
       svg.appendChild(axisLabel);
     }
   }

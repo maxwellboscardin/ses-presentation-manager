@@ -14,7 +14,7 @@
   },
 
   "capacityUtilization": {
-    "currentValue": 3.3,
+    "currentValue": 2.21,
     "maxValue": 5.4,
     "unit": "B",
     "label": "Top 5 States"
@@ -39,15 +39,15 @@
 
   "ctdPremium": {
     "kpis": [
-      { "label": "Written", "value": "$643K", "change": "+12.3%", "direction": "up" },
-      { "label": "Target", "value": "$2.8M", "change": "+5.0%", "direction": "up" }
+      { "label": "New Business", "value": "$726K", "change": "74.0%", "direction": "down" },
+      { "label": "Retained", "value": "$6.2M", "change": "12.0%", "direction": "up" }
     ]
   },
 
   "inForcePremium": {
     "kpis": [
-      { "label": "Annual", "value": "$9.6M", "change": "+8.7%", "direction": "up" },
-      { "label": "Monthly", "value": "$1.4M", "change": "+3.1%", "direction": "up" }
+      { "label": "Property", "value": "$8.2M", "change": "18.0%", "direction": "down" },
+      { "label": "GL", "value": "$1.0M", "change": "25.0%", "direction": "down" }
     ]
   },
 
@@ -55,34 +55,35 @@
     {
       "icon": "map-pin",
       "label": "States",
-      "value": "30",
-      "change": "+3.5%",
-      "direction": "up"
+      "value": "29",
+      "change": "0.0%",
+      "direction": "flat"
     },
     {
       "icon": "building",
       "label": "Assets",
-      "value": "10,757",
-      "change": "+8.2%",
-      "direction": "up"
+      "value": "9,121",
+      "change": "11.0%",
+      "direction": "down"
     },
     {
       "icon": "users",
       "label": "Accounts",
-      "value": "118",
-      "change": "FLAT",
-      "direction": "flat"
+      "value": "100",
+      "change": "12.0%",
+      "direction": "down"
     }
   ],
 
   "underwritingUpdate": {
     "observations": [
-      "Expanded collaboration with Underwriters on renewals and new business opportunities",
-      "A long track record of profitability demonstrates our underwriting discipline. Seeking increased flexibility to refine and adjust to changing market conditions.",
-      "Committed to regular ITV evaluations for new business.",
-      "We have applied correlations between rates and target bind ratios at the state level.",
-      "Weekly strategy calls and thoughtful, detailed submissions are driving strong renewal results.",
-      "Exploring ways to improve our ability to quote strong excess liability options."
+      "Expanded collaboration with Underwriters on renewals and new business",
+      "With a long track record of profitability and underwriting discipline we are seeking increased flexibility to refine and adjust to changing market conditions",
+      "Applied correlations between rates and target bind ratios at the state level",
+      "Exploring ways to improve our ability to quote strong excess liability options",
+      "Introduced quarterly peer reviews for Underwriters",
+      "Continued investment in third-party data to make informed underwriting decisions",
+      "Redeveloping and consolidating our portfolio and MF applications into a customer-friendly dynamic webform"
     ]
   },
 
@@ -135,19 +136,20 @@
 
   "organizationalUpdate": {
     "observations": [
+      "Completed succession plan for Underwriting leadership",
       "Operational restructuring has driven efficiency, dexterity, and alignment in sales, UW, and renewals",
+      "BPO (RSP) moving from China to Malaysia in 2027 – transition underway",
       "Expanded distribution and products through integration of Orarius and New Jersey Package into the SES program",
-      "Tremendous potential to expand our business offering, enable scale, and introduce new competencies through insurance tracking capabilities",
-      "BPO (RSP) moving from China to Malaysia in 2027 – transition underway"
+      "Tremendous potential to expand our business offering, enable scale, and introduce new competencies through insurance tracking capabilities"
     ]
   },
 
   "claimsInsights": {
     "observations": [
-      "Slip & Fall and BI make up 70% of claims",
-      "100% of Animal Bite and 88% of BI Claims are under $25K",
-      "NJ, CT and PA (NE) make up over 40% of all GL claims",
-      "$25K-$100K and $10K-$25K make up 80% of claims"
+      "Slip & Fall and bodily injury make up 70% of claims",
+      "100% of Animal Bite and 88% of bodily injury Claims are under $25K",
+      "NJ, CT and PA (Northeast) make up over 40% of all GL claims",
+      "80% of claims fall between $10k and $100k"
     ],
     "table": {
       "columns": ["2023", "2024", "2025"],

@@ -254,7 +254,7 @@ export function buildOverviewPage(data) {
             '<strong>Premium:</strong> $12M',
             '<strong>Stats:</strong> $1,852 avg premium, 6,502 assets',
             '<strong>Scope:</strong> Provides automated, self-service UW platform for brokers and insureds',
-            '<strong>Strategy:</strong> Focus on program reach including geographic expansion and eligibility tiers. Adapt agent journey to improve retention. Tap into different distribution channels and create API connections to serve a wide range of customers.',
+            '<strong>Strategy:</strong> Focus on program reach including geographic expansion and eligibility tiers. Adapt user experience to improve retention. Tap into different distribution channels and create API connections to serve a wide range of customers.',
           ])}
           ${productSegmentCard('Multi-Family Portfolio', [
             '<strong>Premium:</strong> $3.9M',
@@ -268,9 +268,7 @@ export function buildOverviewPage(data) {
             'General Liability coverage considerations (GSE compliant)',
             'Retrospective refunds for loss free/low loss results (property-only)',
             'Focus on targeted growth states and improved spread of risk',
-            'Exploring various optional coverages',
             'Enhanced user experience across platforms',
-            'AI/ML with expanded analytics',
           ])}
         </div>
 

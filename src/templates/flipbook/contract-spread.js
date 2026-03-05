@@ -292,7 +292,6 @@ export function buildPage2(data, updatesData = null) {
         <div class="page-title">${data.contract} <span class="page-title__program">${[data.code, data.product, 'Performance'].filter(Boolean).join(' ')}</span></div>
       </div>
       <div class="page-content">
-        <div class="section-header">Deductibles & Average Rates</div>
         <div class="page-columns">
           <div class="page-column">
             <div class="chart-container" data-chart-type="stacked-bar" data-chart-src='${stackedData}' data-chart-tiers='${tierLabels}'>
@@ -314,7 +313,6 @@ export function buildPage2(data, updatesData = null) {
             </div>
           </div>
         </div>
-        <div class="section-header">Loss Experience</div>
         <div id="page2-loss-kpis"></div>
         ${updatesData && updatesData.riskScores ? `
         <div class="page-columns" style="flex: 0 0 auto;">
@@ -589,6 +587,7 @@ export function renderPage2Charts(data, root, updatesData = null) {
       createComboChart(ccCanvas, data.carrierClaimCount.data, {
         lineValueFormatter: (v) => Math.round(v).toString(),
         showLineValues: true,
+        showYAxis: false,
       });
     }
   }

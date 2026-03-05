@@ -139,8 +139,11 @@ function buildRow1(data) {
         <div class="kpi-stack__group-label">CTD Premium</div>
         <div class="kpi-stack__group-values">
           ${data.ctdPremium.kpis.map((k) => `
-            <span class="kpi-stack__value">${k.value}</span>
-            ${k.change ? `<span class="growth-indicator growth-indicator--${k.direction}">${directionArrow(k.direction)}${k.change}</span>` : ''}
+            <div class="kpi-stack__item">
+              <div class="kpi-stack__item-label">${k.label}</div>
+              <span class="kpi-stack__value">${k.value}</span>
+              ${k.change ? `<span class="growth-indicator growth-indicator--${k.direction}">${directionArrow(k.direction)}${k.change}</span>` : ''}
+            </div>
           `).join('<span class="kpi-stack__divider">|</span>')}
         </div>
       </div>
@@ -148,8 +151,11 @@ function buildRow1(data) {
         <div class="kpi-stack__group-label">In Force Premium</div>
         <div class="kpi-stack__group-values">
           ${data.inForcePremium.kpis.map((k) => `
-            <span class="kpi-stack__value">${k.value}</span>
-            ${k.change ? `<span class="growth-indicator growth-indicator--${k.direction}">${directionArrow(k.direction)}${k.change}</span>` : ''}
+            <div class="kpi-stack__item">
+              <div class="kpi-stack__item-label">${k.label}</div>
+              <span class="kpi-stack__value">${k.value}</span>
+              ${k.change ? `<span class="growth-indicator growth-indicator--${k.direction}">${directionArrow(k.direction)}${k.change}</span>` : ''}
+            </div>
           `).join('<span class="kpi-stack__divider">|</span>')}
         </div>
       </div>
@@ -353,6 +359,7 @@ export function renderAllCharts(data, root) {
     createComboChart(rrCanvas, data.renewalRetention.data, {
       lineValueFormatter: (v) => v.toFixed(1) + '%',
       showLineValues: true,
+      showYAxis: false,
     });
     const legendContainer = el.querySelector('#legend-renewal-retention');
     if (legendContainer) {

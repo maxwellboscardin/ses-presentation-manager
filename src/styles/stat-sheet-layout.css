@@ -260,13 +260,30 @@
   display: flex;
   justify-content: center;
   gap: var(--gap-sm);
-  align-items: baseline;
+  align-items: flex-end;
+}
+
+.kpi-stack__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.kpi-stack__item-label {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--ses-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: -2px;
 }
 
 .kpi-stack__value {
   font-size: 20px;
   font-weight: 700;
   color: var(--ses-text);
+  line-height: 1;
 }
 
 .kpi-stack__group-values .growth-indicator {
