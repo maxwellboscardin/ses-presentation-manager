@@ -260,7 +260,7 @@
   display: flex;
   justify-content: center;
   gap: var(--gap-sm);
-  align-items: flex-end;
+  align-items: flex-start;
 }
 
 .kpi-stack__item {
