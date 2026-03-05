@@ -125,8 +125,9 @@ html, body {
 
 .back-cover-content__text {
   font-family: var(--font-family);
-  font-size: 14px;
-  color: var(--ses-text-muted);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ses-navy);
 }
 
 /* ─── Navigation Arrows ────────────────────────────────────── */
