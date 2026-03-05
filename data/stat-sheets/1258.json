@@ -162,6 +162,7 @@
 
   "onDeck": {
     "observations": [
+      "Melissa Data going live in Q1, will add geocoding for improved address verification",
       "Salesforce implementation planned for late Q2",
       "Actuarial model refresh exercises planned throughout the year",
       "Coherent Spark live for QUBIE as of Nov 2025. Phase two planning underway to move away from hardcoded risk modeling for all products",
