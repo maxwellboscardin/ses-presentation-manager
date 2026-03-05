@@ -67,8 +67,10 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 24px;
-  max-width: 420px;
+  width: 420px;
+  aspect-ratio: 1 / 1;
 }
 
 .cover-page__logo {
