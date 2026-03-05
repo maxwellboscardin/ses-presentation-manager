@@ -5,7 +5,7 @@
   "title": "SFR Portfolio",
   "lastUpdated": "2025-09-01",
   "_updated": ["statesTivMap", "portfolioKpis", "lossExperience", "deductibles", "averageRates"],
-  "growthTargets": ["WA", "OR", "NV", "AZ", "OH", "NC", "SC", "CO", "GA"],
+  "growthTargets": ["WA", "OR", "NV", "AZ", "FL", "OH", "NC", "SC", "CO", "GA"],
 
   "portfolio": {
     "totalAnnualPremium": "$5M",
