@@ -12,7 +12,7 @@
 
   "capacityUtilization": {
     "currentValue": 1.9,
-    "maxValue": 5.4,
+    "maxValue": 2.0,
     "unit": "B",
     "label": "Top 5 States"
   },
