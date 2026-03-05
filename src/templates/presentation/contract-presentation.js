@@ -332,7 +332,7 @@ export function buildBlankPage() {
 
 export function buildBackCoverPage() {
   const page = document.createElement('div');
-  page.className = 'cover-page';
+  page.className = 'cover-page back-cover';
   page.innerHTML = `
     <div class="cover-card">
       <img class="cover-page__logo" src="../assets/ses-logo.svg" alt="SES Risk Solutions">
