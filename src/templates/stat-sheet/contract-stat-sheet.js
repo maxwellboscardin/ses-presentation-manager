@@ -269,6 +269,7 @@ function buildRow4(data) {
     <div class="chart-container__body">
       <div class="chart-canvas-wrap"><canvas id="chart-quotes-binds"></canvas></div>
       <div id="legend-quotes-binds"></div>
+      ${data.quotesBinds.footnote ? `<div class="chart-footnote">${data.quotesBinds.footnote}</div>` : ''}
     </div>
   `;
   row.appendChild(qbCard);

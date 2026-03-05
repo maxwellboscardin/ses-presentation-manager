@@ -109,7 +109,8 @@
       { "label": "Quotes", "color": "#8FBAD2", "type": "bar" },
       { "label": "Binds", "color": "#E97121", "type": "bar" },
       { "label": "Bind %", "color": "#4CAF50", "type": "line" }
-    ]
+    ],
+    "footnote": "Representative of the entire SES SFR Portfolio"
   },
 
   "renewalRetention": {
