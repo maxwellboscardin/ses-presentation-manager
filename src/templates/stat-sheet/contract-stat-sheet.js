@@ -5,8 +5,17 @@ import { createComboChart, createComboLegend } from '../../components/combo-char
 import { initCardEditor } from '../../components/card-editor.js';
 
 export async function renderStatSheet(container, dataUrl) {
-  const res = await fetch(dataUrl);
+  const res = await fetch(`${dataUrl}?t=${Date.now()}`, { cache: 'no-store' });
   const data = await res.json();
+
+  // DEBUG: Log what was loaded
+  console.log('🔍 STAT SHEET DEBUG:');
+  console.log('  Data URL:', dataUrl);
+  console.log('  Contract:', data.contract);
+  if (data.quotesBinds) {
+    console.log('  Q1 Submissions:', data.quotesBinds.data[0].bars[0]);
+    console.log('  Has Footnote:', !!data.quotesBinds.footnote);
+  }
 
   const viewport = document.createElement('div');
   viewport.className = 'stat-sheet-viewport';

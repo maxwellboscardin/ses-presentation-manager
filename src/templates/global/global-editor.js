@@ -23,7 +23,7 @@ const UPDATED_KEY_TO_HEADERS = {
 const CONTRACTS = [
   { id: '1258', shortLabel: '1258 LOC/LOM', code: 'LOC', product: 'Portfolio', title: 'Portfolio + Multifamily', contract: '../data/contracts/1258.json', stat: '../data/stat-sheets/1258.json' },
   { id: '1334-ceg', shortLabel: '1334 CEG', code: 'CEG', product: 'Portfolio', title: 'Portfolio', contract: '../data/contracts/1334-ceg.json', stat: '../data/stat-sheets/1334.json' },
-  { id: '1334-ces', shortLabel: '1334 CES', code: 'CES', product: 'Individual Asset', title: 'Individual Asset', contract: '../data/contracts/1334-ces.json', stat: '../data/stat-sheets/1334.json', updates: '../data/updates/1334-ces.json' },
+  { id: '1334-ces', shortLabel: '1334 CES', code: 'CES', product: 'Individual Asset', title: 'Individual Asset', contract: '../data/contracts/1334-ces.json', stat: '../data/stat-sheets/1334-ces.json', updates: '../data/updates/1334-ces.json' },
   { id: '1465', shortLabel: '1465 QBS', code: 'QBS', product: 'Individual Asset', title: 'Individual Asset', contract: '../data/contracts/1465.json', stat: '../data/stat-sheets/1465.json', updates: '../data/updates/1465-qbs.json' },
   { id: '1097', shortLabel: '1097 LOL', code: 'LOL', product: 'Portfolio', title: 'Portfolio', contract: '../data/contracts/1097.json', stat: '../data/stat-sheets/1097.json' },
 ];

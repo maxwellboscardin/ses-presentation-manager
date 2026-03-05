@@ -18,14 +18,30 @@ export async function renderPresentation(container, contractDataUrl, statSheetDa
     img.src = src;
   }));
 
-  // Fetch data files in parallel
-  const fetches = [fetch(contractDataUrl), fetch(statSheetDataUrl)];
-  if (config.updatesDataUrl) fetches.push(fetch(config.updatesDataUrl));
-  if (config.sqbDataUrl) fetches.push(fetch(config.sqbDataUrl));
+  // Fetch data files in parallel (cache-busting with timestamp)
+  const ts = Date.now();
+  const fetches = [
+    fetch(`${contractDataUrl}?t=${ts}`, { cache: 'no-store' }),
+    fetch(`${statSheetDataUrl}?t=${ts}`, { cache: 'no-store' })
+  ];
+  if (config.updatesDataUrl) fetches.push(fetch(`${config.updatesDataUrl}?t=${ts}`, { cache: 'no-store' }));
+  if (config.sqbDataUrl) fetches.push(fetch(`${config.sqbDataUrl}?t=${ts}`, { cache: 'no-store' }));
 
   const [responses] = await Promise.all([Promise.all(fetches), ...preloads]);
   const contractData = await responses[0].json();
   const statData = await responses[1].json();
+
+  // DEBUG: Log which files were loaded and their submissions data
+  console.log('🔍 DEBUG: Loaded files:');
+  console.log('  Contract URL:', contractDataUrl);
+  console.log('  Stat Sheet URL:', statSheetDataUrl);
+  console.log('  Stat Sheet Contract:', statData.contract);
+  console.log('  Stat Sheet Title:', statData.title);
+  if (statData.quotesBinds) {
+    console.log('  Q1 Submissions:', statData.quotesBinds.data[0].bars[0]);
+    console.log('  Has Footnote:', !!statData.quotesBinds.footnote);
+    if (statData.quotesBinds.footnote) console.log('  Footnote:', statData.quotesBinds.footnote);
+  }
   let updatesData = null;
   let sqbData = null;
 

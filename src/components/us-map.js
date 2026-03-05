@@ -41,7 +41,7 @@ export async function createUSMap(container, stateData, options = {}) {
   const highlightSet = new Set(highlightStates.map((s) => s.toUpperCase()));
 
   // Fetch SVG
-  const res = await fetch(svgUrl);
+  const res = await fetch(svgUrl, { cache: 'no-store' });
   const svgText = await res.text();
 
   // Parse into DOM

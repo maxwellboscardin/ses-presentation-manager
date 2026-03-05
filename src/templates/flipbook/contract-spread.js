@@ -11,7 +11,7 @@ import { createUSMap } from '../../components/us-map.js';
 import { initCardEditor } from '../../components/card-editor.js';
 
 export async function renderContractSpread(container, dataUrl) {
-  const res = await fetch(dataUrl);
+  const res = await fetch(`${dataUrl}?t=${Date.now()}`, { cache: 'no-store' });
   const data = await res.json();
 
   const flipbook = document.createElement('div');
