@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>1334 Contract Reviews</title>
+  <style>
+    @font-face { font-family: 'Gilroy'; src: url('../fonts/Gilroy-Regular.otf'); font-weight: 400; }
+    @font-face { font-family: 'Gilroy'; src: url('../fonts/Gilroy-Medium.otf'); font-weight: 500; }
+    @font-face { font-family: 'Gilroy'; src: url('../fonts/Gilroy-SemiBold.otf'); font-weight: 600; }
+    @font-face { font-family: 'Gilroy'; src: url('../fonts/Gilroy-Bold.otf'); font-weight: 700; }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Gilroy', sans-serif;
+      background: #1a1a2e;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .presentations {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .cover-link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      width: 220px;
+      transition: transform 0.2s;
+    }
+    .cover-link:hover {
+      transform: translateY(-8px);
+    }
+    .cover-link:hover .cover-thumb {
+      box-shadow: 0 16px 48px rgba(0,0,0,0.6);
+    }
+
+    .cover-thumb {
+      width: 220px;
+      height: 285px;
+      background: url('../assets/bg-cover.png') center / cover no-repeat;
+      border-radius: 8px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.4);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: box-shadow 0.2s;
+    }
+
+    .cover-thumb__card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(10,83,131,0.15);
+      padding: 18px 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      max-width: 170px;
+    }
+
+    .cover-thumb__logo { height: 22px; width: auto; }
+    .cover-thumb__contract { font-size: 28px; font-weight: 700; color: #0A5383; text-align: center; line-height: 1; }
+    .cover-thumb__program { font-size: 11px; font-weight: 500; color: #666; text-align: center; line-height: 1.3; }
+    .cover-thumb__subtitle { font-size: 8px; font-weight: 500; color: #666; text-align: center; opacity: 0.7; }
+  </style>
+</head>
+<body>
+  <div class="presentations">
+    <a href="1334-ceg-presentation.html" class="cover-link">
+      <div class="cover-thumb">
+        <div class="cover-thumb__card">
+          <img class="cover-thumb__logo" src="../assets/ses-logo.svg" alt="SES">
+          <div class="cover-thumb__contract">1334</div>
+          <div class="cover-thumb__program">CEG Portfolio</div>
+          <div class="cover-thumb__subtitle">Contract Review</div>
+        </div>
+      </div>
+    </a>
+    <a href="1334-ces-presentation.html" class="cover-link">
+      <div class="cover-thumb">
+        <div class="cover-thumb__card">
+          <img class="cover-thumb__logo" src="../assets/ses-logo.svg" alt="SES">
+          <div class="cover-thumb__contract">1334</div>
+          <div class="cover-thumb__program">CES Individual Asset</div>
+          <div class="cover-thumb__subtitle">Contract Review</div>
+        </div>
+      </div>
+    </a>
+  </div>
+</body>
+</html>
