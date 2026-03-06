@@ -278,7 +278,9 @@ export function buildPage2(data, updatesData = null) {
     label: q, value: data.averageRates.chartRates[i],
   }))));
 
-  const lossTypesData = esc(JSON.stringify(data.lossExperience.topLossTypes.map((lt) => ({
+  // Sort loss types by amount in descending order
+  const sortedLossTypes = [...data.lossExperience.topLossTypes].sort((a, b) => b.amountMillions - a.amountMillions);
+  const lossTypesData = esc(JSON.stringify(sortedLossTypes.map((lt) => ({
     label: lt.type, value: lt.amountMillions,
   }))));
 
@@ -562,14 +564,16 @@ export function renderPage2Charts(data, root, updatesData = null) {
     });
   }
 
-  // Horizontal bar chart — top loss types
+  // Horizontal bar chart — top loss types (sorted descending by amount)
   const lossTypesCanvas = el.querySelector('#chart-loss-types');
   if (lossTypesCanvas) {
-    const lossTypesData = data.lossExperience.topLossTypes.map((lt) => ({
-      label: lt.type,
-      value: lt.amountMillions,
-      color: '#E97121',
-    }));
+    const lossTypesData = [...data.lossExperience.topLossTypes]
+      .sort((a, b) => b.amountMillions - a.amountMillions)
+      .map((lt) => ({
+        label: lt.type,
+        value: lt.amountMillions,
+        color: '#E97121',
+      }));
     createHBarChart(lossTypesCanvas, lossTypesData, {
       barColor: '#E97121',
       valueFormatter: (v) => `$${v.toFixed(2)}M`,
