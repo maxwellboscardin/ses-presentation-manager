@@ -47,9 +47,9 @@
   },
 
   "lossExperience": {
-    "earnedPremium5yr": "$0.00M",
-    "incurredLosses5yr": "$0.00M",
-    "lossRatio5yr": "0.00%",
+    "earnedPremium5yr": "$7.16M",
+    "incurredLosses5yr": "$1.42M",
+    "lossRatio5yr": "19.81%",
     "annualRatios": [
       { "year": "2021", "ratio": 0 },
       { "year": "2022", "ratio": 0 },
