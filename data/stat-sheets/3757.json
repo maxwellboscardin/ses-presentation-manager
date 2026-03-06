@@ -1,0 +1,145 @@
+{
+  "contract": "3757",
+  "title": "Portfolio",
+  "lastUpdated": "2025-09-01",
+
+  "programUpdate": {
+    "observations": [
+      "Placeholder observation 1",
+      "Placeholder observation 2"
+    ]
+  },
+
+  "capacityUtilization": {
+    "currentValue": 0,
+    "maxValue": 0.2,
+    "unit": "B",
+    "label": "Top 5 States"
+  },
+
+  "averageRates": {
+    "chartData": [
+      { "label": "Q3 '24", "value": 0 },
+      { "label": "Q4 '24", "value": 0 },
+      { "label": "Q1 '25", "value": 0 },
+      { "label": "Q2 '25", "value": 0 },
+      { "label": "Q3 '25", "value": 0 }
+    ]
+  },
+
+  "itvBadge": {
+    "value": "$0",
+    "change": "0.00%",
+    "direction": "flat",
+    "label": "Average ITV"
+  },
+
+  "ctdPremium": {
+    "kpis": [
+      { "label": "New Business", "value": "$0", "change": "N/A", "direction": "flat" },
+      { "label": "Retained", "value": "$0", "change": "0.0%", "direction": "flat" }
+    ]
+  },
+
+  "inForcePremium": {
+    "kpis": [
+      { "label": "Property", "value": "$0", "change": "0.0%", "direction": "flat" },
+      { "label": "GL", "value": "$0", "change": "0.0%", "direction": "flat" }
+    ]
+  },
+
+  "iconKpis": [
+    { "icon": "map-pin", "label": "States", "value": "0", "change": "0.0%", "direction": "flat" },
+    { "icon": "building", "label": "Assets", "value": "0", "change": "0.0%", "direction": "flat" },
+    { "icon": "users", "label": "Accounts", "value": "0", "change": "0.0%", "direction": "flat" }
+  ],
+
+  "underwritingUpdate": {
+    "observations": [
+      "Placeholder observation 1",
+      "Placeholder observation 2"
+    ]
+  },
+
+  "propertyRiskScore": {
+    "data": [
+      { "label": "A", "value": 0, "color": "#0A5383" },
+      { "label": "B", "value": 0, "color": "#2E7BA0" },
+      { "label": "C", "value": 0, "color": "#5A98B8" },
+      { "label": "D", "value": 0, "color": "#8FBAD2" },
+      { "label": "E", "value": 0, "color": "#C5DCE8" }
+    ]
+  },
+
+  "quotesBinds": {
+    "data": [
+      { "label": "Q1", "bars": [0, 0, 0], "line": 0 },
+      { "label": "Q2", "bars": [0, 0, 0], "line": 0 },
+      { "label": "Q3", "bars": [0, 0, 0], "line": 0 },
+      { "label": "Q4", "bars": [0, 0, 0], "line": 0 }
+    ],
+    "legend": [
+      { "label": "Submissions", "color": "#0A5383", "type": "bar" },
+      { "label": "Quotes", "color": "#8FBAD2", "type": "bar" },
+      { "label": "Binds", "color": "#E97121", "type": "bar" },
+      { "label": "Bind %", "color": "#4CAF50", "type": "line" }
+    ]
+  },
+
+  "renewalRetention": {
+    "data": [
+      { "label": "Q1", "line": 0 },
+      { "label": "Q2", "line": 0 },
+      { "label": "Q3", "line": 0 },
+      { "label": "Q4", "line": 0 }
+    ],
+    "legend": [
+      { "label": "Retention %", "color": "#E97121", "type": "line" }
+    ]
+  },
+
+  "lossHistory": {
+    "data": [
+      { "label": "2021", "value": 0 },
+      { "label": "2022", "value": 0 },
+      { "label": "2023", "value": 0 },
+      { "label": "2024", "value": 0 },
+      { "label": "2025", "value": 0 }
+    ]
+  },
+
+  "organizationalUpdate": {
+    "observations": [
+      "Placeholder observation 1",
+      "Placeholder observation 2"
+    ]
+  },
+
+  "claimsInsights": {
+    "observations": [
+      "Placeholder observation 1",
+      "Placeholder observation 2"
+    ],
+    "table": {
+      "columns": ["2023", "2024", "2025"],
+      "rows": [
+        { "label": "Property", "values": ["0", "0", "0"] },
+        { "label": "Liability", "values": ["0", "0", "0"] }
+      ]
+    }
+  },
+
+  "onDeck": {
+    "observations": [
+      "Placeholder observation 1",
+      "Placeholder observation 2"
+    ]
+  },
+
+  "aiRoadmap": {
+    "observations": [
+      "Placeholder observation 1",
+      "Placeholder observation 2"
+    ]
+  }
+}

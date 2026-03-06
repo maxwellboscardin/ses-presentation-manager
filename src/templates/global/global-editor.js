@@ -26,18 +26,19 @@ const CONTRACTS = [
   { id: '1334-ces', shortLabel: '1334 CES', code: 'CES', product: 'Individual Asset', title: 'Individual Asset', contract: '../data/contracts/1334-ces.json', stat: '../data/stat-sheets/1334-ces.json', updates: '../data/updates/1334-ces.json' },
   { id: '1465', shortLabel: '1465 QBS', code: 'QBS', product: 'Individual Asset', title: 'Individual Asset', contract: '../data/contracts/1465.json', stat: '../data/stat-sheets/1465.json', updates: '../data/updates/1465-qbs.json' },
   { id: '1097', shortLabel: '1097 LOL', code: 'LOL', product: 'Portfolio', title: 'Portfolio', contract: '../data/contracts/1097.json', stat: '../data/stat-sheets/1097.json' },
+  { id: '3757', shortLabel: '3757 GLR', code: 'GLR', product: 'Portfolio', title: 'Portfolio', contract: '../data/contracts/3757.json', stat: '../data/stat-sheets/3757.json' },
 ];
 
 // Cross-reference: which presentations each card type appears on
 const XREF = {
-  cover: ['1258 LOC/LOM', '1334 CEG', '1334 CES', '1465 QBS', '1097 LOL'],
-  overview: ['1258 LOC/LOM', '1334 CEG', '1334 CES', '1465 QBS', '1097 LOL'],
+  cover: ['1258 LOC/LOM', '1334 CEG', '1334 CES', '1465 QBS', '1097 LOL', '3757 GLR'],
+  overview: ['1258 LOC/LOM', '1334 CEG', '1334 CES', '1465 QBS', '1097 LOL', '3757 GLR'],
   statSheet: null,
   flipP1: null,
   flipP2: null,
   updates: null,
-  sqbPortfolio: ['1258 LOC/LOM', '1334 CEG', '1097 LOL'],
-  backCover: ['1258 LOC/LOM', '1334 CEG', '1334 CES', '1465 QBS', '1097 LOL'],
+  sqbPortfolio: ['1258 LOC/LOM', '1334 CEG', '1097 LOL', '3757 GLR'],
+  backCover: ['1258 LOC/LOM', '1334 CEG', '1334 CES', '1465 QBS', '1097 LOL', '3757 GLR'],
 };
 
 const PAGE_W = 816;
@@ -262,7 +263,7 @@ const PRODUCT_LINE_GROUPS = [
   // 1258 LOC/LOM has its own version — not in any group
 ];
 
-const PORTFOLIO_QB_GROUP = ['1258 LOC/LOM', '1334 CEG', '1097 LOL'];
+const PORTFOLIO_QB_GROUP = ['1258 LOC/LOM', '1334 CEG', '1097 LOL', '3757 GLR'];
 const QB_DISPLAY_LABEL = { '1258 LOC/LOM': '1258 LOC' }; // override badge text
 
 const SHARED_CARDS = [
