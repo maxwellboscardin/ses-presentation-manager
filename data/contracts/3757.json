@@ -5,7 +5,7 @@
   "title": "Portfolio",
   "lastUpdated": "2025-09-01",
   "_updated": [],
-  "growthTargets": [],
+  "growthTargets": ["WA", "OR", "NV", "AZ", "FL", "OH", "NC", "SC", "CO", "GA"],
 
   "portfolio": {
     "totalAnnualPremium": "$0.0M",

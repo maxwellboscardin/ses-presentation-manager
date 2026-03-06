@@ -56,8 +56,13 @@
 
   "underwritingUpdate": {
     "observations": [
-      "Placeholder observation 1",
-      "Placeholder observation 2"
+      "Expanded collaboration with the Underwriters on renewals and new business",
+      "With a long track record of profitability and underwriting discipline we are seeking increased flexibility to refine and adjust to changing market conditions",
+      "Applied correlations between rates and target bind ratios at the state level",
+      "Exploring ways to improve our ability to quote strong excess liability options",
+      "Introduced quarterly peer reviews for Underwriters",
+      "Continued investment in third-party data to make informed underwriting decisions",
+      "Redeveloping and consolidating our portfolio and MF applications into a customer-friendly dynamic webform"
     ]
   },
 
@@ -73,17 +78,18 @@
 
   "quotesBinds": {
     "data": [
-      { "label": "Q1", "bars": [0, 0, 0], "line": 0 },
-      { "label": "Q2", "bars": [0, 0, 0], "line": 0 },
-      { "label": "Q3", "bars": [0, 0, 0], "line": 0 },
-      { "label": "Q4", "bars": [0, 0, 0], "line": 0 }
+      { "label": "Q1", "bars": [849, 87, 328], "line": 39 },
+      { "label": "Q2", "bars": [731, 112, 339], "line": 46 },
+      { "label": "Q3", "bars": [626, 90, 317], "line": 51 },
+      { "label": "Q4", "bars": [592, 149, 368], "line": 62 }
     ],
     "legend": [
       { "label": "Submissions", "color": "#0A5383", "type": "bar" },
       { "label": "Quotes", "color": "#8FBAD2", "type": "bar" },
       { "label": "Binds", "color": "#E97121", "type": "bar" },
       { "label": "Bind %", "color": "#4CAF50", "type": "line" }
-    ]
+    ],
+    "footnote": "Representative of the entire SES SFR Portfolio"
   },
 
   "renewalRetention": {
@@ -110,36 +116,46 @@
 
   "organizationalUpdate": {
     "observations": [
-      "Placeholder observation 1",
-      "Placeholder observation 2"
+      "Completed succession plan for Underwriting leadership",
+      "Operational restructuring has driven efficiency, dexterity, and alignment in sales, UW, and renewals",
+      "BPO (RSP) moving from China to Malaysia in 2027 – transition underway",
+      "Expanded distribution and products through integration of Orarius and New Jersey Package into the SES program",
+      "Tremendous potential to expand our business offering, enable scale, and introduce new competencies through insurance tracking capabilities"
     ]
   },
 
   "claimsInsights": {
     "observations": [
-      "Placeholder observation 1",
-      "Placeholder observation 2"
+      "Slip & Fall and bodily injury make up 70% of claims",
+      "100% of Animal Bite and 88% of bodily injury Claims are under $25K",
+      "NJ, CT and PA (Northeast) make up over 40% of all GL claims",
+      "80% of claims fall between $10k and $100k"
     ],
     "table": {
       "columns": ["2023", "2024", "2025"],
       "rows": [
-        { "label": "Property", "values": ["0", "0", "0"] },
-        { "label": "Liability", "values": ["0", "0", "0"] }
+        { "label": "Property", "values": ["1,009", "731", "409"] },
+        { "label": "Liability", "values": ["64", "65", "29"] }
       ]
     }
   },
 
   "onDeck": {
     "observations": [
-      "Placeholder observation 1",
-      "Placeholder observation 2"
+      "Melissa Data going live in Q1, will add geocoding for improved address verification",
+      "Salesforce implementation planned for late Q2",
+      "Actuarial model refresh exercises planned throughout the year",
+      "Coherent Spark live for QUBIE as of Nov 2025. Phase two planning underway to move away from hardcoded risk modeling for all products",
+      "Broker portal that supports appointments and submissions",
+      "Redeveloping and consolidating our portfolio and MF applications into a customer-friendly dynamic webform"
     ]
   },
 
   "aiRoadmap": {
     "observations": [
-      "Placeholder observation 1",
-      "Placeholder observation 2"
+      "<strong>Submission Ingestion:</strong> Automated data enrichment, completeness checks, data extraction, prioritization optimization, and appetite & guideline screening",
+      "<strong>Image Scoring:</strong> AI-powered property analysis covering exterior, perimeter, roof, foundation, and hazard detection",
+      "<strong>On Deck:</strong> Loss history interpretation, claims analytics, bind probability modeling, expanded illogical conditions suite"
     ]
   }
 }
