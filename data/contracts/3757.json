@@ -66,8 +66,9 @@
       { "year": "2025", "ratio": 3 }
     ],
     "topLossTypes": [
-      { "type": "WATER",     "amountMillions": 0 },
-      { "type": "WIND/HAIL", "amountMillions": 0 },
+      { "type": "CRIME",     "amountMillions": 0.054 },
+      { "type": "WATER",     "amountMillions": 0.014 },
+      { "type": "WIND/HAIL", "amountMillions": 0.007 },
       { "type": "FIRE",      "amountMillions": 0 },
       { "type": "OTHER",     "amountMillions": 0 }
     ]
@@ -75,9 +76,9 @@
 
   "propertyRiskScore": {
     "data": [
-      { "label": "A", "value": 0, "color": "#0A5383" },
-      { "label": "B", "value": 0, "color": "#2E7BA0" },
-      { "label": "C", "value": 0, "color": "#5A98B8" },
+      { "label": "A", "value": 65, "color": "#0A5383" },
+      { "label": "B", "value": 19, "color": "#2E7BA0" },
+      { "label": "C", "value": 17, "color": "#5A98B8" },
       { "label": "D", "value": 0, "color": "#8FBAD2" },
       { "label": "E", "value": 0, "color": "#C5DCE8" }
     ]
