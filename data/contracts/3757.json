@@ -8,11 +8,11 @@
   "growthTargets": ["WA", "OR", "NV", "AZ", "FL", "OH", "NC", "SC", "CO", "GA"],
 
   "portfolio": {
-    "totalAnnualPremium": "$0.0M",
+    "totalAnnualPremium": "$0.9M",
     "tiv": "$238M",
-    "avgRate": "0.00",
-    "assets": "0",
-    "accounts": "0",
+    "avgRate": "0.38",
+    "assets": "741",
+    "accounts": "14",
     "observations": [
       "Placeholder observation 1",
       "Placeholder observation 2",
