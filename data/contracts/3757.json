@@ -51,11 +51,11 @@
     "incurredLosses5yr": "$1.42M",
     "lossRatio5yr": "19.81%",
     "annualRatios": [
-      { "year": "2021", "ratio": 0 },
-      { "year": "2022", "ratio": 0 },
-      { "year": "2023", "ratio": 0 },
-      { "year": "2024", "ratio": 0 },
-      { "year": "2025", "ratio": 0 }
+      { "year": "2021", "ratio": 3 },
+      { "year": "2022", "ratio": 61 },
+      { "year": "2023", "ratio": 22 },
+      { "year": "2024", "ratio": 3 },
+      { "year": "2025", "ratio": 3 }
     ],
     "topLossTypes": [
       { "type": "WATER",     "amountMillions": 0 },
