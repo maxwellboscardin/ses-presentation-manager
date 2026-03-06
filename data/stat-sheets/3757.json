@@ -94,10 +94,10 @@
 
   "renewalRetention": {
     "data": [
-      { "label": "Q1", "line": 0 },
-      { "label": "Q2", "line": 0 },
-      { "label": "Q3", "line": 0 },
-      { "label": "Q4", "line": 0 }
+      { "label": "Q1", "line": 6 },
+      { "label": "Q2", "line": 100 },
+      { "label": "Q3", "line": 100 },
+      { "label": "Q4", "line": 100 }
     ],
     "legend": [
       { "label": "Retention %", "color": "#E97121", "type": "line" }
