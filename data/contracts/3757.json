@@ -9,7 +9,7 @@
 
   "portfolio": {
     "totalAnnualPremium": "$0.0M",
-    "tiv": "$0M",
+    "tiv": "$238M",
     "avgRate": "0.00",
     "assets": "0",
     "accounts": "0",
@@ -19,11 +19,19 @@
       "Placeholder observation 3"
     ],
     "topStatesByTiv": [
-      { "state": "CA", "tivMillions": 0 },
-      { "state": "TX", "tivMillions": 0 }
+      { "state": "CA", "tivMillions": 92.0 },
+      { "state": "UT", "tivMillions": 51.5 },
+      { "state": "MO", "tivMillions": 29.0 },
+      { "state": "AZ", "tivMillions": 19.5 },
+      { "state": "MN", "tivMillions": 9.6 },
+      { "state": "ID", "tivMillions": 9.5 },
+      { "state": "NV", "tivMillions": 7.9 },
+      { "state": "FL", "tivMillions": 7.3 }
     ],
     "statesTivMap": {
-      "CA": 0, "TX": 0
+      "CA": 92.0, "UT": 51.5, "MO": 29.0, "AZ": 19.5,
+      "MN": 9.6, "ID": 9.5, "NV": 7.9, "FL": 7.3,
+      "KY": 4.3, "TN": 3.6, "MS": 3.0, "OH": 0.9
     }
   },
 
