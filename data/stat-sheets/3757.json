@@ -36,22 +36,22 @@
 
   "ctdPremium": {
     "kpis": [
-      { "label": "New Business", "value": "$0", "change": "N/A", "direction": "flat" },
-      { "label": "Retained", "value": "$0", "change": "0.0%", "direction": "flat" }
+      { "label": "New Business", "value": "$92K", "change": "74.0%", "direction": "up" },
+      { "label": "Retained", "value": "$751K", "change": "127.0%", "direction": "down" }
     ]
   },
 
   "inForcePremium": {
     "kpis": [
-      { "label": "Property", "value": "$0", "change": "0.0%", "direction": "flat" },
-      { "label": "GL", "value": "$0", "change": "0.0%", "direction": "flat" }
+      { "label": "Property", "value": "$845K", "change": "131.0%", "direction": "down" },
+      { "label": "GL", "value": "$34K", "change": "530.0%", "direction": "down" }
     ]
   },
 
   "iconKpis": [
-    { "icon": "map-pin", "label": "States", "value": "0", "change": "0.0%", "direction": "flat" },
-    { "icon": "building", "label": "Assets", "value": "0", "change": "0.0%", "direction": "flat" },
-    { "icon": "users", "label": "Accounts", "value": "0", "change": "0.0%", "direction": "flat" }
+    { "icon": "map-pin", "label": "States", "value": "13", "change": "38.0%", "direction": "down" },
+    { "icon": "building", "label": "Assets", "value": "747", "change": "222.0%", "direction": "down" },
+    { "icon": "users", "label": "Accounts", "value": "15", "change": "27.0%", "direction": "down" }
   ],
 
   "underwritingUpdate": {
