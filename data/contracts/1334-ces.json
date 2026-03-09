@@ -63,8 +63,7 @@
     "incurredLosses5yr": "$2.05M",
     "lossRatio5yr": "20.95%",
     "annualRatios": [
-      { "year": "2024", "ratio": 29 },
-      { "year": "2025", "ratio": 11 }
+      { "year": "Contract Year", "ratio": 9 }
     ],
     "topLossTypes": [
       { "type": "FIRE",      "amountMillions": 0.60 },

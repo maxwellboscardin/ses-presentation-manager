@@ -62,8 +62,7 @@
     "incurredLosses5yr": "$0.54M",
     "lossRatio5yr": "13.9%",
     "annualRatios": [
-      { "year": "2024", "ratio": 127 },
-      { "year": "2025", "ratio": 10 }
+      { "year": "Contract Year", "ratio": 14.2 }
     ],
     "topLossTypes": [
       { "type": "WATER",          "amountMillions": 0.261 },

@@ -31,7 +31,9 @@ export function createVBarChart(element, data, options = {}) {
   const barCount = data.length;
   const totalGap = barCount + 1;
   const gapWidth = Math.min(chartWidth * 0.15 / totalGap, 12);
-  const barWidth = (chartWidth - gapWidth * totalGap) / barCount;
+  let barWidth = (chartWidth - gapWidth * totalGap) / barCount;
+  // Cap bar width for single-bar charts so they don't stretch full width
+  if (barCount === 1) barWidth = Math.min(barWidth, chartWidth * 0.4);
 
   // Grid lines
   for (let i = 0; i <= 4; i++) {
@@ -43,7 +45,9 @@ export function createVBarChart(element, data, options = {}) {
   }
 
   data.forEach((item, i) => {
-    const x = chartLeft + gapWidth + i * (barWidth + gapWidth);
+    const x = barCount === 1
+      ? chartLeft + (chartWidth - barWidth) / 2
+      : chartLeft + gapWidth + i * (barWidth + gapWidth);
     const barH = (item.value / maxValue) * chartHeight;
     const barY = chartBottom - barH;
 
