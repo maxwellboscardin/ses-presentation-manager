@@ -97,13 +97,6 @@ export function buildPage(data) {
 
   inner.appendChild(content);
 
-  // Logo
-  const logo = document.createElement('img');
-  logo.className = 'page-logo';
-  logo.src = '../../assets/ses-logo.dark.png';
-  logo.alt = 'SES Logo';
-  inner.appendChild(logo);
-
   page.appendChild(inner);
   return page;
 }

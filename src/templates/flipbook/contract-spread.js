@@ -214,7 +214,6 @@ export function buildMFPage2(data) {
           </div>
         </div>
       </div>
-      <img class="page-logo" src="../../assets/ses-logo.dark.png" alt="SES Logo">
     </div>
   `;
 
@@ -414,7 +413,6 @@ export function buildPage2(data, updatesData = null) {
           </div>
         </div>`}
       </div>
-      <img class="page-logo" src="../../assets/ses-logo.dark.png" alt="SES Logo">
     </div>
   `;
 

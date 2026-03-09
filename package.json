@@ -4,5 +4,8 @@
   "type": "module",
   "scripts": {
     "start": "node server.js"
+  },
+  "devDependencies": {
+    "puppeteer": "^24.38.0"
   }
 }

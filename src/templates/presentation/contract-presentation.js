@@ -329,7 +329,6 @@ export function buildBackCoverPage() {
   page.className = 'cover-page back-cover';
   page.innerHTML = `
     <div class="cover-card">
-      <img class="cover-page__logo" src="../assets/ses-logo.svg" alt="SES Risk Solutions">
       <div class="back-cover-content__text">Thank you</div>
     </div>
   `;
