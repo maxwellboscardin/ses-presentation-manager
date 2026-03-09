@@ -264,6 +264,7 @@ export function buildPage2(data, updatesData = null) {
     label: r.year,
     value: r.ratio,
   }));
+  const lossRatioTitle = data.lossExperience.lossRatioTitle || 'Annual Loss Ratio';
 
   const esc = (s) => s.replace(/'/g, '&#39;');
 
@@ -319,7 +320,7 @@ export function buildPage2(data, updatesData = null) {
         <div class="page-columns" style="flex: 0 0 auto;">
           <div class="page-column" style="flex: 1; display: flex; flex-direction: column;">
             <div class="chart-container" data-chart-type="v-bar" data-chart-suffix="%" data-chart-src='${JSON.stringify(lossRatioData)}' style="flex: 1; display: flex; flex-direction: column;">
-              <div class="section-header">Annual Loss Ratio</div>
+              <div class="section-header">${lossRatioTitle}</div>
               <div class="chart-container__body" style="flex: 1;">
                 <canvas id="chart-loss-ratio"></canvas>
               </div>
@@ -363,7 +364,7 @@ export function buildPage2(data, updatesData = null) {
         ` : data.carrierClaimCount ? `
         <div style="display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: var(--gap-sm); flex: 1;">
           <div class="chart-container" data-chart-type="v-bar" data-chart-suffix="%" data-chart-src='${JSON.stringify(lossRatioData)}' style="display: flex; flex-direction: column;">
-            <div class="section-header">Annual Loss Ratio</div>
+            <div class="section-header">${lossRatioTitle}</div>
             <div class="chart-container__body" style="flex: 1;">
               <canvas id="chart-loss-ratio"></canvas>
             </div>
@@ -391,7 +392,7 @@ export function buildPage2(data, updatesData = null) {
         <div class="page-columns" style="flex: 1;">
           <div class="page-column" style="flex: 1; display: flex; flex-direction: column;">
             <div class="chart-container" data-chart-type="v-bar" data-chart-suffix="%" data-chart-src='${JSON.stringify(lossRatioData)}' style="flex: 1; display: flex; flex-direction: column;">
-              <div class="section-header">Annual Loss Ratio</div>
+              <div class="section-header">${lossRatioTitle}</div>
               <div class="chart-container__body" style="flex: 1;">
                 <canvas id="chart-loss-ratio"></canvas>
               </div>

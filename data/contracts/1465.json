@@ -61,8 +61,9 @@
     "earnedPremium5yr": "$3.93M",
     "incurredLosses5yr": "$0.54M",
     "lossRatio5yr": "13.9%",
+    "lossRatioTitle": "Contract Year Loss Ratio",
     "annualRatios": [
-      { "year": "Contract Year", "ratio": 14.2 }
+      { "year": "10/1/24 – 9/30/25", "ratio": 14.2 }
     ],
     "topLossTypes": [
       { "type": "WATER",          "amountMillions": 0.261 },
