@@ -1,0 +1,520 @@
+/* ═══════════════════════════════════════════════════════════════
+   pipeline.css — Data Pipeline styles
+   Uses design-tokens.css variables for brand consistency.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Layout Shell ──────────────────────────────────────────── */
+.dp-app {
+  font-family: var(--font-family);
+  background: #1a1a2e;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Top Nav ───────────────────────────────────────────────── */
+.dp-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(26, 26, 46, 0.95);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  height: 44px;
+}
+
+.dp-nav__btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: color 0.15s, background 0.15s;
+}
+
+.dp-nav__btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.dp-nav__sep {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.12);
+  flex-shrink: 0;
+}
+
+.dp-nav__tabs {
+  display: flex;
+  gap: 2px;
+}
+
+.dp-nav__tab {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.45);
+  font-family: var(--font-family);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 5px 12px;
+  border-radius: 5px;
+  white-space: nowrap;
+  transition: color 0.15s, background 0.15s;
+}
+
+.dp-nav__tab:hover {
+  color: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.dp-nav__tab.active {
+  color: #fff;
+  background: var(--ses-navy);
+}
+
+/* ─── Stats bar (right side of nav) ─────────────────────────── */
+.dp-nav__stats {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.dp-stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dp-stat-pill__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ─── Content area ──────────────────────────────────────────── */
+.dp-content {
+  margin-top: 44px;
+  padding: 20px;
+  flex: 1;
+}
+
+/* ─── Search / Filter bar ───────────────────────────────────── */
+.dp-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.dp-search {
+  flex: 1;
+  max-width: 360px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 7px 12px;
+  color: #fff;
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: 500;
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.dp-search::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.dp-search:focus {
+  border-color: var(--ses-navy-light);
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.dp-filter-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 6px 12px;
+  color: rgba(255, 255, 255, 0.55);
+  font-family: var(--font-family);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+
+.dp-filter-btn:hover,
+.dp-filter-btn.active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ─── Registry Matrix ───────────────────────────────────────── */
+.dp-matrix {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.dp-matrix th,
+.dp-matrix td {
+  padding: 0;
+  border: none;
+}
+
+/* Sticky header row */
+.dp-matrix thead th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(26, 26, 46, 0.98);
+  padding: 8px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  white-space: nowrap;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dp-matrix thead th:first-child {
+  text-align: left;
+  min-width: 200px;
+}
+
+/* Category header row */
+.dp-matrix__cat-row td {
+  padding: 16px 10px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ses-orange);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid rgba(233, 113, 33, 0.2);
+}
+
+/* Data point label cell */
+.dp-matrix__label {
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  vertical-align: middle;
+}
+
+.dp-matrix__label-sub {
+  display: block;
+  font-size: 10px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.35);
+  margin-top: 1px;
+}
+
+/* Data cell */
+.dp-matrix__cell {
+  padding: 4px 6px;
+  text-align: center;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.dp-matrix__cell:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.dp-matrix__cell--na {
+  cursor: default;
+}
+
+.dp-matrix__cell--na:hover {
+  background: none;
+}
+
+/* Cell inner — value preview + dot */
+.dp-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 28px;
+}
+
+.dp-cell__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: box-shadow 0.15s;
+}
+
+.dp-cell__dot--fresh { background: #34C759; box-shadow: 0 0 4px rgba(52, 199, 89, 0.4); }
+.dp-cell__dot--aging { background: #FF9500; box-shadow: 0 0 4px rgba(255, 149, 0, 0.4); }
+.dp-cell__dot--stale { background: #FF3B30; box-shadow: 0 0 4px rgba(255, 59, 48, 0.4); }
+.dp-cell__dot--unknown { background: #8E8E93; }
+
+.dp-cell__preview {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dp-cell__na {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.15);
+}
+
+/* ─── Detail Overlay ────────────────────────────────────────── */
+.dp-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.dp-overlay.visible {
+  opacity: 1;
+}
+
+.dp-overlay__panel {
+  background: #1e2740;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  max-width: 640px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 24px;
+  position: relative;
+}
+
+.dp-overlay__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 18px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s, background 0.15s;
+}
+
+.dp-overlay__close:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.dp-overlay__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.dp-overlay__subtitle {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 16px;
+}
+
+.dp-overlay__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.dp-overlay__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dp-overlay__badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+/* Data preview section */
+.dp-overlay__data {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.dp-overlay__data-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.dp-overlay__data-value {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.dp-overlay__data-value ul {
+  list-style: disc;
+  padding-left: 18px;
+  margin: 0;
+}
+
+.dp-overlay__data-value li {
+  margin-bottom: 4px;
+}
+
+/* JSON path display */
+.dp-overlay__path {
+  font-family: 'SF Mono', 'Menlo', 'Monaco', monospace;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 6px 10px;
+  border-radius: 4px;
+  margin-top: 12px;
+}
+
+/* ─── Stub / Placeholder view ───────────────────────────────── */
+.dp-stub {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 12px;
+}
+
+.dp-stub__icon {
+  font-size: 48px;
+  opacity: 0.3;
+}
+
+.dp-stub__title {
+  font-size: 18px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.dp-stub__desc {
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.35);
+  max-width: 400px;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* ─── Summary Cards (top of registry) ───────────────────────── */
+.dp-summary {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.dp-summary__card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 14px 20px;
+  flex: 1;
+  min-width: 150px;
+}
+
+.dp-summary__card-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+
+.dp-summary__card-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 4px;
+}
+
+/* ─── Freshness legend (inline) ─────────────────────────────── */
+.dp-legend {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.dp-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.dp-legend__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* ─── Responsive ────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .dp-matrix__label { min-width: 140px; }
+  .dp-cell__preview { display: none; }
+  .dp-summary__card { min-width: 120px; }
+  .dp-summary__card-value { font-size: 22px; }
+}

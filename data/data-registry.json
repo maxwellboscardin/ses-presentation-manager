@@ -1,0 +1,738 @@
+[
+  {
+    "id": "portfolio.totalAnnualPremium",
+    "label": "Total Annual Premium",
+    "category": "Portfolio KPIs",
+    "dataType": "currency",
+    "format": "String like '$9.8M'",
+    "jsonPath": "portfolio.totalAnnualPremium",
+    "sourceFile": "contracts",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "portfolio.tiv",
+    "label": "Total Insured Value",
+    "category": "Portfolio KPIs",
+    "dataType": "currency",
+    "format": "String like '$2.3B'",
+    "jsonPath": "portfolio.tiv",
+    "sourceFile": "contracts",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "portfolio.avgRate",
+    "label": "Average Rate",
+    "category": "Portfolio KPIs",
+    "dataType": "percentage",
+    "format": "String like '0.39' (rate per $100)",
+    "jsonPath": "portfolio.avgRate",
+    "sourceFile": "contracts",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "portfolio.assets",
+    "label": "Total Assets",
+    "category": "Portfolio KPIs",
+    "dataType": "number",
+    "format": "String like '9,121'",
+    "jsonPath": "portfolio.assets",
+    "sourceFile": "contracts",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "portfolio.accounts",
+    "label": "Total Accounts",
+    "category": "Portfolio KPIs",
+    "dataType": "number",
+    "format": "String like '100'",
+    "jsonPath": "portfolio.accounts",
+    "sourceFile": "contracts",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "portfolio.observations",
+    "label": "Portfolio Observations",
+    "category": "Portfolio Observations",
+    "dataType": "text-array",
+    "format": "Array of bullet-point strings",
+    "jsonPath": "portfolio.observations",
+    "sourceFile": "contracts",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "portfolio.topStatesByTiv",
+    "label": "Top States by TIV",
+    "category": "Portfolio Composition",
+    "dataType": "table:state-tiv",
+    "format": "Array of {state, tivMillions}",
+    "jsonPath": "portfolio.topStatesByTiv",
+    "sourceFile": "contracts",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "portfolio.statesTivMap",
+    "label": "State TIV Map",
+    "category": "Portfolio Composition",
+    "dataType": "map:state-numeric",
+    "format": "Object {stateCode: tivMillions}",
+    "jsonPath": "portfolio.statesTivMap",
+    "sourceFile": "contracts",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "growthTargets",
+    "label": "Growth Target States",
+    "category": "Growth Targets",
+    "dataType": "text-array",
+    "format": "Array of state codes ['WA','OR',...]",
+    "jsonPath": "growthTargets",
+    "sourceFile": "contracts",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": false,
+    "staleDays": 180,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "deductibles",
+    "label": "Deductible Distribution",
+    "category": "Deductibles",
+    "dataType": "table:quarters-tiers",
+    "format": "{quarters: [...], tiers: [{label, values: [...]}]}",
+    "jsonPath": "deductibles",
+    "sourceFile": "contracts",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "averageRates",
+    "label": "Average Rates (Quarterly)",
+    "category": "Average Rates",
+    "dataType": "chart:line-quarterly",
+    "format": "{chartQuarters, chartRates, tableQuarters, tableRates}",
+    "jsonPath": "averageRates",
+    "sourceFile": "contracts",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "lossExperience",
+    "label": "Loss Experience (5yr Summary + Annual)",
+    "category": "Loss Experience",
+    "dataType": "composite",
+    "format": "{earnedPremium5yr, incurredLosses5yr, lossRatio5yr, annualRatios: [{year,ratio}], topLossTypes: [{type,amountMillions}]}",
+    "jsonPath": "lossExperience",
+    "sourceFile": "contracts",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "propertyRiskScore",
+    "label": "Property Risk Score Distribution",
+    "category": "Property Risk Score",
+    "dataType": "chart:bar-distribution",
+    "format": "{data: [{label: 'A'-'E', value, color}]}",
+    "jsonPath": "propertyRiskScore",
+    "sourceFile": "contracts",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "carrierClaimCount",
+    "label": "Carrier Claim Count",
+    "category": "Carrier Claims",
+    "dataType": "chart:line-annual",
+    "format": "{data: [{label: year, line: count}]}",
+    "jsonPath": "carrierClaimCount",
+    "sourceFile": "contracts",
+    "contracts": ["1258"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01"
+    }
+  },
+  {
+    "id": "multiFamily.kpis",
+    "label": "Multifamily KPIs",
+    "category": "Multifamily",
+    "dataType": "composite",
+    "format": "{totalAnnualPremium, tiv, avgRate, assets, accounts, activeStates}",
+    "jsonPath": "multiFamily",
+    "sourceFile": "contracts",
+    "contracts": ["1258"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01"
+    }
+  },
+  {
+    "id": "multiFamily.observations",
+    "label": "Multifamily Observations",
+    "category": "Multifamily",
+    "dataType": "text-array",
+    "format": "Array of bullet-point strings",
+    "jsonPath": "multiFamily.observations",
+    "sourceFile": "contracts",
+    "contracts": ["1258"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01"
+    }
+  },
+  {
+    "id": "multiFamily.statesTivMap",
+    "label": "Multifamily State TIV Map",
+    "category": "Multifamily",
+    "dataType": "map:state-numeric",
+    "format": "Object {stateCode: tivMillions}",
+    "jsonPath": "multiFamily.statesTivMap",
+    "sourceFile": "contracts",
+    "contracts": ["1258"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01"
+    }
+  },
+  {
+    "id": "stat.programUpdate",
+    "label": "Program Update",
+    "category": "Stat: Program Update",
+    "dataType": "text-array",
+    "format": "Array of observation strings",
+    "jsonPath": "programUpdate.observations",
+    "sourceFile": "stat-sheets",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "stat.capacityUtilization",
+    "label": "Capacity Utilization",
+    "category": "Stat: Capacity",
+    "dataType": "gauge",
+    "format": "{currentValue, maxValue, unit, label}",
+    "jsonPath": "capacityUtilization",
+    "sourceFile": "stat-sheets",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "stat.averageRates",
+    "label": "Average Rates (Stat Sheet)",
+    "category": "Stat: Premium KPIs",
+    "dataType": "chart:line-quarterly",
+    "format": "{chartData: [{label, value}]}",
+    "jsonPath": "averageRates",
+    "sourceFile": "stat-sheets",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "stat.itvBadge",
+    "label": "Average ITV Badge",
+    "category": "Stat: Premium KPIs",
+    "dataType": "kpi-badge",
+    "format": "{value, change, direction, label}",
+    "jsonPath": "itvBadge",
+    "sourceFile": "stat-sheets",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "stat.ctdPremium",
+    "label": "CTD Premium KPIs",
+    "category": "Stat: Premium KPIs",
+    "dataType": "kpi-group",
+    "format": "{kpis: [{label, value, change, direction}]}",
+    "jsonPath": "ctdPremium",
+    "sourceFile": "stat-sheets",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "stat.inForcePremium",
+    "label": "In-Force Premium KPIs",
+    "category": "Stat: Premium KPIs",
+    "dataType": "kpi-group",
+    "format": "{kpis: [{label, value, change, direction}]}",
+    "jsonPath": "inForcePremium",
+    "sourceFile": "stat-sheets",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "stat.iconKpis",
+    "label": "Icon KPIs (States/Assets/Accounts)",
+    "category": "Stat: Icon KPIs",
+    "dataType": "kpi-group",
+    "format": "[{icon, label, value, change, direction}]",
+    "jsonPath": "iconKpis",
+    "sourceFile": "stat-sheets",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "stat.quotesBinds",
+    "label": "Quotes & Binds",
+    "category": "Stat: Q&B",
+    "dataType": "chart:stacked-bar-line",
+    "format": "{data: [{label, bars: [subs,quotes,binds], line: bindPct}], legend, footnote}",
+    "jsonPath": "quotesBinds",
+    "sourceFile": "stat-sheets",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "stat.renewalRetention",
+    "label": "Renewal Retention Rate",
+    "category": "Stat: Renewal Retention",
+    "dataType": "chart:line",
+    "format": "{data: [{label, line: pct}], legend}",
+    "jsonPath": "renewalRetention",
+    "sourceFile": "stat-sheets",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "stat.lossHistory",
+    "label": "Loss History (Annual Ratios)",
+    "category": "Stat: Loss History",
+    "dataType": "chart:bar-annual",
+    "format": "{data: [{label: year, value: ratio}]}",
+    "jsonPath": "lossHistory",
+    "sourceFile": "stat-sheets",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "stat.claimsInsights",
+    "label": "Claims Insights",
+    "category": "Stat: Claims",
+    "dataType": "composite",
+    "format": "{observations: [...], table: {columns, rows: [{label, values}]}}",
+    "jsonPath": "claimsInsights",
+    "sourceFile": "stat-sheets",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "stat.underwritingUpdate",
+    "label": "Underwriting Update",
+    "category": "Stat: UW Update",
+    "dataType": "text-array",
+    "format": "Array of observation strings",
+    "jsonPath": "underwritingUpdate.observations",
+    "sourceFile": "stat-sheets",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": true,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "stat.organizationalUpdate",
+    "label": "Organizational Update",
+    "category": "Stat: Org Update",
+    "dataType": "text-array",
+    "format": "Array of observation strings",
+    "jsonPath": "organizationalUpdate.observations",
+    "sourceFile": "stat-sheets",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": true,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "stat.onDeck",
+    "label": "On the Horizon",
+    "category": "Stat: On Deck",
+    "dataType": "text-array",
+    "format": "Array of observation strings",
+    "jsonPath": "onDeck.observations",
+    "sourceFile": "stat-sheets",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": true,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "stat.aiRoadmap",
+    "label": "AI Roadmap",
+    "category": "Stat: AI Roadmap",
+    "dataType": "text-array",
+    "format": "Array of observation strings (may contain HTML)",
+    "jsonPath": "aiRoadmap.observations",
+    "sourceFile": "stat-sheets",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": true,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "stat.propertyRiskScore",
+    "label": "Property Risk Score (Stat Sheet)",
+    "category": "Stat: Risk Score",
+    "dataType": "chart:bar-distribution",
+    "format": "{data: [{label, value, color}]}",
+    "jsonPath": "propertyRiskScore",
+    "sourceFile": "stat-sheets",
+    "contracts": ["1258", "1334-ceg", "1334-ces", "1465", "1097", "3757"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1258": "2025-09-01",
+      "1334-ceg": "2025-09-01",
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01",
+      "1097": "2025-09-01",
+      "3757": "2025-09-01"
+    }
+  },
+  {
+    "id": "updates.riskScores.property",
+    "label": "Property Risk Score (Updates)",
+    "category": "Updates: Risk Scores",
+    "dataType": "chart:bar-distribution",
+    "format": "{title, categories: [...], values: [...]}",
+    "jsonPath": "riskScores.property",
+    "sourceFile": "updates",
+    "contracts": ["1334-ces", "1465"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01"
+    }
+  },
+  {
+    "id": "updates.riskScores.windHail",
+    "label": "Wind/Hail Risk Score",
+    "category": "Updates: Risk Scores",
+    "dataType": "chart:bar-distribution",
+    "format": "{title, categories: [...], values: [...]}",
+    "jsonPath": "riskScores.windHail",
+    "sourceFile": "updates",
+    "contracts": ["1334-ces", "1465"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01"
+    }
+  },
+  {
+    "id": "updates.riskScores.crime",
+    "label": "Crime Risk Score",
+    "category": "Updates: Risk Scores",
+    "dataType": "chart:bar-distribution",
+    "format": "{title, categories: [...], values: [...]}",
+    "jsonPath": "riskScores.crime",
+    "sourceFile": "updates",
+    "contracts": ["1334-ces", "1465"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01"
+    }
+  },
+  {
+    "id": "updates.riskScores.wildfire",
+    "label": "Wildfire Risk Score",
+    "category": "Updates: Risk Scores",
+    "dataType": "chart:bar-distribution",
+    "format": "{title, categories: [...], values: [...]}",
+    "jsonPath": "riskScores.wildfire",
+    "sourceFile": "updates",
+    "contracts": ["1334-ces", "1465"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01"
+    }
+  },
+  {
+    "id": "updates.sqbTrends",
+    "label": "S/Q/B Trends (Updates)",
+    "category": "Updates: SQB Trends",
+    "dataType": "chart:multi-line",
+    "format": "{period, months: [...], submissions: [...], quotes: [...], binds: [...]}",
+    "jsonPath": "sqbTrends",
+    "sourceFile": "updates",
+    "contracts": ["1334-ces", "1465"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01"
+    }
+  },
+  {
+    "id": "updates.operations",
+    "label": "Operations Observations",
+    "category": "Updates: Operations",
+    "dataType": "text-array",
+    "format": "Array of observation strings",
+    "jsonPath": "operations",
+    "sourceFile": "updates",
+    "contracts": ["1334-ces", "1465"],
+    "shared": false,
+    "staleDays": 90,
+    "lastUpdated": {
+      "1334-ces": "2025-09-01",
+      "1465": "2025-09-01"
+    }
+  }
+]

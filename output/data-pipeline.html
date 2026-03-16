@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>SES Data Pipeline</title>
+  <link rel="stylesheet" href="../src/styles/design-tokens.css">
+  <link rel="stylesheet" href="../src/styles/pipeline.css">
+</head>
+<body>
+  <div id="app"></div>
+
+  <script type="module">
+    import { renderDataPipeline } from '../src/pipeline/data-pipeline.js';
+    renderDataPipeline(document.getElementById('app'));
+  </script>
+</body>
+</html>
