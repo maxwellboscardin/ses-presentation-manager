@@ -80,6 +80,7 @@ function buildUserContent(input, inputType) {
 }
 
 async function callModel(modelConfig, systemPrompt, userContent) {
+  console.log(`[extract] Calling ${modelConfig.label} (${modelConfig.id})...`);
   const response = await client.messages.create({
     model: modelConfig.id,
     max_tokens: 1024,
@@ -91,6 +92,8 @@ async function callModel(modelConfig, systemPrompt, userContent) {
     .filter(b => b.type === 'text')
     .map(b => b.text)
     .join('');
+
+  console.log(`[extract] ${modelConfig.label} responded (${text.length} chars)`);
 
   // Parse the JSON response
   try {
@@ -110,12 +113,14 @@ async function callModel(modelConfig, systemPrompt, userContent) {
 export async function handleExtract(req, res) {
   const { input, inputType, dataPointSchema, contractId } = req.body;
 
+  console.log(`[extract] Request: type=${inputType}, contract=${contractId}, schema=${dataPointSchema?.label}, inputLen=${input?.length || 0}`);
+
   if (!input || !inputType || !dataPointSchema || !contractId) {
     return res.status(400).json({ error: 'Missing required fields: input, inputType, dataPointSchema, contractId' });
   }
 
   if (!process.env.ANTHROPIC_API_KEY) {
-    return res.status(500).json({ error: 'ANTHROPIC_API_KEY not configured' });
+    return res.status(500).json({ error: 'ANTHROPIC_API_KEY not configured on server' });
   }
 
   const systemPrompt = buildSystemPrompt(dataPointSchema, contractId);
@@ -136,11 +141,15 @@ export async function handleExtract(req, res) {
 
       if (!shouldEscalate) break;
     } catch (err) {
-      escalationPath.push({ model: model.label, error: err.message });
+      const detail = err.status
+        ? `${err.status} ${err.error?.error?.type || ''}: ${err.error?.error?.message || err.message}`
+        : err.message;
+      console.error(`[extract] ${model.label} failed:`, detail);
+      escalationPath.push({ model: model.label, error: detail });
       // If a model fails, try the next one
       if (model === MODELS[MODELS.length - 1]) {
-        return res.status(500).json({
-          error: `All models failed. Last error: ${err.message}`,
+        return res.status(502).json({
+          error: `All models failed. Last error: ${detail}`,
           escalationPath,
         });
       }

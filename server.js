@@ -25,6 +25,24 @@ app.use(express.json({ limit: '10mb' }));
 // ─── API Routes ──────────────────────────────────────────────
 app.post('/api/extract', handleExtract);
 
+// Health check — verifies API key is set and Anthropic reachable
+app.get('/api/health', async (_req, res) => {
+  const hasKey = !!process.env.ANTHROPIC_API_KEY;
+  if (!hasKey) return res.json({ ok: false, error: 'ANTHROPIC_API_KEY not set' });
+  try {
+    const { default: Anthropic } = await import('@anthropic-ai/sdk');
+    const client = new Anthropic();
+    const r = await client.messages.create({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 10,
+      messages: [{ role: 'user', content: 'Say OK' }],
+    });
+    res.json({ ok: true, model: 'haiku', response: r.content[0]?.text });
+  } catch (e) {
+    res.json({ ok: false, error: e.message, status: e.status });
+  }
+});
+
 // ─── Static File Serving (same logic as before) ──────────────
 app.get('{*path}', async (req, res) => {
   let path = req.path;
