@@ -4,11 +4,13 @@
  */
 
 import { renderRegistryView } from './registry-view.js';
+import { renderIngestView } from './ingest-view.js';
 import { renderRequestView } from './request-view.js';
 import { renderSourceView } from './source-view.js';
 
 const TABS = [
   { id: 'registry', label: 'Registry', render: renderRegistryView },
+  { id: 'ingest', label: 'Ingest', render: renderIngestView },
   { id: 'requests', label: 'Requests', render: renderRequestView },
   { id: 'sources', label: 'Sources', render: renderSourceView },
 ];

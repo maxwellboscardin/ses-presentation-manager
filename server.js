@@ -1,6 +1,8 @@
-import { createServer } from 'http';
+import 'dotenv/config';
+import express from 'express';
 import { readFile } from 'fs/promises';
 import { extname, join, resolve } from 'path';
+import { handleExtract } from './src/pipeline/api-extract.js';
 
 const PORT = process.env.PORT || 8080;
 const ROOT = resolve('.');
@@ -17,33 +19,38 @@ const MIME = {
   '.woff2': 'font/woff2',
 };
 
-createServer(async (req, res) => {
-  let path = req.url.split('?')[0];
+const app = express();
+app.use(express.json({ limit: '10mb' }));
+
+// ─── API Routes ──────────────────────────────────────────────
+app.post('/api/extract', handleExtract);
+
+// ─── Static File Serving (same logic as before) ──────────────
+app.get('{*path}', async (req, res) => {
+  let path = req.path;
   if (path === '/') path = '/output/index.html';
 
   const filePath = join(ROOT, path);
-  if (!filePath.startsWith(ROOT)) {
-    res.writeHead(403);
-    return res.end('Forbidden');
-  }
+  if (!filePath.startsWith(ROOT)) return res.status(403).send('Forbidden');
 
   try {
     const data = await readFile(filePath);
     const ext = extname(filePath);
-    res.writeHead(200, { 'Content-Type': MIME[ext] || 'application/octet-stream' });
-    res.end(data);
+    res.set('Content-Type', MIME[ext] || 'application/octet-stream');
+    res.send(data);
   } catch {
-    // If not found at root, try under /output/ (for clean URLs)
+    // Fallback: try under /output/
     try {
       const outputPath = join(ROOT, 'output', path);
-      if (!outputPath.startsWith(ROOT)) { res.writeHead(403); return res.end('Forbidden'); }
+      if (!outputPath.startsWith(ROOT)) return res.status(403).send('Forbidden');
       const data = await readFile(outputPath);
       const ext = extname(outputPath);
-      res.writeHead(200, { 'Content-Type': MIME[ext] || 'application/octet-stream' });
-      res.end(data);
+      res.set('Content-Type', MIME[ext] || 'application/octet-stream');
+      res.send(data);
     } catch {
-      res.writeHead(404);
-      res.end('Not found');
+      res.status(404).send('Not found');
     }
   }
-}).listen(PORT, () => console.log(`Serving on port ${PORT}`));
+});
+
+app.listen(PORT, () => console.log(`Serving on port ${PORT}`));
