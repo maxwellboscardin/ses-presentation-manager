@@ -4,6 +4,7 @@
  */
 
 import Anthropic from '@anthropic-ai/sdk';
+import { getPool, isDbConfigured } from './db.js';
 
 const client = new Anthropic(); // reads ANTHROPIC_API_KEY from env
 
@@ -111,9 +112,9 @@ async function callModel(modelConfig, systemPrompt, userContent) {
 }
 
 export async function handleExtract(req, res) {
-  const { input, inputType, dataPointSchema, contractId } = req.body;
+  const { input, inputType, dataPointSchema, contractId, collection } = req.body;
 
-  console.log(`[extract] Request: type=${inputType}, contract=${contractId}, schema=${dataPointSchema?.label}, inputLen=${input?.length || 0}`);
+  console.log(`[extract] Request: type=${inputType}, contract=${contractId}, collection=${collection || 'none'}, schema=${dataPointSchema?.label}, inputLen=${input?.length || 0}`);
 
   if (!input || !inputType || !dataPointSchema || !contractId) {
     return res.status(400).json({ error: 'Missing required fields: input, inputType, dataPointSchema, contractId' });
@@ -156,11 +157,41 @@ export async function handleExtract(req, res) {
     }
   }
 
+  // Save to Postgres if configured
+  let savedToDb = false;
+  if (isDbConfigured()) {
+    try {
+      const pool = getPool();
+      await pool.query(
+        `INSERT INTO ingestion_inputs
+          (collection, data_point_id, contract_id, input_type, raw_input, extracted_value, model_used, confidence, reasoning, escalation_path)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+        [
+          collection || null,
+          dataPointSchema.id,
+          contractId,
+          inputType,
+          inputType === 'image' ? '(image data)' : input?.slice(0, 10000),
+          JSON.stringify(result.data),
+          escalationPath[escalationPath.length - 1]?.model || 'unknown',
+          result.confidence,
+          result.reasoning,
+          JSON.stringify(escalationPath),
+        ]
+      );
+      savedToDb = true;
+      console.log('[extract] Saved to database');
+    } catch (err) {
+      console.error('[extract] Failed to save to database:', err.message);
+    }
+  }
+
   res.json({
     data: result.data,
     confidence: result.confidence,
     model: escalationPath[escalationPath.length - 1]?.model || 'unknown',
     reasoning: result.reasoning,
     escalationPath,
+    savedToDb,
   });
 }

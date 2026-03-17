@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>London March 2026 — SES Presentations</title>
+  <style>
+    @font-face { font-family: 'Gilroy'; src: url('../fonts/Gilroy-Regular.otf'); font-weight: 400; }
+    @font-face { font-family: 'Gilroy'; src: url('../fonts/Gilroy-Medium.otf'); font-weight: 500; }
+    @font-face { font-family: 'Gilroy'; src: url('../fonts/Gilroy-SemiBold.otf'); font-weight: 600; }
+    @font-face { font-family: 'Gilroy'; src: url('../fonts/Gilroy-Bold.otf'); font-weight: 700; }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Gilroy', sans-serif;
+      background: #1a1a2e;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .logo { display: none; }
+    h1 { display: none; }
+
+    .content { display: flex; flex-direction: column; gap: 24px; width: 100%; max-width: 1220px; align-items: center; }
+
+    /* ─── Presentations row ─────────────────────────────────── */
+    .presentations { display: flex; gap: 24px; flex-wrap: nowrap; justify-content: center; }
+
+    .cover-link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      width: 180px;
+      transition: transform 0.2s;
+    }
+    .cover-link:hover {
+      transform: translateY(-6px);
+    }
+    .cover-link:hover .cover-thumb {
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    }
+
+    .cover-thumb {
+      width: 180px;
+      height: 233px;
+      background: url('../assets/bg-cover.png') center / cover no-repeat;
+      border-radius: 6px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: box-shadow 0.2s;
+    }
+
+    .cover-thumb__card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(10,83,131,0.12);
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      max-width: 140px;
+    }
+
+    .cover-thumb__logo { height: 18px; width: auto; }
+    .cover-thumb__contract { font-size: 22px; font-weight: 700; color: #0A5383; text-align: center; line-height: 1; }
+    .cover-thumb__program { font-size: 9px; font-weight: 500; color: #666; text-align: center; line-height: 1.3; }
+    .cover-thumb__subtitle { font-size: 7px; font-weight: 500; color: #666; text-align: center; opacity: 0.7; }
+
+    /* ─── Top buttons ──────────────────────────────────────── */
+    .top-btn {
+      position: fixed;
+      top: 20px;
+      padding: 8px 16px;
+      background: rgba(10, 83, 131, 0.6);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-family: 'Gilroy', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+      z-index: 100;
+    }
+    .top-btn:hover {
+      background: rgba(10, 83, 131, 0.9);
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="top-btn" style="left: 20px;">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+    Collections
+  </a>
+  <a href="data-pipeline.html?collection=london" class="top-btn" style="right: 90px;">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/>
+      <line x1="12" y1="8" x2="12" y2="16"/>
+      <line x1="8" y1="12" x2="16" y2="12"/>
+    </svg>
+    Data
+  </a>
+  <a href="global-editor.html" class="top-btn" style="right: 20px;">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+    </svg>
+    Edit
+  </a>
+
+  <img src="../assets/ses-logo.light.png" alt="SES" class="logo">
+  <h1>Presentation Manager</h1>
+
+  <div class="content">
+
+    <div class="presentations">
+      <a href="1258-presentation.html" class="cover-link">
+        <div class="cover-thumb">
+          <div class="cover-thumb__card">
+            <img class="cover-thumb__logo" src="../assets/ses-logo.svg" alt="SES">
+            <div class="cover-thumb__contract">1258</div>
+            <div class="cover-thumb__program">LOC Portfolio + LOM Multifamily</div>
+          </div>
+        </div>
+      </a>
+      <a href="1334-ceg-presentation.html" class="cover-link">
+        <div class="cover-thumb">
+          <div class="cover-thumb__card">
+            <img class="cover-thumb__logo" src="../assets/ses-logo.svg" alt="SES">
+            <div class="cover-thumb__contract">1334</div>
+            <div class="cover-thumb__program">CEG Portfolio</div>
+          </div>
+        </div>
+      </a>
+      <a href="1334-ces-presentation.html" class="cover-link">
+        <div class="cover-thumb">
+          <div class="cover-thumb__card">
+            <img class="cover-thumb__logo" src="../assets/ses-logo.svg" alt="SES">
+            <div class="cover-thumb__contract">1334</div>
+            <div class="cover-thumb__program">CES Individual Asset</div>
+          </div>
+        </div>
+      </a>
+      <a href="1465-presentation.html" class="cover-link">
+        <div class="cover-thumb">
+          <div class="cover-thumb__card">
+            <img class="cover-thumb__logo" src="../assets/ses-logo.svg" alt="SES">
+            <div class="cover-thumb__contract">1465</div>
+            <div class="cover-thumb__program">QBS Individual Asset</div>
+          </div>
+        </div>
+      </a>
+      <a href="1097-presentation.html" class="cover-link">
+        <div class="cover-thumb">
+          <div class="cover-thumb__card">
+            <img class="cover-thumb__logo" src="../assets/ses-logo.svg" alt="SES">
+            <div class="cover-thumb__contract">1097</div>
+            <div class="cover-thumb__program">LOL Portfolio</div>
+          </div>
+        </div>
+      </a>
+      <a href="3757-presentation.html" class="cover-link">
+        <div class="cover-thumb">
+          <div class="cover-thumb__card">
+            <img class="cover-thumb__logo" src="../assets/ses-logo.svg" alt="SES">
+            <div class="cover-thumb__contract">3757</div>
+            <div class="cover-thumb__program">GLR Portfolio</div>
+          </div>
+        </div>
+      </a>
+    </div>
+
+  </div>
+</body>
+</html>

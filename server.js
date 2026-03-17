@@ -3,6 +3,8 @@ import express from 'express';
 import { readFile } from 'fs/promises';
 import { extname, join, resolve } from 'path';
 import { handleExtract } from './src/pipeline/api-extract.js';
+import { initDb } from './src/pipeline/db-init.js';
+import { getPool, isDbConfigured } from './src/pipeline/db.js';
 
 const PORT = process.env.PORT || 8080;
 const ROOT = resolve('.');
@@ -22,8 +24,33 @@ const MIME = {
 const app = express();
 app.use(express.json({ limit: '10mb' }));
 
+// Initialize database tables
+initDb();
+
 // ─── API Routes ──────────────────────────────────────────────
 app.post('/api/extract', handleExtract);
+
+// Ingestion history
+app.get('/api/ingestions', async (req, res) => {
+  if (!isDbConfigured()) {
+    return res.json({ rows: [], error: 'Database not configured' });
+  }
+  try {
+    const pool = getPool();
+    const { collection } = req.query;
+    let query = 'SELECT id, collection, data_point_id, contract_id, input_type, extracted_value, model_used, confidence, reasoning, created_at FROM ingestion_inputs';
+    const params = [];
+    if (collection) {
+      query += ' WHERE collection = $1';
+      params.push(collection);
+    }
+    query += ' ORDER BY created_at DESC LIMIT 100';
+    const result = await pool.query(query, params);
+    res.json({ rows: result.rows });
+  } catch (err) {
+    res.status(500).json({ rows: [], error: err.message });
+  }
+});
 
 // Health check — verifies API key is set and Anthropic reachable
 app.get('/api/health', async (_req, res) => {

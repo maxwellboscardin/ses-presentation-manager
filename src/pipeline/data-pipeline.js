@@ -7,6 +7,7 @@ import { renderRegistryView } from './registry-view.js';
 import { renderIngestView } from './ingest-view.js';
 import { renderRequestView } from './request-view.js';
 import { renderSourceView } from './source-view.js';
+import { getActiveCollection, COLLECTIONS } from './collections.js';
 
 const TABS = [
   { id: 'registry', label: 'Registry', render: renderRegistryView },
@@ -16,10 +17,13 @@ const TABS = [
 ];
 
 let activeTab = 'registry';
+let activeCollection = null;
 
 export async function renderDataPipeline(root) {
   root.innerHTML = '';
   root.className = 'dp-app';
+
+  activeCollection = getActiveCollection();
 
   const nav = buildNav();
   const content = document.createElement('div');
@@ -36,11 +40,12 @@ function buildNav() {
   const nav = document.createElement('nav');
   nav.className = 'dp-nav';
 
-  // Home link
+  // Home link — goes to collection index if scoped, otherwise main index
   const home = document.createElement('a');
   home.className = 'dp-nav__btn';
-  home.href = 'index.html';
-  home.textContent = 'Home';
+  const col = activeCollection && COLLECTIONS[activeCollection];
+  home.href = col ? col.indexUrl : 'index.html';
+  home.textContent = col ? col.label : 'Home';
   nav.appendChild(home);
 
   // Editor link
@@ -105,6 +110,6 @@ async function switchTab(tabId, content) {
   const tab = TABS.find(t => t.id === tabId);
   if (tab) {
     content.innerHTML = '';
-    await tab.render(content);
+    await tab.render(content, activeCollection);
   }
 }

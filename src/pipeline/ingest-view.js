@@ -4,20 +4,15 @@
  */
 
 import { loadDataOverrides, saveDataOverrides, markUpdated } from './pipeline-storage.js';
+import { getContractsForCollection } from './collections.js';
 
-const CONTRACTS = [
-  { id: '1258', shortLabel: '1258 LOC' },
-  { id: '1334-ceg', shortLabel: '1334 CEG' },
-  { id: '1334-ces', shortLabel: '1334 CES' },
-  { id: '1465', shortLabel: '1465 QBS' },
-  { id: '1097', shortLabel: '1097 LOL' },
-  { id: '3757', shortLabel: '3757 GLR' },
-];
+let CONTRACTS = [];
 
 let registry = [];
 let selectedDataPoint = null;
 let selectedContract = null;
 let lastResult = null;
+let activeCollectionId = null;
 
 // ─── Helpers ─────────────────────────────────────────────────
 
@@ -47,12 +42,25 @@ function detectInputType(file) {
 
 // ─── Main Render ─────────────────────────────────────────────
 
-export async function renderIngestView(container) {
+export async function renderIngestView(container, collectionId) {
   container.innerHTML = '';
+  activeCollectionId = collectionId;
+
+  // Build contracts list based on collection filter
+  CONTRACTS = getContractsForCollection(collectionId).map(c => ({
+    id: c.id,
+    shortLabel: c.shortLabel,
+  }));
 
   // Load registry
   const resp = await fetch('../data/data-registry.json');
   registry = await resp.json();
+
+  // Filter registry to only show data points relevant to this collection's contracts
+  if (collectionId) {
+    const contractIds = new Set(CONTRACTS.map(c => c.id));
+    registry = registry.filter(dp => dp.contracts.some(cid => contractIds.has(cid)));
+  }
 
   const layout = el('div', 'dp-ingest');
 
@@ -62,9 +70,10 @@ export async function renderIngestView(container) {
   left.appendChild(buildInputArea());
   layout.appendChild(left);
 
-  // Right column: preview
+  // Right column: preview + history
   const right = el('div', 'dp-ingest__right');
   right.appendChild(buildPreviewPanel());
+  right.appendChild(buildHistoryPanel());
   layout.appendChild(right);
 
   container.appendChild(layout);
@@ -319,6 +328,7 @@ async function handleExtract() {
         inputType,
         dataPointSchema: selectedDataPoint,
         contractId: selectedContract,
+        collection: activeCollectionId,
       }),
     });
 
@@ -331,6 +341,17 @@ async function handleExtract() {
 
     lastResult = result;
     showPreviewResult(result);
+
+    // Show DB save confirmation if server saved to database
+    if (result.savedToDb) {
+      const preview = document.getElementById('ingest-preview');
+      if (preview) {
+        const dbConfirm = el('div', 'dp-preview__applied', 'Saved to database');
+        dbConfirm.style.background = 'rgba(76,175,80,0.12)';
+        dbConfirm.style.color = '#4CAF50';
+        preview.appendChild(dbConfirm);
+      }
+    }
   } catch (err) {
     showPreviewError(err.message);
   } finally {
@@ -451,5 +472,82 @@ function applyResult(result) {
   if (preview) {
     const confirm = el('div', 'dp-preview__applied', 'Applied! Value saved to local overrides.');
     preview.appendChild(confirm);
+  }
+}
+
+// ─── History Panel ────────────────────────────────────────────
+
+function buildHistoryPanel() {
+  const section = el('div', 'dp-ingest__section');
+
+  const header = el('div', 'dp-ingest__heading');
+  header.textContent = 'Recent Ingestions';
+  const refreshBtn = el('button', 'dp-ingest__history-refresh', 'Refresh');
+  refreshBtn.style.cssText = 'margin-left:auto;background:none;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.5);border-radius:4px;padding:2px 8px;font-size:11px;cursor:pointer;font-family:inherit;';
+  refreshBtn.addEventListener('click', loadHistory);
+  header.style.display = 'flex';
+  header.style.alignItems = 'center';
+  header.appendChild(refreshBtn);
+  section.appendChild(header);
+
+  const list = el('div', 'dp-ingest__history');
+  list.id = 'ingest-history';
+  list.style.cssText = 'max-height:240px;overflow-y:auto;font-size:12px;color:rgba(255,255,255,0.5);';
+  list.textContent = 'Loading...';
+  section.appendChild(list);
+
+  // Load on mount
+  setTimeout(loadHistory, 100);
+
+  return section;
+}
+
+async function loadHistory() {
+  const list = document.getElementById('ingest-history');
+  if (!list) return;
+
+  try {
+    const url = activeCollectionId
+      ? `/api/ingestions?collection=${encodeURIComponent(activeCollectionId)}`
+      : '/api/ingestions';
+    const resp = await fetch(url);
+    const { rows, error } = await resp.json();
+
+    if (error && (!rows || rows.length === 0)) {
+      list.textContent = error === 'Database not configured' ? 'Database not connected' : error;
+      return;
+    }
+
+    if (!rows || rows.length === 0) {
+      list.textContent = 'No ingestions yet';
+      return;
+    }
+
+    list.innerHTML = '';
+    rows.slice(0, 20).forEach(row => {
+      const item = el('div', 'dp-ingest__history-item');
+      item.style.cssText = 'padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;gap:8px;align-items:baseline;';
+
+      const time = el('span', '', new Date(row.created_at).toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }));
+      time.style.cssText = 'color:rgba(255,255,255,0.3);font-size:11px;white-space:nowrap;';
+      item.appendChild(time);
+
+      const dpLabel = el('span', '', row.data_point_id);
+      dpLabel.style.cssText = 'color:rgba(255,255,255,0.7);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;';
+      item.appendChild(dpLabel);
+
+      const contract = el('span', '', row.contract_id);
+      contract.style.cssText = 'color:rgba(10,83,131,0.8);font-size:11px;';
+      item.appendChild(contract);
+
+      const conf = el('span', '', `${Math.round((row.confidence || 0) * 100)}%`);
+      const confPct = Math.round((row.confidence || 0) * 100);
+      conf.style.cssText = `color:${confPct >= 80 ? '#4CAF50' : confPct >= 60 ? '#FFC107' : '#f44336'};font-size:11px;font-weight:600;`;
+      item.appendChild(conf);
+
+      list.appendChild(item);
+    });
+  } catch {
+    list.textContent = 'Failed to load history';
   }
 }

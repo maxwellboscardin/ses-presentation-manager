@@ -5,15 +5,19 @@
 
 import { getFreshness, COLORS } from './freshness.js';
 import { loadLastUpdated } from './pipeline-storage.js';
+import { getContractsForCollection } from './collections.js';
 
-const CONTRACTS = [
-  { id: '1258', shortLabel: '1258 LOC', contract: '../data/contracts/1258.json', stat: '../data/stat-sheets/1258.json', updates: null },
-  { id: '1334-ceg', shortLabel: '1334 CEG', contract: '../data/contracts/1334-ceg.json', stat: '../data/stat-sheets/1334.json', updates: null },
-  { id: '1334-ces', shortLabel: '1334 CES', contract: '../data/contracts/1334-ces.json', stat: '../data/stat-sheets/1334-ces.json', updates: '../data/updates/1334-ces.json' },
-  { id: '1465', shortLabel: '1465 QBS', contract: '../data/contracts/1465.json', stat: '../data/stat-sheets/1465.json', updates: '../data/updates/1465-qbs.json' },
-  { id: '1097', shortLabel: '1097 LOL', contract: '../data/contracts/1097.json', stat: '../data/stat-sheets/1097.json', updates: null },
-  { id: '3757', shortLabel: '3757 GLR', contract: '../data/contracts/3757.json', stat: '../data/stat-sheets/3757.json', updates: null },
-];
+const ALL_CONTRACT_FILES = {
+  '1258':     { contract: '../data/contracts/1258.json',     stat: '../data/stat-sheets/1258.json',     updates: null },
+  '1334-ceg': { contract: '../data/contracts/1334-ceg.json', stat: '../data/stat-sheets/1334.json',     updates: null },
+  '1334-ces': { contract: '../data/contracts/1334-ces.json', stat: '../data/stat-sheets/1334-ces.json', updates: '../data/updates/1334-ces.json' },
+  '1465':     { contract: '../data/contracts/1465.json',     stat: '../data/stat-sheets/1465.json',     updates: '../data/updates/1465-qbs.json' },
+  '1097':     { contract: '../data/contracts/1097.json',     stat: '../data/stat-sheets/1097.json',     updates: null },
+  '3757':     { contract: '../data/contracts/3757.json',     stat: '../data/stat-sheets/3757.json',     updates: null },
+  'zurich':   { contract: '../data/contracts/zurich.json',   stat: '../data/stat-sheets/zurich.json',   updates: null },
+};
+
+let CONTRACTS = [];
 
 let registry = [];
 let contractData = {};
@@ -22,12 +26,30 @@ let overlay = null;
 /**
  * Render the registry view into the given container.
  */
-export async function renderRegistryView(container) {
+export async function renderRegistryView(container, collectionId) {
   container.innerHTML = '';
+
+  // Build contracts list based on collection filter
+  const colContracts = getContractsForCollection(collectionId);
+  CONTRACTS = colContracts.map(c => ({
+    id: c.id,
+    shortLabel: c.shortLabel,
+    ...(ALL_CONTRACT_FILES[c.id] || {
+      contract: `../data/contracts/${c.id}.json`,
+      stat: `../data/stat-sheets/${c.id}.json`,
+      updates: null,
+    }),
+  }));
 
   // Load registry + contract data
   const [regResp] = await Promise.all([fetch('../data/data-registry.json')]);
   registry = await regResp.json();
+
+  // Filter registry to only show data points relevant to this collection's contracts
+  if (collectionId) {
+    const contractIds = new Set(CONTRACTS.map(c => c.id));
+    registry = registry.filter(dp => dp.contracts.some(cid => contractIds.has(cid)));
+  }
 
   // Load all contract data in parallel
   await loadAllContractData();

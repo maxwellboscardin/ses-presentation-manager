@@ -1,0 +1,93 @@
+{
+  "contract": "zurich",
+  "title": "SFR Portfolio",
+  "lastUpdated": null,
+
+  "programUpdate": {
+    "observations": []
+  },
+
+  "capacityUtilization": {
+    "currentValue": 0,
+    "maxValue": 1.0,
+    "unit": "B",
+    "label": "Top 5 States"
+  },
+
+  "averageRates": {
+    "chartData": []
+  },
+
+  "itvBadge": {
+    "value": "",
+    "change": "",
+    "direction": "flat",
+    "label": "Average ITV"
+  },
+
+  "ctdPremium": {
+    "kpis": []
+  },
+
+  "inForcePremium": {
+    "kpis": []
+  },
+
+  "iconKpis": [],
+
+  "underwritingUpdate": {
+    "observations": []
+  },
+
+  "propertyRiskScore": {
+    "data": [
+      { "label": "A", "value": 0, "color": "#0A5383" },
+      { "label": "B", "value": 0, "color": "#2E7BA0" },
+      { "label": "C", "value": 0, "color": "#5A98B8" },
+      { "label": "D", "value": 0, "color": "#8FBAD2" },
+      { "label": "E", "value": 0, "color": "#C5DCE8" }
+    ]
+  },
+
+  "quotesBinds": {
+    "data": [],
+    "legend": [
+      { "label": "Submissions", "color": "#0A5383", "type": "bar" },
+      { "label": "Quotes", "color": "#8FBAD2", "type": "bar" },
+      { "label": "Binds", "color": "#E97121", "type": "bar" },
+      { "label": "Bind %", "color": "#4CAF50", "type": "line" }
+    ],
+    "footnote": ""
+  },
+
+  "renewalRetention": {
+    "data": [],
+    "legend": [
+      { "label": "Retention %", "color": "#E97121", "type": "line" }
+    ]
+  },
+
+  "lossHistory": {
+    "data": []
+  },
+
+  "organizationalUpdate": {
+    "observations": []
+  },
+
+  "claimsInsights": {
+    "observations": [],
+    "table": {
+      "columns": [],
+      "rows": []
+    }
+  },
+
+  "onDeck": {
+    "observations": []
+  },
+
+  "aiRoadmap": {
+    "observations": []
+  }
+}
