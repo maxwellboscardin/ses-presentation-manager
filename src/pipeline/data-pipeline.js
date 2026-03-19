@@ -48,10 +48,10 @@ function buildNav() {
   home.textContent = col ? col.label : 'Home';
   nav.appendChild(home);
 
-  // Editor link
+  // Editor link — pass collection param through
   const editor = document.createElement('a');
   editor.className = 'dp-nav__btn';
-  editor.href = 'global-editor.html';
+  editor.href = activeCollection ? `global-editor.html?collection=${activeCollection}` : 'global-editor.html';
   editor.textContent = 'Editor';
   nav.appendChild(editor);
 

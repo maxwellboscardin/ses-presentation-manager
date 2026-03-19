@@ -20,25 +20,38 @@ const UPDATED_KEY_TO_HEADERS = {
   propertyRiskScore: ['Property Risk Score'],
 };
 
-const CONTRACTS = [
-  { id: '1258', shortLabel: '1258 LOC/LOM', code: 'LOC', product: 'Portfolio', title: 'Portfolio + Multifamily', contract: '../data/contracts/1258.json', stat: '../data/stat-sheets/1258.json' },
-  { id: '1334-ceg', shortLabel: '1334 CEG', code: 'CEG', product: 'Portfolio', title: 'Portfolio', contract: '../data/contracts/1334-ceg.json', stat: '../data/stat-sheets/1334.json' },
-  { id: '1334-ces', shortLabel: '1334 CES', code: 'CES', product: 'Individual Asset', title: 'Individual Asset', contract: '../data/contracts/1334-ces.json', stat: '../data/stat-sheets/1334-ces.json', updates: '../data/updates/1334-ces.json' },
-  { id: '1465', shortLabel: '1465 QBS', code: 'QBS', product: 'Individual Asset', title: 'Individual Asset', contract: '../data/contracts/1465.json', stat: '../data/stat-sheets/1465.json', updates: '../data/updates/1465-qbs.json' },
-  { id: '1097', shortLabel: '1097 LOL', code: 'LOL', product: 'Portfolio', title: 'Portfolio', contract: '../data/contracts/1097.json', stat: '../data/stat-sheets/1097.json' },
-  { id: '3757', shortLabel: '3757 GLR', code: 'GLR', product: 'Portfolio', title: 'Portfolio', contract: '../data/contracts/3757.json', stat: '../data/stat-sheets/3757.json' },
+const ALL_CONTRACTS = [
+  { id: '1258', shortLabel: '1258 LOC/LOM', code: 'LOC', product: 'Portfolio', title: 'Portfolio + Multifamily', contract: '../data/contracts/1258.json', stat: '../data/stat-sheets/1258.json', collection: 'london' },
+  { id: '1334-ceg', shortLabel: '1334 CEG', code: 'CEG', product: 'Portfolio', title: 'Portfolio', contract: '../data/contracts/1334-ceg.json', stat: '../data/stat-sheets/1334.json', collection: 'london' },
+  { id: '1334-ces', shortLabel: '1334 CES', code: 'CES', product: 'Individual Asset', title: 'Individual Asset', contract: '../data/contracts/1334-ces.json', stat: '../data/stat-sheets/1334-ces.json', updates: '../data/updates/1334-ces.json', collection: 'london' },
+  { id: '1465', shortLabel: '1465 QBS', code: 'QBS', product: 'Individual Asset', title: 'Individual Asset', contract: '../data/contracts/1465.json', stat: '../data/stat-sheets/1465.json', updates: '../data/updates/1465-qbs.json', collection: 'london' },
+  { id: '1097', shortLabel: '1097 LOL', code: 'LOL', product: 'Portfolio', title: 'Portfolio', contract: '../data/contracts/1097.json', stat: '../data/stat-sheets/1097.json', collection: 'london' },
+  { id: '3757', shortLabel: '3757 GLR', code: 'GLR', product: 'Portfolio', title: 'Portfolio', contract: '../data/contracts/3757.json', stat: '../data/stat-sheets/3757.json', collection: 'london' },
+  { id: 'zurich', shortLabel: 'Zurich SFR', code: 'ZUR', product: 'Portfolio', title: 'SFR Portfolio', contract: '../data/contracts/zurich.json', stat: '../data/stat-sheets/zurich.json', collection: 'zurich' },
 ];
+
+const COLLECTION_LABELS = { london: 'London March 2026', zurich: 'Zurich March 2026' };
+const COLLECTION_INDEX = { london: 'london-index.html', zurich: 'zurich-index.html' };
+
+function getActiveCollection() {
+  return new URLSearchParams(window.location.search).get('collection') || null;
+}
+
+const activeCollection = getActiveCollection();
+const CONTRACTS = activeCollection
+  ? ALL_CONTRACTS.filter(c => c.collection === activeCollection)
+  : ALL_CONTRACTS;
 
 // Cross-reference: which presentations each card type appears on
 const XREF = {
-  cover: ['1258 LOC/LOM', '1334 CEG', '1334 CES', '1465 QBS', '1097 LOL', '3757 GLR'],
-  overview: ['1258 LOC/LOM', '1334 CEG', '1334 CES', '1465 QBS', '1097 LOL', '3757 GLR'],
+  cover: ['1258 LOC/LOM', '1334 CEG', '1334 CES', '1465 QBS', '1097 LOL', '3757 GLR', 'Zurich SFR'],
+  overview: ['1258 LOC/LOM', '1334 CEG', '1334 CES', '1465 QBS', '1097 LOL', '3757 GLR', 'Zurich SFR'],
   statSheet: null,
   flipP1: null,
   flipP2: null,
   updates: null,
-  sqbPortfolio: ['1258 LOC/LOM', '1334 CEG', '1097 LOL', '3757 GLR'],
-  backCover: ['1258 LOC/LOM', '1334 CEG', '1334 CES', '1465 QBS', '1097 LOL', '3757 GLR'],
+  sqbPortfolio: ['1258 LOC/LOM', '1334 CEG', '1097 LOL', '3757 GLR', 'Zurich SFR'],
+  backCover: ['1258 LOC/LOM', '1334 CEG', '1334 CES', '1465 QBS', '1097 LOL', '3757 GLR', 'Zurich SFR'],
 };
 
 const PAGE_W = 816;
@@ -353,8 +366,8 @@ function buildNav(getZoomIndex, setZoom) {
 
   const home = document.createElement('a');
   home.className = 'ge-nav__btn';
-  home.href = 'index.html';
-  home.textContent = 'Home';
+  home.href = activeCollection ? COLLECTION_INDEX[activeCollection] || 'index.html' : 'index.html';
+  home.textContent = activeCollection ? COLLECTION_LABELS[activeCollection] || 'Home' : 'Home';
   nav.appendChild(home);
   nav.appendChild(buildSep());
 
