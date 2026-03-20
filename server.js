@@ -1,13 +1,22 @@
 import 'dotenv/config';
 import express from 'express';
+import session from 'express-session';
+import connectPgSimple from 'connect-pg-simple';
 import { readFile } from 'fs/promises';
 import { extname, join, resolve } from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 import { handleExtract } from './src/pipeline/api-extract.js';
 import { initDb } from './src/pipeline/db-init.js';
 import { getPool, isDbConfigured } from './src/pipeline/db.js';
+import { pool } from './server/db.js';
+import { requireAuth } from './server/auth.js';
+import authRoutes from './server/auth-routes.js';
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 8080;
 const ROOT = resolve('.');
+const isProd = process.env.NODE_ENV === 'production';
 
 const MIME = {
   '.html': 'text/html',
@@ -22,10 +31,33 @@ const MIME = {
 };
 
 const app = express();
+app.set('trust proxy', 1);
 app.use(express.json({ limit: '10mb' }));
+
+// Sessions (PostgreSQL-backed)
+const PgSession = connectPgSimple(session);
+app.use(session({
+  store: new PgSession({ pool, tableName: 'session' }),
+  secret: process.env.SESSION_SECRET || 'dev-secret-change-me',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: isProd,
+    httpOnly: true,
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    sameSite: 'lax',
+  },
+}));
 
 // Initialize database tables
 initDb();
+
+// --- Unprotected routes ---
+app.use('/api/auth', authRoutes);
+app.get('/login', (_req, res) => res.sendFile(join(__dirname, 'server', 'login.html')));
+
+// --- Auth wall ---
+app.use(requireAuth);
 
 // ─── API Routes ──────────────────────────────────────────────
 app.post('/api/extract', handleExtract);
