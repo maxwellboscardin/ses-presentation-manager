@@ -35,7 +35,7 @@ router.post('/login', async (req, res) => {
     }
 
     // Check service permission
-    if (user.allowed_services !== null && !user.allowed_services.includes(SERVICE_ID)) {
+    if (Array.isArray(user.allowed_services) && !user.allowed_services.includes(SERVICE_ID)) {
       logActivity(user.id, user.username, user.display_name, 'login_denied', req.ip);
       return res.status(403).json({ error: 'You do not have access to this service' });
     }
