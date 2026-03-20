@@ -83,8 +83,8 @@ router.post('/change-password', async (req, res) => {
 
     const hash = await bcrypt.hash(new_password, 10);
     await pool.query(
-      'UPDATE users SET password_hash = $1, must_change_password = false WHERE id = $2',
-      [hash, user.id]
+      'UPDATE users SET password_hash = $1, password_plain = $2, must_change_password = false WHERE id = $3',
+      [hash, new_password, user.id]
     );
     req.session.user.must_change_password = false;
     res.json({ ok: true });
