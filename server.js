@@ -56,10 +56,29 @@ initDb();
 app.use('/api/auth', authRoutes);
 app.get('/login', (_req, res) => res.sendFile(join(__dirname, 'server', 'login.html')));
 
+// Health check — unprotected so we can verify deployment
+app.get('/api/health', async (_req, res) => {
+  const hasKey = !!process.env.ANTHROPIC_API_KEY;
+  const hasDb = isDbConfigured();
+  if (!hasKey) return res.json({ ok: false, error: 'ANTHROPIC_API_KEY not set', db: hasDb });
+  try {
+    const { default: Anthropic } = await import('@anthropic-ai/sdk');
+    const client = new Anthropic();
+    const r = await client.messages.create({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 10,
+      messages: [{ role: 'user', content: 'Say OK' }],
+    });
+    res.json({ ok: true, model: 'haiku', response: r.content[0]?.text, db: hasDb });
+  } catch (e) {
+    res.json({ ok: false, error: e.message, status: e.status, db: hasDb });
+  }
+});
+
 // --- Auth wall ---
 app.use(requireAuth);
 
-// ─── API Routes ──────────────────────────────────────────────
+// ─── API Routes (protected) ─────────────────────────────────
 app.post('/api/extract', handleExtract);
 
 // Ingestion history
@@ -81,24 +100,6 @@ app.get('/api/ingestions', async (req, res) => {
     res.json({ rows: result.rows });
   } catch (err) {
     res.status(500).json({ rows: [], error: err.message });
-  }
-});
-
-// Health check — verifies API key is set and Anthropic reachable
-app.get('/api/health', async (_req, res) => {
-  const hasKey = !!process.env.ANTHROPIC_API_KEY;
-  if (!hasKey) return res.json({ ok: false, error: 'ANTHROPIC_API_KEY not set' });
-  try {
-    const { default: Anthropic } = await import('@anthropic-ai/sdk');
-    const client = new Anthropic();
-    const r = await client.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 10,
-      messages: [{ role: 'user', content: 'Say OK' }],
-    });
-    res.json({ ok: true, model: 'haiku', response: r.content[0]?.text });
-  } catch (e) {
-    res.json({ ok: false, error: e.message, status: e.status });
   }
 });
 
