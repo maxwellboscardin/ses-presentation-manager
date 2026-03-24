@@ -140,6 +140,35 @@
       background: rgba(255,255,255,0.15);
       color: #fff;
     }
+
+    .collection-card__btn--pdf {
+      background: rgba(233,113,33,0.25);
+      color: rgba(255,255,255,0.85);
+    }
+    .collection-card__btn--pdf:hover {
+      background: rgba(233,113,33,0.5);
+      color: #fff;
+    }
+    .collection-card__btn--pdf.is-loading {
+      pointer-events: none;
+      opacity: 0.7;
+    }
+    .collection-card__btn--pdf .pdf-spinner {
+      display: none;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    .collection-card__btn--pdf.is-loading .pdf-icon { display: none; }
+    .collection-card__btn--pdf.is-loading .pdf-spinner { display: block; }
+    .collection-card__btn--pdf.is-loading .pdf-label { content: ''; }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
@@ -179,6 +208,15 @@
             </svg>
             Data
           </a>
+          <button onclick="downloadPDFs('london', this)" class="collection-card__btn collection-card__btn--pdf">
+            <svg class="pdf-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            <div class="pdf-spinner"></div>
+            <span class="pdf-label">PDFs</span>
+          </button>
         </div>
       </div>
     </div>
@@ -215,10 +253,51 @@
             </svg>
             Data
           </a>
+          <button onclick="downloadPDFs('zurich', this)" class="collection-card__btn collection-card__btn--pdf">
+            <svg class="pdf-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            <div class="pdf-spinner"></div>
+            <span class="pdf-label">PDFs</span>
+          </button>
         </div>
       </div>
     </div>
 
   </div>
+
+  <script>
+    async function downloadPDFs(collection, btn) {
+      const label = btn.querySelector('.pdf-label');
+      const originalText = label.textContent;
+      btn.classList.add('is-loading');
+      label.textContent = 'Generating...';
+
+      try {
+        const resp = await fetch(`/api/pdf/${collection}`);
+        if (!resp.ok) {
+          const err = await resp.json().catch(() => ({ error: resp.statusText }));
+          throw new Error(err.error || 'Download failed');
+        }
+
+        const blob = await resp.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${collection}-presentations.zip`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      } catch (err) {
+        alert(`PDF generation failed: ${err.message}`);
+      } finally {
+        btn.classList.remove('is-loading');
+        label.textContent = originalText;
+      }
+    }
+  </script>
 </body>
 </html>

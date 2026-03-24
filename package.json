@@ -5,16 +5,15 @@
   "scripts": {
     "start": "node server.js"
   },
-  "devDependencies": {
-    "puppeteer": "^24.38.0"
-  },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.79.0",
+    "archiver": "^7.0.1",
     "bcryptjs": "^2.4.3",
     "connect-pg-simple": "^10.0.0",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "express-session": "^1.18.1",
-    "pg": "^8.20.0"
+    "pg": "^8.20.0",
+    "puppeteer": "^24.38.0"
   }
 }

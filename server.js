@@ -12,6 +12,7 @@ import { getPool, isDbConfigured } from './src/pipeline/db.js';
 import { pool } from './server/db.js';
 import { requireAuth } from './server/auth.js';
 import authRoutes from './server/auth-routes.js';
+import pdfRoutes from './server/pdf-route.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 8080;
@@ -79,6 +80,13 @@ app.get('/api/health', async (_req, res) => {
 app.use(requireAuth);
 
 // ─── API Routes (protected) ─────────────────────────────────
+// PDF generation (5-minute timeout for large collections)
+app.use('/api/pdf', (req, res, next) => {
+  req.setTimeout(5 * 60 * 1000);
+  res.setTimeout(5 * 60 * 1000);
+  next();
+}, pdfRoutes);
+
 app.post('/api/extract', handleExtract);
 
 // Ingestion history
