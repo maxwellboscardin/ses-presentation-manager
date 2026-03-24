@@ -43,15 +43,15 @@
 
   "inForcePremium": {
     "kpis": [
-      { "label": "Property", "value": "$0", "change": "N/A", "direction": "flat" },
+      { "label": "Property", "value": "$28.6M", "change": "N/A", "direction": "flat" },
       { "label": "GL", "value": "$0", "change": "N/A", "direction": "flat" }
     ]
   },
 
   "iconKpis": [
-    { "icon": "map-pin", "label": "States", "value": "0", "change": "0.0%", "direction": "flat" },
-    { "icon": "building", "label": "Assets", "value": "0", "change": "0.0%", "direction": "flat" },
-    { "icon": "users", "label": "Accounts", "value": "0", "change": "0.0%", "direction": "flat" }
+    { "icon": "map-pin", "label": "States", "value": "40", "change": "N/A", "direction": "flat" },
+    { "icon": "building", "label": "Assets", "value": "25,653", "change": "N/A", "direction": "flat" },
+    { "icon": "users", "label": "Accounts", "value": "1,122", "change": "N/A", "direction": "flat" }
   ],
 
   "underwritingUpdate": {
