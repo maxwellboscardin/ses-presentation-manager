@@ -133,8 +133,8 @@
     "table": {
       "columns": ["2023", "2024", "2025"],
       "rows": [
-        { "label": "Property", "values": ["0", "0", "0"] },
-        { "label": "Liability", "values": ["0", "0", "0"] }
+        { "label": "Property", "values": ["1,009", "731", "409"] },
+        { "label": "Liability", "values": ["64", "65", "29"] }
       ]
     }
   },
