@@ -220,14 +220,29 @@ router.get('/:collection', async (req, res) => {
   }
 });
 
-// Diagnostic endpoint
-router.get('/', (_req, res) => {
+// Diagnostic endpoint - try actually launching the browser
+router.get('/', async (_req, res) => {
   const chromiumPath = getChromiumPath();
-  res.json({
+  const info = {
     chromiumPath: chromiumPath || 'puppeteer-bundled',
     collections: Object.keys(COLLECTIONS),
     generating,
-  });
+  };
+  try {
+    const browser = await puppeteer.launch({
+      headless: true,
+      executablePath: chromiumPath,
+      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+    });
+    const version = await browser.version();
+    await browser.close();
+    info.browserVersion = version;
+    info.status = 'ok';
+  } catch (err) {
+    info.status = 'error';
+    info.launchError = err.message;
+  }
+  res.json(info);
 });
 
 export default router;
