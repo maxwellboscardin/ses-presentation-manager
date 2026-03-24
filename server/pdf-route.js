@@ -24,18 +24,21 @@ const COLLECTIONS = {
 let generating = false;
 
 function getChromiumPath() {
-  // 1. Explicit env var (Railway sets this via nixpacks.toml)
+  // 1. Explicit env var
   if (process.env.PUPPETEER_EXECUTABLE_PATH) {
+    console.log(`[PDF] Using PUPPETEER_EXECUTABLE_PATH: ${process.env.PUPPETEER_EXECUTABLE_PATH}`);
     return process.env.PUPPETEER_EXECUTABLE_PATH;
   }
-  // 2. System chromium
-  try {
-    return execSync('which chromium', { encoding: 'utf8' }).trim();
-  } catch { /* not found */ }
-  try {
-    return execSync('which chromium-browser', { encoding: 'utf8' }).trim();
-  } catch { /* not found */ }
+  // 2. System chromium (nix, apt, etc.)
+  for (const cmd of ['chromium', 'chromium-browser', 'google-chrome-stable']) {
+    try {
+      const path = execSync(`which ${cmd}`, { encoding: 'utf8' }).trim();
+      console.log(`[PDF] Found system browser: ${path}`);
+      return path;
+    } catch { /* not found */ }
+  }
   // 3. Let Puppeteer use its bundled Chromium (local dev)
+  console.log('[PDF] No system browser found, using Puppeteer bundled Chromium');
   return undefined;
 }
 
@@ -215,6 +218,16 @@ router.get('/:collection', async (req, res) => {
   } finally {
     generating = false;
   }
+});
+
+// Diagnostic endpoint
+router.get('/', (_req, res) => {
+  const chromiumPath = getChromiumPath();
+  res.json({
+    chromiumPath: chromiumPath || 'puppeteer-bundled',
+    collections: Object.keys(COLLECTIONS),
+    generating,
+  });
 });
 
 export default router;
