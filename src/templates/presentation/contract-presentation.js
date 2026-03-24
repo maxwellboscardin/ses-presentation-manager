@@ -278,8 +278,7 @@ export function buildOverviewPage(data) {
             '<strong>Strategy:</strong> Still seeking solutions for large apartment complexes and higher risk locations.',
           ])}
           ${productSegmentCard('Roadmap to Continued Market Relevance', [
-            'Large account and BTR solutions',
-            'Expanded eligibility criteria for individual asset program',
+            'Large account solution',
             'General Liability coverage considerations (GSE compliant)',
             'Retrospective refunds for loss free/low loss results (property-only)',
             'Focus on targeted growth states and improved spread of risk',
