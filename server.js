@@ -89,6 +89,62 @@ app.use('/api/pdf', (req, res, next) => {
 
 app.post('/api/extract', handleExtract);
 
+// Data values CRUD
+app.get('/api/data-values', async (req, res) => {
+  if (!isDbConfigured()) {
+    return res.json({ rows: [], error: 'Database not configured' });
+  }
+  try {
+    const pipePool = getPool();
+    const result = await pipePool.query(
+      'SELECT data_point_id, contract_id, value, value_type, source_ingestion_id, updated_by, updated_at FROM data_values ORDER BY updated_at DESC'
+    );
+    res.json({ rows: result.rows });
+  } catch (err) {
+    res.status(500).json({ rows: [], error: err.message });
+  }
+});
+
+app.put('/api/data-values', async (req, res) => {
+  if (!isDbConfigured()) {
+    return res.status(503).json({ error: 'Database not configured' });
+  }
+  const { dataPointId, contractId, value, valueType, sourceIngestionId } = req.body;
+  if (!dataPointId || !contractId || value === undefined) {
+    return res.status(400).json({ error: 'Missing required fields: dataPointId, contractId, value' });
+  }
+  try {
+    const pipePool = getPool();
+    const result = await pipePool.query(
+      `INSERT INTO data_values (data_point_id, contract_id, value, value_type, source_ingestion_id, updated_by, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, NOW())
+       ON CONFLICT (data_point_id, contract_id)
+       DO UPDATE SET value = $3, value_type = $4, source_ingestion_id = $5, updated_by = $6, updated_at = NOW()
+       RETURNING *`,
+      [dataPointId, contractId, JSON.stringify(value), valueType || 'manual', sourceIngestionId || null, req.session?.user?.name || 'unknown']
+    );
+    res.json({ ok: true, row: result.rows[0] });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete('/api/data-values/:dpId/:contractId', async (req, res) => {
+  if (!isDbConfigured()) {
+    return res.status(503).json({ error: 'Database not configured' });
+  }
+  try {
+    const pipePool = getPool();
+    await pipePool.query(
+      'DELETE FROM data_values WHERE data_point_id = $1 AND contract_id = $2',
+      [req.params.dpId, req.params.contractId]
+    );
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Ingestion history
 app.get('/api/ingestions', async (req, res) => {
   if (!isDbConfigured()) {

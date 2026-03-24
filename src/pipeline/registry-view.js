@@ -1,11 +1,14 @@
 /**
- * registry-view.js — Matrix browser for all data points × contracts.
- * Shows freshness dots, value previews, and click-to-inspect overlay.
+ * registry-view.js -- Card-based data point browser.
+ * Each data point is a card showing contract values as pills.
+ * Click to expand: see full values + inline ingest panel.
+ * DB values (data_values table) overlay JSON source values.
  */
 
 import { getFreshness, COLORS } from './freshness.js';
-import { loadLastUpdated } from './pipeline-storage.js';
 import { getContractsForCollection } from './collections.js';
+import { fetchAllValues } from './data-api.js';
+import { buildInlineIngestPanel } from './ingest-view.js';
 
 const ALL_CONTRACT_FILES = {
   '1258':     { contract: '../data/contracts/1258.json',     stat: '../data/stat-sheets/1258.json',     updates: null },
@@ -18,18 +21,24 @@ const ALL_CONTRACT_FILES = {
 };
 
 let CONTRACTS = [];
-
 let registry = [];
 let contractData = {};
-let overlay = null;
+let dbValues = {};
+let expandedCardId = null;
+
+function el(tag, cls, text) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text !== undefined) e.textContent = text;
+  return e;
+}
 
 /**
- * Render the registry view into the given container.
+ * Render the unified registry view.
  */
 export async function renderRegistryView(container, collectionId) {
   container.innerHTML = '';
 
-  // Build contracts list based on collection filter
   const colContracts = getContractsForCollection(collectionId);
   CONTRACTS = colContracts.map(c => ({
     id: c.id,
@@ -41,40 +50,41 @@ export async function renderRegistryView(container, collectionId) {
     }),
   }));
 
-  // Load registry + contract data
-  const [regResp] = await Promise.all([fetch('../data/data-registry.json')]);
-  registry = await regResp.json();
+  // Load registry + contract data + DB values in parallel
+  const [regResp, dbVals] = await Promise.all([
+    fetch('../data/data-registry.json').then(r => r.json()),
+    fetchAllValues(collectionId).catch(() => ({})),
+  ]);
+  registry = regResp;
+  dbValues = dbVals;
 
-  // Filter registry to only show data points relevant to this collection's contracts
+  // Filter registry by collection
   if (collectionId) {
     const contractIds = new Set(CONTRACTS.map(c => c.id));
     registry = registry.filter(dp => dp.contracts.some(cid => contractIds.has(cid)));
   }
 
-  // Load all contract data in parallel
   await loadAllContractData();
 
-  // Build the view
-  const toolbar = buildToolbar();
+  // Build UI
   const summary = buildSummary();
+  const toolbar = buildToolbar();
   const legend = buildLegend();
-  const matrix = buildMatrix();
+  const cards = buildCardList();
 
-  container.appendChild(toolbar);
   container.appendChild(summary);
+  container.appendChild(toolbar);
   container.appendChild(legend);
-  container.appendChild(matrix);
+  container.appendChild(cards);
 }
 
 async function loadAllContractData() {
   const fetches = CONTRACTS.map(async c => {
-    const results = {};
     const [contractResp, statResp] = await Promise.all([
       fetch(c.contract).then(r => r.json()).catch(() => null),
       fetch(c.stat).then(r => r.json()).catch(() => null),
     ]);
-    results.contract = contractResp;
-    results.stat = statResp;
+    const results = { contract: contractResp, stat: statResp };
     if (c.updates) {
       results.updates = await fetch(c.updates).then(r => r.json()).catch(() => null);
     }
@@ -83,109 +93,68 @@ async function loadAllContractData() {
   await Promise.all(fetches);
 }
 
-/** Resolve a dotted path on an object. */
 function resolvePath(obj, path) {
   if (!obj || !path) return undefined;
   return path.split('.').reduce((o, k) => (o && o[k] !== undefined ? o[k] : undefined), obj);
 }
 
-/** Get the actual value for a data point + contract. */
+/** Get value: DB override > JSON source */
 function getDataValue(dataPoint, contractId) {
+  // DB value takes priority
+  if (dbValues[dataPoint.id]?.[contractId]) {
+    return { value: dbValues[dataPoint.id][contractId].value, source: 'db' };
+  }
+  // Fall back to JSON
   const data = contractData[contractId];
-  if (!data) return undefined;
-
-  const source = dataPoint.sourceFile;
+  if (!data) return { value: undefined, source: 'json' };
+  const srcFile = dataPoint.sourceFile;
   let root;
-  if (source === 'contracts') root = data.contract;
-  else if (source === 'stat-sheets') root = data.stat;
-  else if (source === 'updates') root = data.updates;
-
-  if (!root) return undefined;
-  return resolvePath(root, dataPoint.jsonPath);
+  if (srcFile === 'contracts') root = data.contract;
+  else if (srcFile === 'stat-sheets') root = data.stat;
+  else if (srcFile === 'updates') root = data.updates;
+  if (!root) return { value: undefined, source: 'json' };
+  return { value: resolvePath(root, dataPoint.jsonPath), source: 'json' };
 }
 
-/** Format a value for short preview in a cell. */
+function getLastUpdated(dataPoint, contractId) {
+  if (dbValues[dataPoint.id]?.[contractId]?.updatedAt) {
+    return dbValues[dataPoint.id][contractId].updatedAt.split('T')[0];
+  }
+  return dataPoint.lastUpdated?.[contractId] || null;
+}
+
 function formatPreview(value) {
   if (value === undefined || value === null) return '';
-  if (typeof value === 'string') return value;
+  if (typeof value === 'string') return value.length > 30 ? value.slice(0, 30) + '...' : value;
   if (typeof value === 'number') return String(value);
-  if (Array.isArray(value)) {
-    if (value.length === 0) return '(empty)';
-    if (typeof value[0] === 'string') return value[0].slice(0, 30) + (value[0].length > 30 ? '...' : '');
-    if (typeof value[0] === 'object') return `${value.length} items`;
-    return `${value.length} items`;
-  }
-  if (typeof value === 'object') {
-    const keys = Object.keys(value);
-    return `${keys.length} fields`;
-  }
+  if (Array.isArray(value)) return value.length === 0 ? '(empty)' : `${value.length} items`;
+  if (typeof value === 'object') return `${Object.keys(value).length} fields`;
   return String(value);
 }
 
-/** Format a value for the detail overlay. */
 function formatDetail(value) {
   if (value === undefined || value === null) return 'No data';
   if (typeof value === 'string') return value;
   if (typeof value === 'number') return String(value);
   if (Array.isArray(value)) {
     if (value.length === 0) return '(empty array)';
-    if (typeof value[0] === 'string') return value.map(v => `\u2022 ${v}`).join('\n');
+    if (typeof value[0] === 'string') return value;
     return JSON.stringify(value, null, 2);
   }
   if (typeof value === 'object') return JSON.stringify(value, null, 2);
   return String(value);
 }
 
-/** Get the effective lastUpdated date, merging localStorage overrides. */
-function getLastUpdated(dataPoint, contractId) {
-  const overrides = loadLastUpdated();
-  if (overrides[dataPoint.id] && overrides[dataPoint.id][contractId]) {
-    return overrides[dataPoint.id][contractId];
-  }
-  return dataPoint.lastUpdated?.[contractId] || null;
-}
-
 // ─── UI Builders ─────────────────────────────────────────────
-
-function el(tag, cls, text) {
-  const e = document.createElement(tag);
-  if (cls) e.className = cls;
-  if (text) e.textContent = text;
-  return e;
-}
-
-function buildToolbar() {
-  const bar = el('div', 'dp-toolbar');
-
-  const search = el('input', 'dp-search');
-  search.type = 'text';
-  search.placeholder = 'Search data points...';
-  search.addEventListener('input', () => filterMatrix(search.value));
-  bar.appendChild(search);
-
-  const filters = ['All', 'Stale', 'Aging', 'Fresh'];
-  filters.forEach(label => {
-    const btn = el('button', 'dp-filter-btn', label);
-    if (label === 'All') btn.classList.add('active');
-    btn.addEventListener('click', () => {
-      bar.querySelectorAll('.dp-filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      filterByFreshness(label.toLowerCase());
-    });
-    bar.appendChild(btn);
-  });
-
-  return bar;
-}
 
 function buildSummary() {
   const wrap = el('div', 'dp-summary');
-
   const total = registry.length;
   let fresh = 0, aging = 0, stale = 0;
 
   registry.forEach(dp => {
     dp.contracts.forEach(cid => {
+      if (!CONTRACTS.find(c => c.id === cid)) return;
       const date = getLastUpdated(dp, cid);
       const f = getFreshness(date, dp.staleDays);
       if (f.status === 'fresh') fresh++;
@@ -195,6 +164,8 @@ function buildSummary() {
   });
 
   const totalCells = fresh + aging + stale;
+  const dbCount = Object.values(dbValues).reduce((sum, dpMap) => sum + Object.keys(dpMap).length, 0);
+
   const cards = [
     { value: total, label: 'Data Points' },
     { value: CONTRACTS.length, label: 'Contracts' },
@@ -202,6 +173,7 @@ function buildSummary() {
     { value: fresh, label: 'Fresh' },
     { value: aging, label: 'Aging' },
     { value: stale, label: 'Stale' },
+    { value: dbCount, label: 'DB Values' },
   ];
 
   cards.forEach(c => {
@@ -214,11 +186,43 @@ function buildSummary() {
   return wrap;
 }
 
+function buildToolbar() {
+  const bar = el('div', 'dp-toolbar');
+
+  const search = el('input', 'dp-search');
+  search.type = 'text';
+  search.placeholder = 'Search data points...';
+  search.addEventListener('input', () => filterCards(search.value, getActiveFilter()));
+  search.id = 'dp-search';
+  bar.appendChild(search);
+
+  const filters = ['All', 'Stale', 'Aging', 'Fresh'];
+  filters.forEach(label => {
+    const btn = el('button', 'dp-filter-btn', label);
+    btn.dataset.filter = label.toLowerCase();
+    if (label === 'All') btn.classList.add('active');
+    btn.addEventListener('click', () => {
+      bar.querySelectorAll('.dp-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const searchVal = document.getElementById('dp-search')?.value || '';
+      filterCards(searchVal, label.toLowerCase());
+    });
+    bar.appendChild(btn);
+  });
+
+  return bar;
+}
+
+function getActiveFilter() {
+  const active = document.querySelector('.dp-filter-btn.active');
+  return active?.dataset.filter || 'all';
+}
+
 function buildLegend() {
   const wrap = el('div', 'dp-legend');
   const items = [
-    { color: COLORS.fresh, label: 'Fresh (\u226490 days)' },
-    { color: COLORS.aging, label: 'Aging (90\u2013135 days)' },
+    { color: COLORS.fresh, label: 'Fresh (<=90 days)' },
+    { color: COLORS.aging, label: 'Aging (90-135 days)' },
     { color: COLORS.stale, label: 'Stale (>135 days)' },
     { color: COLORS.unknown, label: 'Unknown' },
   ];
@@ -233,247 +237,242 @@ function buildLegend() {
   return wrap;
 }
 
-function buildMatrix() {
-  const table = el('table', 'dp-matrix');
-  table.id = 'dp-matrix';
+function buildCardList() {
+  const container = el('div', 'dp-cards');
+  container.id = 'dp-cards';
 
-  // Header
-  const thead = el('thead');
-  const headerRow = el('tr');
-  headerRow.appendChild(el('th', '', 'Data Point'));
-  CONTRACTS.forEach(c => headerRow.appendChild(el('th', '', c.shortLabel)));
-  thead.appendChild(headerRow);
-  table.appendChild(thead);
-
-  // Body — grouped by category
-  const tbody = el('tbody');
   let currentCategory = '';
 
   registry.forEach(dp => {
-    // Category header
     if (dp.category !== currentCategory) {
       currentCategory = dp.category;
-      const catRow = el('tr', 'dp-matrix__cat-row');
-      catRow.dataset.category = currentCategory;
-      const catCell = document.createElement('td');
-      catCell.colSpan = CONTRACTS.length + 1;
-      catCell.textContent = currentCategory;
-      catRow.appendChild(catCell);
-      tbody.appendChild(catRow);
+      const header = el('div', 'dp-cat-header', currentCategory);
+      header.dataset.category = currentCategory;
+      container.appendChild(header);
     }
 
-    const row = el('tr');
-    row.dataset.dataPointId = dp.id;
-    row.dataset.category = dp.category;
-    row.dataset.label = dp.label.toLowerCase();
-
-    // Label cell
-    const labelCell = el('td', 'dp-matrix__label');
-    labelCell.textContent = dp.label;
-    if (dp.shared) {
-      const sub = el('span', 'dp-matrix__label-sub', 'shared across all');
-      labelCell.appendChild(sub);
-    }
-    row.appendChild(labelCell);
-
-    // Contract cells
-    CONTRACTS.forEach(c => {
-      const td = el('td', 'dp-matrix__cell');
-      const applicable = dp.contracts.includes(c.id);
-
-      if (!applicable) {
-        td.classList.add('dp-matrix__cell--na');
-        const naSpan = el('span', 'dp-cell__na', '\u2014');
-        td.appendChild(naSpan);
-      } else {
-        const date = getLastUpdated(dp, c.id);
-        const freshness = getFreshness(date, dp.staleDays);
-        const value = getDataValue(dp, c.id);
-        const preview = formatPreview(value);
-
-        const cell = el('div', 'dp-cell');
-
-        const dot = el('span', `dp-cell__dot dp-cell__dot--${freshness.status}`);
-        dot.title = `${freshness.label}${freshness.daysAgo !== null ? ` (${freshness.daysAgo}d ago)` : ''}`;
-        cell.appendChild(dot);
-
-        if (preview) {
-          const prev = el('span', 'dp-cell__preview', preview);
-          cell.appendChild(prev);
-        }
-
-        td.appendChild(cell);
-        td.dataset.freshness = freshness.status;
-
-        td.addEventListener('click', () => openOverlay(dp, c.id, value, freshness));
-      }
-
-      row.appendChild(td);
-    });
-
-    tbody.appendChild(row);
+    const card = buildCard(dp);
+    container.appendChild(card);
   });
 
-  table.appendChild(tbody);
-  return table;
+  return container;
+}
+
+function buildCard(dp) {
+  const card = el('div', 'dp-card');
+  card.dataset.dataPointId = dp.id;
+  card.dataset.category = dp.category;
+  card.dataset.label = dp.label.toLowerCase();
+
+  // Header row (always visible)
+  const header = el('div', 'dp-card__header');
+
+  // Name
+  const name = el('div', 'dp-card__name');
+  name.textContent = dp.label;
+  if (dp.shared) {
+    name.appendChild(el('span', 'dp-card__name-sub', 'shared across all'));
+  }
+  header.appendChild(name);
+
+  // Category tag
+  header.appendChild(el('span', 'dp-card__cat', dp.category));
+
+  // Contract pills with freshness
+  const pills = el('div', 'dp-card__pills');
+  CONTRACTS.forEach(c => {
+    const applicable = dp.contracts.includes(c.id);
+    if (!applicable) return;
+
+    const pill = el('span', 'dp-card__pill');
+    const date = getLastUpdated(dp, c.id);
+    const freshness = getFreshness(date, dp.staleDays);
+    const { value } = getDataValue(dp, c.id);
+    const preview = formatPreview(value);
+
+    const dot = el('span', `dp-fresh-dot dp-fresh-dot--${freshness.status}`);
+    pill.appendChild(dot);
+    pill.appendChild(el('span', 'dp-card__pill-label', c.shortLabel));
+    if (preview) {
+      pill.appendChild(el('span', 'dp-card__pill-val', preview));
+    }
+    pill.dataset.freshness = freshness.status;
+    pills.appendChild(pill);
+  });
+  header.appendChild(pills);
+
+  // Chevron
+  header.appendChild(el('span', 'dp-card__chevron', '\u203A'));
+
+  // Click to expand
+  header.addEventListener('click', () => toggleCard(dp, card));
+
+  card.appendChild(header);
+
+  // Body (hidden until expanded)
+  const body = el('div', 'dp-card__body');
+  body.id = `dp-card-body-${dp.id}`;
+  card.appendChild(body);
+
+  // Track freshness for filtering
+  const statuses = new Set();
+  CONTRACTS.forEach(c => {
+    if (!dp.contracts.includes(c.id)) return;
+    const date = getLastUpdated(dp, c.id);
+    statuses.add(getFreshness(date, dp.staleDays).status);
+  });
+  card.dataset.freshness = [...statuses].join(',');
+
+  return card;
+}
+
+function toggleCard(dp, card) {
+  const wasExpanded = card.classList.contains('dp-card--expanded');
+
+  // Collapse any previously expanded card
+  if (expandedCardId && expandedCardId !== dp.id) {
+    const prev = document.querySelector(`.dp-card[data-data-point-id="${expandedCardId}"]`);
+    if (prev) {
+      prev.classList.remove('dp-card--expanded');
+      const prevBody = prev.querySelector('.dp-card__body');
+      if (prevBody) prevBody.innerHTML = '';
+    }
+  }
+
+  if (wasExpanded) {
+    card.classList.remove('dp-card--expanded');
+    card.querySelector('.dp-card__body').innerHTML = '';
+    expandedCardId = null;
+  } else {
+    card.classList.add('dp-card--expanded');
+    expandedCardId = dp.id;
+    renderCardBody(dp, card.querySelector('.dp-card__body'));
+  }
+}
+
+function renderCardBody(dp, body) {
+  body.innerHTML = '';
+
+  // Contract value detail rows
+  const values = el('div', 'dp-card__values');
+
+  CONTRACTS.forEach(c => {
+    const applicable = dp.contracts.includes(c.id);
+    if (!applicable) {
+      const row = el('div', 'dp-val-row dp-val-row--na');
+      row.appendChild(el('span', 'dp-val-row__contract', c.shortLabel));
+      row.appendChild(el('span', '', 'N/A'));
+      values.appendChild(row);
+      return;
+    }
+
+    const row = el('div', 'dp-val-row');
+    row.appendChild(el('span', 'dp-val-row__contract', c.shortLabel));
+
+    const { value, source } = getDataValue(dp, c.id);
+    const detail = formatDetail(value);
+
+    const valueEl = el('div', 'dp-val-row__value');
+    if (Array.isArray(value) && value.length > 0 && typeof value[0] === 'string') {
+      const ul = document.createElement('ul');
+      value.forEach(v => {
+        const li = document.createElement('li');
+        li.textContent = v;
+        ul.appendChild(li);
+      });
+      valueEl.appendChild(ul);
+    } else {
+      valueEl.textContent = typeof detail === 'string' ? detail : JSON.stringify(detail, null, 2);
+    }
+    row.appendChild(valueEl);
+
+    // Meta: freshness pill + source badge
+    const meta = el('div', 'dp-val-row__meta');
+    const date = getLastUpdated(dp, c.id);
+    const freshness = getFreshness(date, dp.staleDays);
+    const pill = el('span', `dp-fresh-pill dp-fresh-pill--${freshness.status}`);
+    pill.textContent = `${freshness.label}${freshness.daysAgo !== null ? ` (${freshness.daysAgo}d)` : ''}`;
+    meta.appendChild(pill);
+
+    const srcBadge = el('span', `dp-source-badge${source === 'db' ? ' dp-source-badge--db' : ''}`);
+    srcBadge.textContent = source === 'db' ? 'DB' : 'JSON';
+    meta.appendChild(srcBadge);
+    row.appendChild(meta);
+
+    values.appendChild(row);
+  });
+
+  body.appendChild(values);
+
+  // JSON path info
+  const path = el('div', 'dp-val-row__path');
+  path.textContent = `${dp.sourceFile}/*.json -> ${dp.jsonPath}`;
+  body.appendChild(path);
+
+  // Inline ingest panel
+  const applicableContracts = CONTRACTS.filter(c => dp.contracts.includes(c.id));
+  const ingestPanel = buildInlineIngestPanel(dp, applicableContracts, async (contractId, extractedValue, ingestionResult) => {
+    // On apply: refresh this card
+    if (dbValues[dp.id] === undefined) dbValues[dp.id] = {};
+    dbValues[dp.id][contractId] = {
+      value: extractedValue,
+      valueType: 'ai-extracted',
+      updatedAt: new Date().toISOString(),
+    };
+    renderCardBody(dp, body);
+    // Refresh the pill in the header
+    refreshCardHeader(dp);
+  });
+  body.appendChild(ingestPanel);
+}
+
+function refreshCardHeader(dp) {
+  const card = document.querySelector(`.dp-card[data-data-point-id="${dp.id}"]`);
+  if (!card) return;
+  const pills = card.querySelector('.dp-card__pills');
+  if (!pills) return;
+  pills.innerHTML = '';
+
+  CONTRACTS.forEach(c => {
+    if (!dp.contracts.includes(c.id)) return;
+    const pill = el('span', 'dp-card__pill');
+    const date = getLastUpdated(dp, c.id);
+    const freshness = getFreshness(date, dp.staleDays);
+    const { value } = getDataValue(dp, c.id);
+    const preview = formatPreview(value);
+    pill.appendChild(el('span', `dp-fresh-dot dp-fresh-dot--${freshness.status}`));
+    pill.appendChild(el('span', 'dp-card__pill-label', c.shortLabel));
+    if (preview) pill.appendChild(el('span', 'dp-card__pill-val', preview));
+    pill.dataset.freshness = freshness.status;
+    pills.appendChild(pill);
+  });
 }
 
 // ─── Filtering ───────────────────────────────────────────────
 
-function filterMatrix(query) {
+function filterCards(query, statusFilter) {
   const q = query.toLowerCase().trim();
-  const tbody = document.querySelector('#dp-matrix tbody');
-  if (!tbody) return;
+  const container = document.getElementById('dp-cards');
+  if (!container) return;
 
-  const rows = tbody.querySelectorAll('tr');
+  const cards = container.querySelectorAll('.dp-card');
+  const catHeaders = container.querySelectorAll('.dp-cat-header');
   const visibleCategories = new Set();
 
-  rows.forEach(row => {
-    if (row.classList.contains('dp-matrix__cat-row')) return; // handle below
-    const label = row.dataset.label || '';
-    const category = row.dataset.category || '';
-    const visible = !q || label.includes(q) || category.toLowerCase().includes(q);
-    row.style.display = visible ? '' : 'none';
+  cards.forEach(card => {
+    const label = card.dataset.label || '';
+    const category = card.dataset.category || '';
+    const freshness = card.dataset.freshness || '';
+
+    const matchesQuery = !q || label.includes(q) || category.toLowerCase().includes(q);
+    const matchesStatus = statusFilter === 'all' || freshness.split(',').includes(statusFilter);
+
+    const visible = matchesQuery && matchesStatus;
+    card.style.display = visible ? '' : 'none';
     if (visible) visibleCategories.add(category);
   });
 
-  // Show/hide category headers
-  rows.forEach(row => {
-    if (!row.classList.contains('dp-matrix__cat-row')) return;
-    row.style.display = visibleCategories.has(row.dataset.category) ? '' : 'none';
+  catHeaders.forEach(h => {
+    h.style.display = visibleCategories.has(h.dataset.category) ? '' : 'none';
   });
-}
-
-function filterByFreshness(status) {
-  const tbody = document.querySelector('#dp-matrix tbody');
-  if (!tbody) return;
-
-  const rows = tbody.querySelectorAll('tr');
-  const visibleCategories = new Set();
-
-  rows.forEach(row => {
-    if (row.classList.contains('dp-matrix__cat-row')) return;
-    if (status === 'all') {
-      row.style.display = '';
-      visibleCategories.add(row.dataset.category);
-      return;
-    }
-
-    const cells = row.querySelectorAll('.dp-matrix__cell:not(.dp-matrix__cell--na)');
-    let hasMatch = false;
-    cells.forEach(cell => {
-      if (cell.dataset.freshness === status) hasMatch = true;
-    });
-    row.style.display = hasMatch ? '' : 'none';
-    if (hasMatch) visibleCategories.add(row.dataset.category);
-  });
-
-  rows.forEach(row => {
-    if (!row.classList.contains('dp-matrix__cat-row')) return;
-    row.style.display = visibleCategories.has(row.dataset.category) ? '' : 'none';
-  });
-}
-
-// ─── Detail Overlay ──────────────────────────────────────────
-
-function openOverlay(dataPoint, contractId, value, freshness) {
-  closeOverlay();
-
-  const contractLabel = CONTRACTS.find(c => c.id === contractId)?.shortLabel || contractId;
-
-  overlay = el('div', 'dp-overlay');
-  overlay.addEventListener('click', e => { if (e.target === overlay) closeOverlay(); });
-
-  const panel = el('div', 'dp-overlay__panel');
-
-  // Close button
-  const closeBtn = el('button', 'dp-overlay__close', '\u00d7');
-  closeBtn.addEventListener('click', closeOverlay);
-  panel.appendChild(closeBtn);
-
-  // Title
-  panel.appendChild(el('div', 'dp-overlay__title', dataPoint.label));
-  panel.appendChild(el('div', 'dp-overlay__subtitle', `${contractLabel} \u2022 ${dataPoint.category}`));
-
-  // Meta badges
-  const meta = el('div', 'dp-overlay__meta');
-
-  const freshBadge = el('span', 'dp-overlay__badge');
-  const freshDot = el('span', 'dp-overlay__badge-dot');
-  freshDot.style.background = freshness.color;
-  freshBadge.appendChild(freshDot);
-  freshBadge.appendChild(document.createTextNode(
-    `${freshness.label}${freshness.daysAgo !== null ? ` \u2022 ${freshness.daysAgo}d ago` : ''}`
-  ));
-  meta.appendChild(freshBadge);
-
-  meta.appendChild(el('span', 'dp-overlay__badge', dataPoint.dataType));
-  meta.appendChild(el('span', 'dp-overlay__badge', dataPoint.sourceFile));
-  if (dataPoint.shared) {
-    meta.appendChild(el('span', 'dp-overlay__badge', 'Shared'));
-  }
-  panel.appendChild(meta);
-
-  // Data value
-  const dataSection = el('div', 'dp-overlay__data');
-  dataSection.appendChild(el('div', 'dp-overlay__data-label', 'Current Value'));
-  const valueEl = el('div', 'dp-overlay__data-value');
-
-  const detail = formatDetail(value);
-  if (Array.isArray(value) && value.length > 0 && typeof value[0] === 'string') {
-    const ul = document.createElement('ul');
-    value.forEach(v => {
-      const li = document.createElement('li');
-      li.textContent = v;
-      ul.appendChild(li);
-    });
-    valueEl.appendChild(ul);
-  } else {
-    valueEl.textContent = detail;
-  }
-
-  dataSection.appendChild(valueEl);
-  panel.appendChild(dataSection);
-
-  // JSON path
-  const pathEl = el('div', 'dp-overlay__path', `${dataPoint.sourceFile}/${contractId}.json \u2192 ${dataPoint.jsonPath}`);
-  panel.appendChild(pathEl);
-
-  overlay.appendChild(panel);
-  document.body.appendChild(overlay);
-  requestAnimationFrame(() => overlay.classList.add('visible'));
-
-  // ESC to close
-  document.addEventListener('keydown', handleOverlayEsc);
-}
-
-function closeOverlay() {
-  if (overlay) {
-    const el = overlay;
-    el.classList.remove('visible');
-    overlay = null;
-    setTimeout(() => el.remove(), 200);
-  }
-  document.removeEventListener('keydown', handleOverlayEsc);
-}
-
-function handleOverlayEsc(e) {
-  if (e.key === 'Escape') closeOverlay();
-}
-
-/**
- * Return freshness summary counts for the nav stats bar.
- */
-export function getFreshnessCounts() {
-  let fresh = 0, aging = 0, stale = 0;
-  registry.forEach(dp => {
-    dp.contracts.forEach(cid => {
-      const date = getLastUpdated(dp, cid);
-      const f = getFreshness(date, dp.staleDays);
-      if (f.status === 'fresh') fresh++;
-      else if (f.status === 'aging') aging++;
-      else stale++;
-    });
-  });
-  return { fresh, aging, stale };
 }

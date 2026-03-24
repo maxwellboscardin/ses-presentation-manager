@@ -29,6 +29,21 @@ export async function initDb() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       )
     `);
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS data_values (
+        id SERIAL PRIMARY KEY,
+        data_point_id TEXT NOT NULL,
+        contract_id TEXT NOT NULL,
+        value JSONB NOT NULL,
+        value_type TEXT,
+        source_ingestion_id INTEGER,
+        updated_by TEXT,
+        updated_at TIMESTAMPTZ DEFAULT NOW(),
+        UNIQUE(data_point_id, contract_id)
+      )
+    `);
+
     console.log('[db] Tables initialized');
   } catch (err) {
     console.error('[db] Failed to initialize tables:', err.message);
