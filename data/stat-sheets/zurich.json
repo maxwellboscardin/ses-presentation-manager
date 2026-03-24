@@ -19,17 +19,16 @@
 
   "averageRates": {
     "chartData": [
-      { "label": "Q3 '24", "value": 0 },
-      { "label": "Q4 '24", "value": 0 },
-      { "label": "Q1 '25", "value": 0 },
-      { "label": "Q2 '25", "value": 0 },
-      { "label": "Q3 '25", "value": 0 }
+      { "label": "Q1 '25", "value": 1.11 },
+      { "label": "Q2 '25", "value": 0.29 },
+      { "label": "Q3 '25", "value": 0.55 },
+      { "label": "Q4 '25", "value": 0.62 }
     ]
   },
 
   "itvBadge": {
-    "value": "$0",
-    "change": "0.00%",
+    "value": "$7.5B",
+    "change": "N/A",
     "direction": "flat",
     "label": "Average ITV"
   },
@@ -89,10 +88,10 @@
 
   "renewalRetention": {
     "data": [
-      { "label": "Q1", "line": 0 },
-      { "label": "Q2", "line": 0 },
-      { "label": "Q3", "line": 0 },
-      { "label": "Q4", "line": 0 }
+      { "label": "Q1", "line": 93.6 },
+      { "label": "Q2", "line": 86.4 },
+      { "label": "Q3", "line": 72.7 },
+      { "label": "Q4", "line": 88.5 }
     ],
     "legend": [
       { "label": "Retention %", "color": "#E97121", "type": "line" }
@@ -101,10 +100,10 @@
 
   "lossHistory": {
     "data": [
-      { "label": "2021", "value": 0 },
-      { "label": "2022", "value": 0 },
-      { "label": "2023", "value": 0 },
-      { "label": "2024", "value": 0 },
+      { "label": "2021", "value": 20 },
+      { "label": "2022", "value": 43 },
+      { "label": "2023", "value": 40 },
+      { "label": "2024", "value": 2 },
       { "label": "2025", "value": 0 }
     ]
   },
