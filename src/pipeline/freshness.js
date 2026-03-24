@@ -17,9 +17,9 @@ const STATUS = {
 };
 
 const COLORS = {
-  fresh: '#34C759',
-  aging: '#FF9500',
-  stale: '#FF3B30',
+  fresh: '#3FAB5A',
+  aging: '#E39622',
+  stale: '#B01A12',
   unknown: '#8E8E93',
 };
 
