@@ -138,7 +138,7 @@ function buildRow1(data) {
     <div class="section-header">Premium</div>
     <div class="kpi-stack__body">
       <div class="kpi-stack__group">
-        <div class="kpi-stack__group-label">CTD Premium</div>
+        <div class="kpi-stack__group-label">YTD Premium</div>
         <div class="kpi-stack__group-values">
           ${data.ctdPremium.kpis.map((k) => `
             <div class="kpi-stack__item">
