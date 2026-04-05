@@ -34,7 +34,7 @@
 }
 
 .brochure-intro__headline {
-  font-size: 44px;
+  font-size: 48px;
   font-weight: 700;
   color: var(--ses-navy);
   line-height: 1.1;
@@ -43,7 +43,7 @@
 }
 
 .brochure-intro__body {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 400;
   color: var(--ses-text-muted);
   line-height: 1.7;
@@ -65,14 +65,14 @@
 }
 
 .brochure-stat__value {
-  font-size: 36px;
+  font-size: 42px;
   font-weight: 700;
   color: var(--ses-navy);
   line-height: 1;
 }
 
 .brochure-stat__label {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--ses-text-muted);
   text-transform: uppercase;
@@ -95,7 +95,7 @@
 }
 
 .brochure-overview__title {
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 700;
   color: var(--ses-navy);
   margin-bottom: 20px;
@@ -103,11 +103,10 @@
 
 /* Description — open body text, no card wrapper */
 .brochure-overview__description {
-  font-size: 15px;
+  font-size: 16px;
   color: var(--ses-text-muted);
   line-height: 1.7;
   margin-bottom: 28px;
-  max-width: 640px;
 }
 
 /* Section label — lightweight navy text + orange accent */
@@ -115,7 +114,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--ses-navy);
   text-transform: uppercase;
@@ -142,7 +141,7 @@
 }
 
 .brochure-overview__highlights li {
-  font-size: 14px;
+  font-size: 15px;
   color: var(--ses-text-muted);
   line-height: 1.6;
 }
@@ -164,13 +163,14 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 16px 18px;
-  border: 1px solid rgba(10, 83, 131, 0.12);
+  padding: 18px 20px;
+  background: var(--ses-white);
   border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(10, 83, 131, 0.1);
 }
 
 .brochure-product-block__name {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--ses-navy);
   text-transform: uppercase;
@@ -179,7 +179,7 @@
 }
 
 .brochure-product-block__premium {
-  font-size: 22px;
+  font-size: 28px;
   font-weight: 700;
   color: var(--ses-orange);
   margin-bottom: 8px;
@@ -187,7 +187,7 @@
 }
 
 .brochure-product-block__desc {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--ses-text-muted);
   line-height: 1.5;
 }
@@ -205,7 +205,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--ses-navy);
 }
@@ -237,11 +237,11 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 5px 14px;
+  padding: 6px 16px;
   background: var(--ses-navy);
   color: #fff;
   border-radius: 4px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.8px;
@@ -253,16 +253,16 @@
 }
 
 .brochure-product-intro__title {
-  font-size: 36px;
+  font-size: 44px;
   font-weight: 700;
   color: var(--ses-navy);
   line-height: 1.15;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   max-width: 560px;
 }
 
 .brochure-product-intro__desc {
-  font-size: 15px;
+  font-size: 17px;
   color: var(--ses-text-muted);
   line-height: 1.7;
   max-width: 560px;
@@ -286,7 +286,7 @@
 }
 
 .brochure-product-detail__title {
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 700;
   color: var(--ses-navy);
   margin-bottom: 20px;
@@ -306,6 +306,10 @@
   display: flex;
   flex-direction: column;
   min-height: 0;
+  background: var(--ses-white);
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(10, 83, 131, 0.08);
+  padding: 18px 20px;
 }
 
 /* Lightweight header — no navy background fill */
@@ -313,25 +317,25 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 0 0 8px;
-  border-bottom: 2px solid rgba(10, 83, 131, 0.1);
-  margin-bottom: 12px;
+  padding: 0 0 10px;
+  border-bottom: 2px solid rgba(10, 83, 131, 0.08);
+  margin-bottom: 14px;
   flex-shrink: 0;
 }
 
 .brochure-detail-section__icon {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   flex-shrink: 0;
 }
 
 .brochure-detail-section__icon svg {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
 }
 
 .brochure-detail-section__label {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--ses-navy);
   letter-spacing: 0.2px;
@@ -349,13 +353,13 @@
   padding-left: 16px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
 }
 
 .brochure-detail-section__body li {
-  font-size: 13px;
+  font-size: 14.5px;
   color: var(--ses-text-muted);
-  line-height: 1.6;
+  line-height: 1.55;
 }
 
 .brochure-detail-section__body li::marker {
