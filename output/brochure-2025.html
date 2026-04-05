@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Program Guide 2025 — SES Risk Solutions</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.mjs" type="module"></script>
   <style>
     @font-face { font-family: 'Gilroy'; src: url('../fonts/Gilroy-Regular.otf'); font-weight: 400; }
     @font-face { font-family: 'Gilroy'; src: url('../fonts/Gilroy-SemiBold.otf'); font-weight: 600; }
@@ -17,8 +18,10 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      overflow: hidden;
     }
 
+    /* ── Toolbar ── */
     .viewer-toolbar {
       position: fixed;
       top: 0;
@@ -65,6 +68,42 @@
       color: rgba(255,255,255,0.7);
     }
 
+    .viewer-toolbar__center {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .viewer-toolbar__nav-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.7);
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .viewer-toolbar__nav-btn:hover:not(:disabled) {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+    }
+    .viewer-toolbar__nav-btn:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+
+    .viewer-toolbar__page-info {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.6);
+      min-width: 70px;
+      text-align: center;
+    }
+
     .viewer-toolbar__right {
       display: flex;
       align-items: center;
@@ -92,17 +131,86 @@
       color: #fff;
     }
 
-    .pdf-container {
+    /* ── Page viewer ── */
+    .page-viewer {
       flex: 1;
       margin-top: 48px;
       display: flex;
-      align-items: stretch;
+      align-items: center;
+      justify-content: center;
+      height: calc(100vh - 48px);
+      position: relative;
+      user-select: none;
     }
 
-    .pdf-container embed {
-      width: 100%;
-      height: calc(100vh - 48px);
+    .page-viewer__canvas-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding: 24px;
+    }
+
+    .page-viewer__canvas-wrap canvas {
+      max-height: calc(100vh - 96px);
+      max-width: calc(100vw - 48px);
+      border-radius: 4px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    }
+
+    /* Click zones for prev/next */
+    .page-viewer__zone {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 25%;
+      cursor: pointer;
+      z-index: 10;
+    }
+    .page-viewer__zone--prev { left: 0; }
+    .page-viewer__zone--next { right: 0; }
+    .page-viewer__zone:hover {
+      background: rgba(255,255,255,0.02);
+    }
+
+    /* ── Dots nav ── */
+    .page-dots {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 100;
+    }
+
+    .page-dots__dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
       border: none;
+      padding: 0;
+    }
+    .page-dots__dot:hover {
+      background: rgba(255,255,255,0.4);
+    }
+    .page-dots__dot--active {
+      background: rgba(255,255,255,0.8);
+      transform: scale(1.3);
+    }
+
+    /* Loading state */
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: calc(100vh - 48px);
+      margin-top: 48px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.4);
     }
   </style>
 </head>
@@ -117,6 +225,19 @@
       </a>
       <span class="viewer-toolbar__title">Program Guide 2025</span>
     </div>
+    <div class="viewer-toolbar__center">
+      <button class="viewer-toolbar__nav-btn" id="prevBtn" disabled>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+      <span class="viewer-toolbar__page-info" id="pageInfo">1 / 9</span>
+      <button class="viewer-toolbar__nav-btn" id="nextBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
+    </div>
     <div class="viewer-toolbar__right">
       <a href="../assets/brochure/program-guide-2025.pdf" download class="viewer-toolbar__btn">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -129,8 +250,109 @@
     </div>
   </div>
 
-  <div class="pdf-container">
-    <embed src="../assets/brochure/program-guide-2025.pdf" type="application/pdf">
+  <div class="loading" id="loading">Loading brochure...</div>
+
+  <div class="page-viewer" id="viewer" style="display:none;">
+    <div class="page-viewer__zone page-viewer__zone--prev" id="zonePrev"></div>
+    <div class="page-viewer__canvas-wrap">
+      <canvas id="pdfCanvas"></canvas>
+    </div>
+    <div class="page-viewer__zone page-viewer__zone--next" id="zoneNext"></div>
   </div>
+
+  <div class="page-dots" id="dots"></div>
+
+  <script type="module">
+    const pdfjsLib = await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.mjs');
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.mjs';
+
+    const PDF_URL = '../assets/brochure/program-guide-2025.pdf';
+    const canvas = document.getElementById('pdfCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let pdfDoc = null;
+    let currentPage = 1;
+    let totalPages = 0;
+    let rendering = false;
+
+    async function loadPDF() {
+      pdfDoc = await pdfjsLib.getDocument(PDF_URL).promise;
+      totalPages = pdfDoc.numPages;
+      buildDots();
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('viewer').style.display = 'flex';
+      renderPage(1);
+    }
+
+    async function renderPage(num) {
+      if (rendering) return;
+      rendering = true;
+      currentPage = num;
+
+      const page = await pdfDoc.getPage(num);
+      const dpr = window.devicePixelRatio || 1;
+      const viewerHeight = window.innerHeight - 96;
+      const viewerWidth = window.innerWidth - 48;
+      const viewport = page.getViewport({ scale: 1 });
+
+      // Scale to fit viewer
+      const scaleH = viewerHeight / viewport.height;
+      const scaleW = viewerWidth / viewport.width;
+      const scale = Math.min(scaleH, scaleW) * dpr;
+      const scaledViewport = page.getViewport({ scale });
+
+      canvas.width = scaledViewport.width;
+      canvas.height = scaledViewport.height;
+      canvas.style.width = (scaledViewport.width / dpr) + 'px';
+      canvas.style.height = (scaledViewport.height / dpr) + 'px';
+
+      await page.render({ canvasContext: ctx, viewport: scaledViewport }).promise;
+
+      updateUI();
+      rendering = false;
+    }
+
+    function updateUI() {
+      document.getElementById('pageInfo').textContent = `${currentPage} / ${totalPages}`;
+      document.getElementById('prevBtn').disabled = currentPage <= 1;
+      document.getElementById('nextBtn').disabled = currentPage >= totalPages;
+
+      document.querySelectorAll('.page-dots__dot').forEach((dot, i) => {
+        dot.classList.toggle('page-dots__dot--active', i + 1 === currentPage);
+      });
+    }
+
+    function buildDots() {
+      const container = document.getElementById('dots');
+      for (let i = 1; i <= totalPages; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'page-dots__dot';
+        dot.addEventListener('click', () => renderPage(i));
+        container.appendChild(dot);
+      }
+    }
+
+    function goNext() { if (currentPage < totalPages) renderPage(currentPage + 1); }
+    function goPrev() { if (currentPage > 1) renderPage(currentPage - 1); }
+
+    document.getElementById('nextBtn').addEventListener('click', goNext);
+    document.getElementById('prevBtn').addEventListener('click', goPrev);
+    document.getElementById('zoneNext').addEventListener('click', goNext);
+    document.getElementById('zonePrev').addEventListener('click', goPrev);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goNext(); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); goPrev(); }
+    });
+
+    // Re-render on resize
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => renderPage(currentPage), 200);
+    });
+
+    loadPDF();
+  </script>
 </body>
 </html>
