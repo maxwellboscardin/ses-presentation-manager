@@ -1,4 +1,4 @@
-/* SES Presentation Manager — Brochure Layout */
+/* SES Presentation Manager — Brochure Layout (Marketing-Forward 2026) */
 
 /* ─── Cover Page (brochure-specific) ──────────────────────── */
 .brochure-cover .cover-card {
@@ -29,50 +29,50 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 48px 40px;
+  padding: 56px 48px;
   height: 100%;
 }
 
 .brochure-intro__headline {
-  font-size: 36px;
+  font-size: 44px;
   font-weight: 700;
   color: var(--ses-navy);
-  line-height: 1.15;
-  margin-bottom: 24px;
-  max-width: 600px;
+  line-height: 1.1;
+  margin-bottom: 28px;
+  max-width: 620px;
 }
 
 .brochure-intro__body {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 400;
   color: var(--ses-text-muted);
   line-height: 1.7;
-  margin-bottom: 32px;
+  margin-bottom: 40px;
   max-width: 640px;
 }
 
 .brochure-intro__stats {
   display: flex;
-  gap: 24px;
+  gap: 32px;
   flex-wrap: wrap;
-  margin-bottom: 40px;
+  margin-bottom: 48px;
 }
 
 .brochure-stat {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
 }
 
 .brochure-stat__value {
-  font-size: 28px;
+  font-size: 36px;
   font-weight: 700;
   color: var(--ses-navy);
   line-height: 1;
 }
 
 .brochure-stat__label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--ses-text-muted);
   text-transform: uppercase;
@@ -89,132 +89,130 @@
 .brochure-overview {
   display: flex;
   flex-direction: column;
-  padding: 24px;
+  padding: 48px;
   height: 100%;
-  gap: 12px;
+  gap: 0;
 }
 
 .brochure-overview__title {
-  font-size: 22px;
+  font-size: 28px;
   font-weight: 700;
   color: var(--ses-navy);
-  margin-bottom: 4px;
+  margin-bottom: 20px;
 }
 
-.brochure-overview__card {
-  background: var(--ses-white);
-  border-radius: var(--radius);
-  box-shadow: 0 1px 3px rgba(10, 83, 131, 0.1);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.brochure-overview__card-header {
-  background: var(--ses-navy);
-  color: #fff;
-  padding: 6px 14px;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.brochure-overview__card-body {
-  padding: 12px 14px;
-  font-size: 12px;
+/* Description — open body text, no card wrapper */
+.brochure-overview__description {
+  font-size: 15px;
   color: var(--ses-text-muted);
-  line-height: 1.5;
+  line-height: 1.7;
+  margin-bottom: 28px;
+  max-width: 640px;
 }
 
-.brochure-overview__card-body p {
-  margin: 0;
-}
-
-.brochure-overview__card-body ul {
-  margin: 0;
-  padding-left: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.brochure-overview__card-body li {
-  font-size: 11.5px;
-  line-height: 1.4;
-}
-
-/* Product summary cards in overview */
-.brochure-overview__products {
-  display: flex;
-  gap: 8px;
-  flex: 1;
-  min-height: 0;
-}
-
-.brochure-product-mini {
-  flex: 1;
-  background: var(--ses-white);
-  border-radius: var(--radius);
-  box-shadow: 0 1px 3px rgba(10, 83, 131, 0.1);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.brochure-product-mini__header {
-  background: var(--ses-navy);
-  color: #fff;
-  padding: 8px 12px;
+/* Section label — lightweight navy text + orange accent */
+.brochure-overview__section-label {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-}
-
-.brochure-product-mini__name {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-}
-
-.brochure-product-mini__premium {
+  gap: 8px;
   font-size: 13px;
   font-weight: 700;
-  color: var(--ses-orange-light);
+  color: var(--ses-navy);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
 }
 
-.brochure-product-mini__body {
-  padding: 10px 12px;
-  font-size: 11px;
+.brochure-overview__section-label::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--ses-orange);
+  flex-shrink: 0;
+}
+
+/* Highlights — simple bullet list */
+.brochure-overview__highlights {
+  margin: 0 0 28px 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.brochure-overview__highlights li {
+  font-size: 14px;
+  color: var(--ses-text-muted);
+  line-height: 1.6;
+}
+
+.brochure-overview__highlights li::marker {
+  color: var(--ses-orange);
+}
+
+/* Product summary — horizontal blocks */
+.brochure-overview__products {
+  display: flex;
+  gap: 16px;
+  flex: 1;
+  min-height: 0;
+  margin-bottom: 24px;
+}
+
+.brochure-product-block {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 18px;
+  border: 1px solid rgba(10, 83, 131, 0.12);
+  border-radius: 8px;
+}
+
+.brochure-product-block__name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ses-navy);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 2px;
+}
+
+.brochure-product-block__premium {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ses-orange);
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+.brochure-product-block__desc {
+  font-size: 13px;
   color: var(--ses-text-muted);
   line-height: 1.5;
-  flex: 1;
 }
 
 /* Contact footer */
 .brochure-contact {
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding: 10px 14px;
-  background: var(--ses-white);
-  border-radius: var(--radius);
-  box-shadow: 0 1px 3px rgba(10, 83, 131, 0.1);
+  gap: 24px;
+  padding: 16px 0 0;
+  border-top: 1px solid rgba(10, 83, 131, 0.1);
 }
 
 .brochure-contact__item {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 11px;
+  gap: 8px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--ses-navy);
 }
 
 .brochure-contact__item svg {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   flex-shrink: 0;
 }
 
@@ -222,93 +220,57 @@
 .brochure-product-intro {
   display: flex;
   flex-direction: column;
-  height: 100%;
-}
-
-.brochure-product-intro__photo {
-  flex: 1;
-  background: var(--ses-bg);
-  display: flex;
-  align-items: center;
   justify-content: center;
-  min-height: 0;
-  overflow: hidden;
-}
-
-.brochure-product-intro__photo img {
-  width: 100%;
+  align-items: flex-start;
   height: 100%;
-  object-fit: cover;
-}
-
-.brochure-product-intro__photo-placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  color: var(--ses-text-muted);
-  opacity: 0.4;
-}
-
-.brochure-product-intro__photo-placeholder svg {
-  width: 48px;
-  height: 48px;
-}
-
-.brochure-product-intro__photo-placeholder span {
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.brochure-product-intro__content {
-  padding: 24px 32px 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  padding: 56px 48px;
 }
 
 .brochure-product-intro__badges {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  margin-bottom: 16px;
 }
 
 .brochure-product-intro__badge {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 4px 12px;
+  padding: 5px 14px;
   background: var(--ses-navy);
   color: #fff;
   border-radius: 4px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.8px;
 }
 
 .brochure-product-intro__qubie {
-  height: 24px;
+  height: 26px;
   width: auto;
 }
 
 .brochure-product-intro__title {
-  font-size: 28px;
+  font-size: 36px;
   font-weight: 700;
   color: var(--ses-navy);
   line-height: 1.15;
+  margin-bottom: 20px;
+  max-width: 560px;
 }
 
 .brochure-product-intro__desc {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--ses-text-muted);
-  line-height: 1.6;
-  max-width: 640px;
+  line-height: 1.7;
+  max-width: 560px;
+  margin-bottom: 0;
 }
 
 .brochure-product-intro__logo {
-  height: 28px;
+  height: 32px;
   width: auto;
   opacity: 0.5;
   margin-top: auto;
@@ -318,77 +280,82 @@
 .brochure-product-detail {
   display: flex;
   flex-direction: column;
-  padding: 24px;
+  padding: 40px 40px 32px;
   height: 100%;
-  gap: 10px;
+  gap: 0;
 }
 
 .brochure-product-detail__title {
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--ses-navy);
-  margin-bottom: 2px;
+  margin-bottom: 20px;
+}
+
+/* 2x2 grid */
+.brochure-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 20px;
+  flex: 1;
+  min-height: 0;
 }
 
 .brochure-detail-section {
-  flex: 1;
-  background: var(--ses-white);
-  border-radius: var(--radius);
-  box-shadow: 0 1px 3px rgba(10, 83, 131, 0.1);
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   min-height: 0;
 }
 
+/* Lightweight header — no navy background fill */
 .brochure-detail-section__header {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 14px;
-  background: var(--ses-navy);
-  color: #fff;
+  padding: 0 0 8px;
+  border-bottom: 2px solid rgba(10, 83, 131, 0.1);
+  margin-bottom: 12px;
   flex-shrink: 0;
 }
 
 .brochure-detail-section__icon {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
   flex-shrink: 0;
 }
 
 .brochure-detail-section__icon svg {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
 }
 
 .brochure-detail-section__label {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  color: var(--ses-navy);
+  letter-spacing: 0.2px;
 }
 
 .brochure-detail-section__body {
-  padding: 8px 14px;
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .brochure-detail-section__body ul {
   margin: 0;
-  padding-left: 14px;
+  padding-left: 16px;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
 }
 
 .brochure-detail-section__body li {
-  font-size: 11.5px;
+  font-size: 13px;
   color: var(--ses-text-muted);
-  line-height: 1.4;
+  line-height: 1.6;
 }
 
 .brochure-detail-section__body li::marker {

@@ -3,23 +3,23 @@
 
 const DATA_URL = '../data/brochure/program-guide-2026.json';
 
-// ─── Detail Section Icons (inline SVG, navy stroke + orange accent) ──────
+// ─── Detail Section Icons (navy stroke + orange accent on white bg) ─────
 
 const ICONS = {
-  eligible: `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke="#fff"/>
+  eligible: `<svg viewBox="0 0 24 24" fill="none" stroke="#0A5383" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
     <polyline points="22 4 12 14.01 9 11.01" stroke="#E97121"/>
   </svg>`,
-  ineligible: `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  ineligible: `<svg viewBox="0 0 24 24" fill="none" stroke="#0A5383" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <circle cx="12" cy="12" r="10"/>
     <line x1="15" y1="9" x2="9" y2="15" stroke="#E97121"/>
     <line x1="9" y1="9" x2="15" y2="15" stroke="#E97121"/>
   </svg>`,
-  coverage: `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  coverage: `<svg viewBox="0 0 24 24" fill="none" stroke="#0A5383" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
     <polyline points="9 12 11 14 15 10" stroke="#E97121"/>
   </svg>`,
-  policyFeatures: `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  policyFeatures: `<svg viewBox="0 0 24 24" fill="none" stroke="#0A5383" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
     <polyline points="14 2 14 8 20 8"/>
     <line x1="12" y1="18" x2="12" y2="12" stroke="#E97121"/>
@@ -204,38 +204,24 @@ function buildOverviewPage(data) {
     <div class="brochure-overview">
       <div class="brochure-overview__title">Program Overview</div>
 
-      <!-- Description card -->
-      <div class="brochure-overview__card">
-        <div class="brochure-overview__card-header">About Our Programs</div>
-        <div class="brochure-overview__card-body">
-          <p>${ov.description}</p>
-        </div>
-      </div>
+      <p class="brochure-overview__description">${ov.description}</p>
 
-      <!-- Highlights card -->
-      <div class="brochure-overview__card" style="flex: 1; min-height: 0;">
-        <div class="brochure-overview__card-header">Key Capabilities</div>
-        <div class="brochure-overview__card-body" style="display: flex; flex-direction: column; justify-content: center; flex: 1;">
-          <ul>
-            ${ov.highlights.map(h => `<li>${h}</li>`).join('')}
-          </ul>
-        </div>
-      </div>
+      <div class="brochure-overview__section-label">Key Capabilities</div>
+      <ul class="brochure-overview__highlights">
+        ${ov.highlights.map(h => `<li>${h}</li>`).join('')}
+      </ul>
 
-      <!-- Product summaries -->
+      <div class="brochure-overview__section-label">Our Programs</div>
       <div class="brochure-overview__products">
         ${ov.products.map(p => `
-          <div class="brochure-product-mini">
-            <div class="brochure-product-mini__header">
-              <span class="brochure-product-mini__name">${p.name}</span>
-              <span class="brochure-product-mini__premium">${p.premium}</span>
-            </div>
-            <div class="brochure-product-mini__body">${p.description}</div>
+          <div class="brochure-product-block">
+            <div class="brochure-product-block__name">${p.name}</div>
+            <div class="brochure-product-block__premium">${p.premium}</div>
+            <div class="brochure-product-block__desc">${p.description}</div>
           </div>
         `).join('')}
       </div>
 
-      <!-- Contact footer -->
       <div class="brochure-contact">
         <div class="brochure-contact__item">
           ${CONTACT_ICONS.phone}
@@ -267,29 +253,13 @@ function buildProductIntroPage(product) {
 
   page.innerHTML = `
     <div class="brochure-product-intro">
-      <div class="brochure-product-intro__photo">
-        ${product.photoPlaceholder ? `
-          <div class="brochure-product-intro__photo-placeholder">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-              <circle cx="8.5" cy="8.5" r="1.5"/>
-              <polyline points="21 15 16 10 5 21"/>
-            </svg>
-            <span>Photo placeholder</span>
-          </div>
-        ` : `
-          <img src="${product.photo}" alt="${product.name}">
-        `}
+      <div class="brochure-product-intro__badges">
+        <span class="brochure-product-intro__badge">${product.badge}</span>
+        ${qubieBadgeHTML}
       </div>
-      <div class="brochure-product-intro__content">
-        <div class="brochure-product-intro__badges">
-          <span class="brochure-product-intro__badge">${product.badge}</span>
-          ${qubieBadgeHTML}
-        </div>
-        <div class="brochure-product-intro__title">${product.name}</div>
-        <div class="brochure-product-intro__desc">${product.description}</div>
-        <img class="brochure-product-intro__logo" src="../assets/ses-logo.svg" alt="SES">
-      </div>
+      <div class="brochure-product-intro__title">${product.name}</div>
+      <div class="brochure-product-intro__desc">${product.description}</div>
+      <img class="brochure-product-intro__logo" src="../assets/ses-logo.svg" alt="SES">
     </div>
   `;
   return page;
@@ -311,19 +281,21 @@ function buildProductDetailPage(product) {
   page.innerHTML = `
     <div class="brochure-product-detail">
       <div class="brochure-product-detail__title">${product.name} - Details</div>
-      ${detailSections.map(s => `
-        <div class="brochure-detail-section">
-          <div class="brochure-detail-section__header">
-            <div class="brochure-detail-section__icon">${s.icon}</div>
-            <div class="brochure-detail-section__label">${s.label}</div>
+      <div class="brochure-detail-grid">
+        ${detailSections.map(s => `
+          <div class="brochure-detail-section">
+            <div class="brochure-detail-section__header">
+              <div class="brochure-detail-section__icon">${s.icon}</div>
+              <div class="brochure-detail-section__label">${s.label}</div>
+            </div>
+            <div class="brochure-detail-section__body">
+              <ul>
+                ${(product[s.key] || []).map(item => `<li>${item}</li>`).join('')}
+              </ul>
+            </div>
           </div>
-          <div class="brochure-detail-section__body">
-            <ul>
-              ${(product[s.key] || []).map(item => `<li>${item}</li>`).join('')}
-            </ul>
-          </div>
-        </div>
-      `).join('')}
+        `).join('')}
+      </div>
     </div>
   `;
   return page;
