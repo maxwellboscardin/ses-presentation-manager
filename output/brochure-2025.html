@@ -64,37 +64,6 @@
       stroke-linejoin: round;
     }
 
-    /* ── Dots (matches .pres-dots) ── */
-    .pres-dots {
-      position: fixed;
-      bottom: 16px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 10px;
-      z-index: 200;
-      background: rgba(10, 83, 131, 0.6);
-      padding: 8px 16px;
-      border-radius: 20px;
-    }
-    .pres-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.3);
-      border: none;
-      cursor: pointer;
-      padding: 0;
-      transition: background 0.2s, transform 0.2s;
-    }
-    .pres-dot:hover {
-      background: rgba(255, 255, 255, 0.6);
-    }
-    .pres-dot.active {
-      background: #fff;
-      transform: scale(1.3);
-    }
-
     /* ── Download button (discreet, bottom-right) ── */
     .download-btn {
       position: fixed;
@@ -179,8 +148,6 @@
     <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
   </button>
 
-  <div class="pres-dots" id="dots"></div>
-
   <a href="../assets/brochure/program-guide-2025.pdf" download class="download-btn">
     <svg viewBox="0 0 24 24">
       <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -225,7 +192,6 @@
         await renderPageToCanvas(p);
       }
 
-      buildDots();
       document.getElementById('loading').style.display = 'none';
       showSection(0);
     }
@@ -291,19 +257,6 @@
       document.getElementById('prevBtn').disabled = currentIndex === 0;
       document.getElementById('nextBtn').disabled = currentIndex === sections.length - 1;
 
-      document.querySelectorAll('.pres-dot').forEach((dot, i) => {
-        dot.classList.toggle('active', i === currentIndex);
-      });
-    }
-
-    function buildDots() {
-      const container = document.getElementById('dots');
-      sections.forEach((_, i) => {
-        const dot = document.createElement('button');
-        dot.className = 'pres-dot';
-        dot.addEventListener('click', () => showSection(i));
-        container.appendChild(dot);
-      });
     }
 
     function goNext() { showSection(currentIndex + 1); }
