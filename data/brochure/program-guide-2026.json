@@ -1,0 +1,177 @@
+{
+  "title": "Program Guide",
+  "year": "2026",
+  "subtitle": "Real Estate Investor Insurance Programs",
+
+  "intro": {
+    "headline": "Protecting Real Estate Investors Since 1989",
+    "body": "SES Risk Solutions is a leading program administrator specializing in property insurance for real estate investors. As part of the Alliant Insurance Services family, we combine decades of niche expertise with the resources of one of the nation's largest insurance brokerages. Our data-driven underwriting, proprietary technology platforms, and deep distribution partnerships make us the trusted choice for insuring investor-owned residential properties.",
+    "stats": [
+      { "value": "35+", "label": "Years in Business" },
+      { "value": "$181M", "label": "Annual GWP" },
+      { "value": "85K+", "label": "Properties Insured" },
+      { "value": "$15B", "label": "Total Insured Value" }
+    ]
+  },
+
+  "overview": {
+    "description": "Our core programs are designed to insure properties held in trust and owned by real estate investors. We focus on innovation, risk management, and client solutions to serve the ever-changing market. Our proprietary policy administration system is API-enabled and offers web-based self-service.",
+    "highlights": [
+      "Data-driven underwriting with in-house actuarial team",
+      "Proprietary quoting and policy management systems (TIMS, QUBIE)",
+      "AI/ML-powered risk scoring using aerial imagery and proximity signals",
+      "Longstanding partnerships with 1,000+ agents, brokers, and wholesalers",
+      "Self-service platforms with API-ready connectivity",
+      "PowerBI dashboards delivering live KPIs and performance tracking"
+    ],
+    "products": [
+      {
+        "name": "SFR Portfolio",
+        "premium": "$56M",
+        "description": "Core program for investors with 5+ properties"
+      },
+      {
+        "name": "Individual Asset",
+        "premium": "$12M",
+        "description": "Automated self-service for single-property investors"
+      },
+      {
+        "name": "Multifamily Portfolio",
+        "premium": "$3.9M",
+        "description": "Portfolios between $1M and $30M TIV"
+      }
+    ],
+    "contact": {
+      "phone": "(866) 643-1010",
+      "email": "info@ses-ins.com",
+      "website": "ses-ins.com"
+    }
+  },
+
+  "products": [
+    {
+      "id": "sfr-portfolio",
+      "name": "Single Family Portfolio",
+      "badge": "PORTFOLIO",
+      "badgeColor": "#0A5383",
+      "description": "Our flagship program supporting real estate investors with portfolios of 5 or more single-family residential properties. Designed for mid-size portfolios and property managers seeking comprehensive coverage with competitive pricing.",
+      "photoPlaceholder": true,
+      "eligible": [
+        "1-4 family dwellings, townhomes, and condos",
+        "Minimum 5 properties per account",
+        "Owner-occupied or tenant-occupied",
+        "Properties undergoing renovation (with restrictions)",
+        "Vacant properties (up to 120 days)",
+        "Properties in most US states (see appetite guide)"
+      ],
+      "ineligible": [
+        "Commercial properties",
+        "Properties with open foundation or structural damage",
+        "Properties in coastal wind zones (specific counties)",
+        "Properties valued over $750K (individual)",
+        "Mobile or manufactured homes",
+        "Properties with prior arson claims"
+      ],
+      "coverage": [
+        "Dwelling coverage (Replacement Cost or Actual Cash Value)",
+        "Other structures coverage",
+        "Loss of rents / Fair rental value",
+        "Personal property of the landlord",
+        "General liability (optional, GSE-compliant)",
+        "Equipment breakdown",
+        "Ordinance or law coverage"
+      ],
+      "policyFeatures": [
+        "Annual or multi-year policy terms",
+        "Blanket coverage available",
+        "Flexible deductible options ($1K - $25K)",
+        "Wind/hail sub-deductibles by region",
+        "Monthly reporting form available",
+        "Automatic coverage for newly acquired properties (30 days)"
+      ]
+    },
+    {
+      "id": "multifamily",
+      "name": "Multifamily Portfolio",
+      "badge": "MULTIFAMILY",
+      "badgeColor": "#0A5383",
+      "description": "Tailored coverage for investors and property managers with multifamily residential portfolios. Supports apartment buildings, duplexes, triplexes, and small apartment complexes with total insured values between $1M and $30M.",
+      "photoPlaceholder": true,
+      "eligible": [
+        "Apartment buildings (5-50 units typical)",
+        "Duplexes, triplexes, and quadplexes",
+        "Mixed residential portfolios",
+        "Properties with on-site management",
+        "Owner-occupied multifamily (2-4 units)",
+        "Properties in most US states"
+      ],
+      "ineligible": [
+        "Properties over $30M TIV per location",
+        "Large apartment complexes (100+ units)",
+        "Student housing or dormitories",
+        "Assisted living or nursing facilities",
+        "Properties with more than 2 losses in 3 years",
+        "Properties in coastal high-hazard zones"
+      ],
+      "coverage": [
+        "Building coverage (Replacement Cost)",
+        "Business personal property",
+        "Loss of rents / Business income",
+        "General liability",
+        "Equipment breakdown",
+        "Ordinance or law coverage",
+        "Water damage / sewer backup"
+      ],
+      "policyFeatures": [
+        "Portfolio-level blanket coverage",
+        "Flexible deductible structure",
+        "Loss of rents with extended period option",
+        "Agreed value endorsement available",
+        "Automatic coverage for new acquisitions",
+        "Quarterly or annual premium payment options"
+      ]
+    },
+    {
+      "id": "individual-asset",
+      "name": "SF Individual Asset",
+      "badge": "INDIVIDUAL ASSET",
+      "badgeColor": "#0A5383",
+      "qubieBadge": true,
+      "description": "Our automated, self-service underwriting platform for brokers and individual property investors. Powered by QUBIE, our proprietary quoting engine that delivers instant quotes using AI-driven risk scoring, aerial imagery analysis, and real-time data validation.",
+      "photoPlaceholder": true,
+      "eligible": [
+        "Single-family residential properties",
+        "1-4 unit dwellings",
+        "Investor-owned, tenant-occupied",
+        "Fix-and-flip properties (with restrictions)",
+        "Short-term rentals (Airbnb, VRBO)",
+        "Properties valued up to $750K"
+      ],
+      "ineligible": [
+        "Owner-occupied primary residences",
+        "Commercial or mixed-use properties",
+        "Vacant land",
+        "Properties with prior arson or fraud claims",
+        "Mobile or manufactured homes",
+        "Properties requiring major structural repair"
+      ],
+      "coverage": [
+        "Dwelling coverage (Replacement Cost)",
+        "Other structures",
+        "Loss of rents / Fair rental value",
+        "Personal property coverage",
+        "Liability coverage (optional)",
+        "Equipment breakdown",
+        "Ordinance or law"
+      ],
+      "policyFeatures": [
+        "Instant online quotes via QUBIE platform",
+        "Self-service policy issuance",
+        "API integration for broker platforms",
+        "Flexible deductibles ($1K - $10K)",
+        "Monthly or annual payment options",
+        "Real-time risk scoring and pricing"
+      ]
+    }
+  ]
+}
