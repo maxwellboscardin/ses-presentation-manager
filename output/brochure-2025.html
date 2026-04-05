@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Program Guide 2025 — SES Risk Solutions</title>
+  <style>
+    @font-face { font-family: 'Gilroy'; src: url('../fonts/Gilroy-Regular.otf'); font-weight: 400; }
+    @font-face { font-family: 'Gilroy'; src: url('../fonts/Gilroy-SemiBold.otf'); font-weight: 600; }
+    @font-face { font-family: 'Gilroy'; src: url('../fonts/Gilroy-Bold.otf'); font-weight: 700; }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Gilroy', sans-serif;
+      background: #1a1a2e;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .viewer-toolbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 48px;
+      background: rgba(26, 26, 46, 0.95);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 100;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .viewer-toolbar__left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .viewer-toolbar__back {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: rgba(10, 83, 131, 0.6);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-family: 'Gilroy', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .viewer-toolbar__back:hover { background: rgba(10, 83, 131, 0.9); }
+
+    .viewer-toolbar__title {
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .viewer-toolbar__right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .viewer-toolbar__btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: rgba(233,113,33,0.25);
+      color: rgba(255,255,255,0.85);
+      border: none;
+      border-radius: 6px;
+      font-family: 'Gilroy', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .viewer-toolbar__btn:hover {
+      background: rgba(233,113,33,0.5);
+      color: #fff;
+    }
+
+    .pdf-container {
+      flex: 1;
+      margin-top: 48px;
+      display: flex;
+      align-items: stretch;
+    }
+
+    .pdf-container embed {
+      width: 100%;
+      height: calc(100vh - 48px);
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="viewer-toolbar">
+    <div class="viewer-toolbar__left">
+      <a href="brochure-index.html" class="viewer-toolbar__back">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        Back
+      </a>
+      <span class="viewer-toolbar__title">Program Guide 2025</span>
+    </div>
+    <div class="viewer-toolbar__right">
+      <a href="../assets/brochure/program-guide-2025.pdf" download class="viewer-toolbar__btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Download PDF
+      </a>
+    </div>
+  </div>
+
+  <div class="pdf-container">
+    <embed src="../assets/brochure/program-guide-2025.pdf" type="application/pdf">
+  </div>
+</body>
+</html>
