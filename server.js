@@ -1,7 +1,5 @@
 import 'dotenv/config';
 import express from 'express';
-import session from 'express-session';
-import connectPgSimple from 'connect-pg-simple';
 import { readFile } from 'fs/promises';
 import { extname, join, resolve } from 'path';
 import { fileURLToPath } from 'url';
@@ -9,9 +7,6 @@ import { dirname } from 'path';
 import { handleExtract } from './src/pipeline/api-extract.js';
 import { initDb } from './src/pipeline/db-init.js';
 import { getPool, isDbConfigured } from './src/pipeline/db.js';
-import { pool } from './server/db.js';
-import { requireAuth } from './server/auth.js';
-import authRoutes from './server/auth-routes.js';
 import pdfRoutes from './server/pdf-route.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -35,29 +30,10 @@ const app = express();
 app.set('trust proxy', 1);
 app.use(express.json({ limit: '10mb' }));
 
-// Sessions (PostgreSQL-backed)
-const PgSession = connectPgSimple(session);
-app.use(session({
-  store: new PgSession({ pool, tableName: 'session' }),
-  secret: process.env.SESSION_SECRET || 'dev-secret-change-me',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    secure: isProd,
-    httpOnly: true,
-    maxAge: 30 * 24 * 60 * 60 * 1000,
-    sameSite: 'lax',
-  },
-}));
-
 // Initialize database tables
 initDb();
 
-// --- Unprotected routes ---
-app.use('/api/auth', authRoutes);
-app.get('/login', (_req, res) => res.sendFile(join(__dirname, 'server', 'login.html')));
-
-// Health check — unprotected so we can verify deployment
+// Health check
 app.get('/api/health', async (_req, res) => {
   const hasKey = !!process.env.ANTHROPIC_API_KEY;
   const hasDb = isDbConfigured();
@@ -76,10 +52,7 @@ app.get('/api/health', async (_req, res) => {
   }
 });
 
-// --- Auth wall ---
-app.use(requireAuth);
-
-// ─── API Routes (protected) ─────────────────────────────────
+// ─── API Routes ─────────────────────────────────
 // PDF generation (5-minute timeout for large collections)
 app.use('/api/pdf', (req, res, next) => {
   req.setTimeout(5 * 60 * 1000);
@@ -121,7 +94,7 @@ app.put('/api/data-values', async (req, res) => {
        ON CONFLICT (data_point_id, contract_id)
        DO UPDATE SET value = $3, value_type = $4, source_ingestion_id = $5, updated_by = $6, updated_at = NOW()
        RETURNING *`,
-      [dataPointId, contractId, JSON.stringify(value), valueType || 'manual', sourceIngestionId || null, req.session?.user?.name || 'unknown']
+      [dataPointId, contractId, JSON.stringify(value), valueType || 'manual', sourceIngestionId || null, 'manual']
     );
     res.json({ ok: true, row: result.rows[0] });
   } catch (err) {
