@@ -44,7 +44,7 @@
 
 .brochure-intro__body {
   font-size: 18px;
-  font-weight: 400;
+  font-weight: 500;
   color: var(--ses-text-muted);
   line-height: 1.7;
   margin-bottom: 40px;
@@ -104,6 +104,7 @@
 /* Description — open body text, no card wrapper */
 .brochure-overview__description {
   font-size: 16px;
+  font-weight: 500;
   color: var(--ses-text-muted);
   line-height: 1.7;
   margin-bottom: 28px;
@@ -142,6 +143,7 @@
 
 .brochure-overview__highlights li {
   font-size: 15px;
+  font-weight: 500;
   color: var(--ses-text-muted);
   line-height: 1.6;
 }
@@ -188,6 +190,7 @@
 
 .brochure-product-block__desc {
   font-size: 14px;
+  font-weight: 500;
   color: var(--ses-text-muted);
   line-height: 1.5;
 }
@@ -263,6 +266,7 @@
 
 .brochure-product-intro__desc {
   font-size: 18px;
+  font-weight: 500;
   color: var(--ses-text-muted);
   line-height: 1.7;
   max-width: 560px;
@@ -358,6 +362,7 @@
 
 .brochure-detail-section__body li {
   font-size: 16px;
+  font-weight: 500;
   color: var(--ses-text-muted);
   line-height: 1.55;
 }
